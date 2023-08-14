@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.thalesgroup.gemalto.d1.card.State;
 import com.thalesgroup.gemalto.d1.d1pay.DeviceAuthenticationCallback;
 import com.thalesgroup.gemalto.d1.validation.R;
 import com.thalesgroup.gemalto.d1.validation.databinding.FragmentD1payDigitalCardDetailBinding;
@@ -23,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Locale;
@@ -128,20 +128,17 @@ public class D1PayDigitalCardFragment extends AbstractBaseFragment<D1PayDigitalC
             mIcon.setBackground(new BitmapDrawable(getResources(), bitmap));
         });
 
-        mViewModel.mIsDeleteCardStartedSuccess.observe(getViewLifecycleOwner(), isDeleteSuccess -> {
+        mViewModel.mIsUpdateCardStartedSuccess.observe(getViewLifecycleOwner(), cardState -> {
             hideProgressDialog();
-            if (isDeleteSuccess) {
-                // popFromBackstack();
-                Toast.makeText(getActivity(), "Delete card started OK.", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), "Waiting for push message.", Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(getActivity(), String.format(Locale.ENGLISH, "Update card started: %s", cardState), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Waiting for push message.", Toast.LENGTH_LONG).show();
         });
 
-        mViewModel.mIsDeleteCardFinishSuccess.observe(getViewLifecycleOwner(), isDeleteSuccess -> {
+        mViewModel.mUpdatedCardState.observe(getViewLifecycleOwner(), cardState -> {
             hideProgressDialog();
-            if (isDeleteSuccess) {
+            Toast.makeText(getActivity(), String.format(Locale.ENGLISH, "Update card state finished: %s", cardState), Toast.LENGTH_SHORT).show();
+            if (cardState == State.DELETED) {
                 popFromBackstack();
-                Toast.makeText(getActivity(), "Card deleted OK.", Toast.LENGTH_SHORT).show();
             }
         });
 

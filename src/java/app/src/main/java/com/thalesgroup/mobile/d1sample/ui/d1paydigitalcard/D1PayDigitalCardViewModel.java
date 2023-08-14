@@ -4,18 +4,15 @@
 
 package com.thalesgroup.mobile.d1sample.ui.d1paydigitalcard;
 
-import android.app.Activity;
 import android.view.View;
 
 import com.thalesgroup.gemalto.d1.D1Exception;
 import com.thalesgroup.gemalto.d1.D1Task;
 import com.thalesgroup.gemalto.d1.card.CardMetadata;
 import com.thalesgroup.gemalto.d1.card.State;
-import com.thalesgroup.gemalto.d1.d1pay.D1PayConfigParams;
 import com.thalesgroup.gemalto.d1.d1pay.D1PayDigitalCard;
 import com.thalesgroup.gemalto.d1.d1pay.DeviceAuthenticationCallback;
 import com.thalesgroup.mobile.d1sample.sdk.D1Helper;
-import com.thalesgroup.mobile.d1sample.sdk.payment.D1PayTransactionListener;
 import com.thalesgroup.mobile.d1sample.ui.base.BaseViewModel;
 
 import androidx.annotation.NonNull;
@@ -30,12 +27,12 @@ public class D1PayDigitalCardViewModel extends BaseViewModel {
     public MutableLiveData<String> mLast4Pan = new MutableLiveData<>();
     public MutableLiveData<String> mExpr = new MutableLiveData<>();
     public MutableLiveData<String> mIsDefault = new MutableLiveData<>();
-    public MutableLiveData<Boolean> mIsDeleteCardStartedSuccess = new MutableLiveData<>(Boolean.FALSE);
+    public MutableLiveData<Boolean> mIsUpdateCardStartedSuccess = new MutableLiveData<>(Boolean.FALSE);
     public MutableLiveData<Integer> mSuspendButtonVisibility = new MutableLiveData<>(View.GONE);
     public MutableLiveData<Integer> mResumeButtonVisibility = new MutableLiveData<>(View.GONE);
     public MutableLiveData<Integer> mSetDefaultButtonVisibility = new MutableLiveData<>(View.GONE);
     public MutableLiveData<Integer> mUnsetDefaultButtonVisibility = new MutableLiveData<>(View.GONE);
-    public MutableLiveData<Boolean> mIsDeleteCardFinishSuccess = new MutableLiveData<>(Boolean.FALSE);
+    public MutableLiveData<State> mUpdatedCardState = new MutableLiveData<>(State.UNKNOWN);
     public MutableLiveData<Integer> mReplenishButtonVisibility = new MutableLiveData<>(View.GONE);
 
 
@@ -115,14 +112,24 @@ public class D1PayDigitalCardViewModel extends BaseViewModel {
      * @param cardId Card ID.
      */
     public void suspendD1PayDigitalCard(@NonNull final String cardId) {
+        D1Helper.getInstance().registerCardDataChangeListenerD1Pay((card, state) -> {
+            mUpdatedCardState.postValue(state);
+            D1Helper.getInstance().unregisterCardDataChangeListenerD1Pay();
+
+            // reload card
+            if (card != null && state == State.INACTIVE) {
+                getD1PayDigitalCard(cardId);
+            }
+        });
+
         D1Helper.getInstance().getDigitalCardD1Pay(cardId, new D1Task.Callback<D1PayDigitalCard>() {
             @Override
             public void onSuccess(final D1PayDigitalCard digitalCard) {
                 D1Helper.getInstance().suspendD1PayDigitalCard(cardId, digitalCard, new D1Task.Callback<Boolean>() {
                     @Override
                     public void onSuccess(final Boolean aBoolean) {
-                        // get most recent state
-                        getD1PayDigitalCard(cardId);
+                        // need to wait for push message to process the card state change
+                        mIsUpdateCardStartedSuccess.postValue(true);
                     }
 
                     @Override
@@ -145,14 +152,24 @@ public class D1PayDigitalCardViewModel extends BaseViewModel {
      * @param cardId Card ID.
      */
     public void resumeD1PayDigitalCard(@NonNull final String cardId) {
+        D1Helper.getInstance().registerCardDataChangeListenerD1Pay((card, state) -> {
+            mUpdatedCardState.postValue(state);
+            D1Helper.getInstance().unregisterCardDataChangeListenerD1Pay();
+
+            // reload card
+            if (card != null && state == State.ACTIVE) {
+                getD1PayDigitalCard(cardId);
+            }
+        });
+
         D1Helper.getInstance().getDigitalCardD1Pay(cardId, new D1Task.Callback<D1PayDigitalCard>() {
             @Override
             public void onSuccess(final D1PayDigitalCard digitalCard) {
                 D1Helper.getInstance().resumeD1PayDigitalCard(cardId, digitalCard, new D1Task.Callback<Boolean>() {
                     @Override
                     public void onSuccess(final Boolean aBoolean) {
-                        // get most recent state
-                        getD1PayDigitalCard(cardId);
+                        // need to wait for push message to process the card state change
+                        mIsUpdateCardStartedSuccess.postValue(true);
                     }
 
                     @Override
@@ -176,10 +193,8 @@ public class D1PayDigitalCardViewModel extends BaseViewModel {
      */
     public void deleteD1PayDigitalCard(@NonNull final String cardId) {
         D1Helper.getInstance().registerCardDataChangeListenerD1Pay((card, state) -> {
-            if (state == State.DELETED) {
-                mIsDeleteCardFinishSuccess.postValue(true);
-                D1Helper.getInstance().unregisterCardDataChangeListenerD1Pay();
-            }
+            mUpdatedCardState.postValue(state);
+            D1Helper.getInstance().unregisterCardDataChangeListenerD1Pay();
         });
 
         D1Helper.getInstance().getDigitalCardD1Pay(cardId, new D1Task.Callback<D1PayDigitalCard>() {
@@ -188,7 +203,8 @@ public class D1PayDigitalCardViewModel extends BaseViewModel {
                 D1Helper.getInstance().deleteD1PayDigitalCard(cardId, digitalCard, new D1Task.Callback<Boolean>() {
                     @Override
                     public void onSuccess(final Boolean aBoolean) {
-                        mIsDeleteCardStartedSuccess.postValue(aBoolean);
+                        // need to wait for push message to process the card state change
+                        mIsUpdateCardStartedSuccess.postValue(true);
                     }
 
                     @Override
