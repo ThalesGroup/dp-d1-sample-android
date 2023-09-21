@@ -25,10 +25,16 @@ google-services.json
 # Keystore files
 *.jks
 *.keystore
-keystore/
+app/keystore/
+app/src/main/assets/keystore.properties
 
 # Include gradle wrapper jar
 !gradle-wrapper.jar
 
 # configuration property files
-src/java/app/src/main/assets/*.properties
+Features/pay/src/main/assets/*.properties
+core/src/main/assets/d1.properties
+
+# static code analysis
+quality.gradle
+config/

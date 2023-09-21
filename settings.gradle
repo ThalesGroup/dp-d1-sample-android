@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "D1-Templates"
+include':app',
+    ':core',
+    ':features:pay',
+    ':features:push',
+    ':features:virtualcard',
+    ':libs:d1-debug',
+    ':libs:d1-release'

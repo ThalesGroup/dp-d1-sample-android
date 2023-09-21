@@ -1,103 +1,35 @@
-# D1 SDK Sample Android application
+# D1 SDK Sample Android application v2
 
-Sample application to show the integration of D1 SDK in to an Android application.
+Sample application to show the integration of D1 SDK in to an Android application. This serves not only as a guide but also 
+as a ready made solution if code needs to be transferred 1:1 to client applications.
 
-## Get started
+# Getting started
 
-To be able to build and run the sample application:
-
-1. D1 SDK needs to be added to the sample application.
-2. Application configuration needs to be added.
+*Note: Thales SDK support team will supply all config files directly via email.*
 
 The following files need to be added to the project:
 
-1. D1 backend configuration.
+## TLDR files to add:
+```bash
+.
+├── D1
+│   ├── d1.properties
+│   └── D1 SDK Binaries
+│
+└── D1-Pay-Extra
+    ├── Android Keystore
+    ├── keystore.properties
+    ├── gemcbp.properties
+    ├── mobilegateway.properties
+    ├── rages.properties
+    └── google-services.json
+```
+
+## D1 Backend Configuration
    
-```bash
-src/java/app/src/main/assets/d1.properties
-```
-
-2. D1 SDK.
-
-```bash
-src/java/app/libs
-               ├── d1-debug.aar
-               └── d1-release.aar
-```
-
-3. Keystore.
-
-```bash
-src/java/app/keystore/keystore
-```
-
-```bash
-src/java/app/src/main/assets/keystore.properties
-```
-
-4. D1Pay configuration.
-
-```bash
-src/java/app/src/main/assets
-                        ├── gemcbp.properties
-                        ├── mobilegateway.properties
-                        └── rages.properties
-
-```
-
-5. `google-services.json` file.
-
-```bash
-src/java/app/google-services.json
-```
-
-Adding the Keystore and D1 Pay configuration is only mandatory if using D1Pay feature.
-
-Please contact your Thales representative to recieve D1 SDK and a working configuration.
-
-### D1 SDK
-
-This sample application was tested with **D1 SDK version 3.0.0**.
-Please refer to the sample application `build.gradle` files for the correct location of D1 SDK.
-
-**`src/java/build.gradle`**
-```groovy
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        flatDir{
-            dirs 'libs'
-        }
-    }
-}
-```
-
-**`src/java/app/build.gradle`**
-```groovy
-releaseImplementation(name: 'd1-release', ext: 'aar')
-debugImplementation(name: 'd1-debug', ext: 'aar')
-```
-
-```bash
-src/java/app/
-├── build.gradle
-├── proguard-rules.pro
-├── src
-└── libs
-    ├── d1-debug.aar
-    └── d1-release.aar
-```
-
-For more details, please refer to the [D1 SDK Integration](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/f2c8e49a37919-integrate-sdk-binary-into-your-android-application) section of the D1 Developer Portal.
-
-### Configuration
-
-#### D1 backend configuration
-
 The `d1.properties` file which holds the D1 backend configuration needs to be added to the project.
 
-**`src/java/app/src/main/assets/d1.properties`**
+**`core/src/main/assets/d1.properties`**
 ```bash
 D1_SERVICE_URL = 
 ISSUER_ID = 
@@ -106,64 +38,89 @@ D1_SERVICE_RSA_MODULUS =
 DIGITAL_CARD_URL = 
 CONSUMER_ID = 
 CARD_ID = 
-SANDBOX_NAME = 
-SANDBOX_SCOPE = 
-SANDBOX_AUDIENCE = 
-SANDBOX_KEY_ID = 
-SANDBOX_ALGO = 
-SANDBOX_PRIVATE_KEY =
+JWT_URL = 
+JWT_USERNAME = 
+JWT_PASSWORD = 
 ```
-The `d1.properties` file is not kept under version control to prevent it from being overwritten during repository update.
 
+The `d1.properties` file is **not** kept under version control to prevent it from being overwritten during repository update.
 
 For more details, please refer to the [D1 SDK Setup](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/4f003bf306c04-initial-setup) section of the D1 Developer Portal.
 
-#### Authentication
+## D1 SDK Binaries
 
-To receive access to all D1 services, the user needs to authenticate with D1. This authentication is done using a [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens). For simplicity this token is generated in the sample application. The JWT configuration is part of the `d1.properties` file.
+This sample application was tested with **D1 SDK version 3.1.0.rc2**.
+Please refer to the sample application `build.gradle` files for the correct location of D1 SDK.
 
-For more details, please refer to the [D1 SDK Login](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/97566495c786d-sdk-login) section of the D1 Developer Portal.
+**`app/build.gradle`**
+```groovy
+debugImplementation project(":Libs:d1-debug")
+releaseImplementation project(":Libs:d1-release")
+```
 
+```bash
+Libs/
+├── D1-debug
+│   ├── build.gradle
+│   └── d1-debug.aar
+└── D1-release
+    ├── build.gradle
+    └── d1-release.aar
+```
 
-#### D1Pay configuration
+**`settings.gradle`**
+```groovy
+include':app',
+    ':Libs:d1-debug',
+    ':Libs:d1-release'
+```
 
-To use [D1Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/d6a8ba3f3c186-d1-pay-introduction) services, the following configurations need to be added:
+For more details, please refer to the [D1 SDK Integration](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/f2c8e49a37919-integrate-sdk-binary-into-your-android-application) section of the D1 Developer Portal.
 
-* Google services
-* Android keystore
-* D1Pay backend configuration
+## Additional D1-Pay Configuration:
+To use [D1-Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/d6a8ba3f3c186-d1-pay-introduction) services, the following configurations need to be added:
 
-##### Google services
+* Android Keystore
+* D1-Pay Backend Configuration
+* Google Services
 
-[D1Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/d6a8ba3f3c186-d1-pay-introduction) services use [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging). For this reason the corresponding `google-services.json` file needs to be added to the sample application.
-
-##### Android keystore
-
+### Android Keystore
 To use [D1Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/d6a8ba3f3c186-d1-pay-introduction) services, the sample application needs to be signed with a specific keystore - [Mobile banking application signing key](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/627614736c261-what-is-app-pk-value-and-how-to-obtain-it). The sample application needs to be updated with the appropriate keystore and signing configuration.
 
-**`src/java/app/build.gradle`**
+```bash
+app/keystore/keystore
+```
+
+**`app/build.gradle`**
 ```groovy
 
 android {
     signingConfigs {
-        signingD1Pay {
-            // Load keystore
-            def keystorePropertiesFile = rootProject.file("app/src/main/assets/keystore.properties");
-            def keystoreProperties = new Properties()
-            if (keystorePropertiesFile.canRead()) {
-                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+        def keystorePropertiesFile = rootProject.file("app/src/main/assets/keystore.properties")
+        def keystoreProperties = new Properties()
 
-                storeFile file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-            }
+        release {
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+
+        debug {
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
 }
 ```
 
-**`src/java/app/src/main/assets/keystore.properties`**
+**`app/src/main/assets/keystore.properties`**
 ```bash
 storePassword= 
 keyPassword= 
@@ -171,11 +128,10 @@ keyAlias=
 storeFile=keystore/keystore
 ```
 
-##### D1Pay backend configuration
-
+### 2. D1-Pay Backend Configuration
 The following files with a working D1Pay backend configuration need to be added:
 
-**`src/java/app/src/main/assets/gemcbp.properties`**
+**`1. Features/pay/src/main/assets/gemcbp.properties`**
 ```bash
 
 # The URL of the CPS server.
@@ -199,7 +155,7 @@ CPS_CONNECTION_RETRY_COUNT=5
 CPS_CONNECTION_RETRY_INTERVAL=10000
 ```
 
-**`src/java/app/src/main/assets/mobilegateway.properties`**
+**`2. Features/pay/src/main/assets/mobilegateway.properties`**
 ```bash
 
 # The URL of the MG server.
@@ -233,7 +189,7 @@ MG_CONNECTION_RETRY_INTERVAL=10000
 MG_TRANSACTION_HISTORY_CONNECTION_URL=https://dummy.endpoint.test/mobile/mg
 ```
 
-**`src/java/app/src/main/assets/rages.properties`**
+**`3. Features/pay/src/main/assets/rages.properties`**
 ```bash
 
 # A fixed parameter
@@ -272,33 +228,58 @@ These files are not kept under version control to prevent them from being overwr
 
 For more details, please refer to the [D1Pay Service Application Setup](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/09e7447f9cb9b-d1-pay-application-setup) section of the D1 Developer Portal.
 
-## Build and run project
+### 3. Google Services
 
+[D1Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/d6a8ba3f3c186-d1-pay-introduction) services use [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging). For this reason the corresponding `google-services.json` file needs to be added to the sample application.
+
+```bash
+app/google-services.json
+```
+
+# Authentication
+To receive access to all D1 services, the user needs to authenticate with D1. This authentication is done using a [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens). For the [sandbox environment](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/fa46cefb0ef05-mobile-sdk-sandbox) a web service is used to fetch the JWT. The JWT configuration is part of the `d1.properties` file.
+
+For more details, please refer to the [D1 SDK Login](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/97566495c786d-sdk-login) section of the D1 Developer Portal.
+
+# Build and run project
 After all of the configurations have been added, the application can be build. Application can be build either using Android Studio, or from the command line.
-
 
 ```bash
 >> ./gradlew assemble
 >> adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## Source code overview
+# Project structure
+The sample application is divided in to multiple modules.
 
-Most of D1 SDK related source code is located in the following classes:
+```bash
+.
+├── app
+├── core
+│
+├── Features
+│   ├── pay
+│   ├── push
+│   └── virtualcard
+│
+└── Libs
+    ├── D1-debug
+    └── D1-release
+```
+## Use Cases
+* app - Main application.
+* core - Common classes and components for all modules.
+* Features/pay - [D1-Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/d6a8ba3f3c186-d1-pay-introduction) use cases.
+* Features/push - [D1-Push](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/294f33eaf2378-introduction) use cases.
+* Features/virtualCard - [Virtual Card](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/3c8a7e6f0a81a-card-display-introduction) use cases.
+* Libs - D1 SDK binaries.
 
-* `D1Helper` - most of D1 SDK logic.
-* `Tenant` - JWT configuration.
-* `D1PayFirebaseService` - Handling of push messages.
-
-## Documentation
-
+# Documentation
 [D1 Developer portal](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/de9abde9af194-thales-d1-a-card-api-to-modernise-card-issuance)
 
 
-## Contributing
-
+# Contributing
 If you are interested in contributing to the D1 SDK Sample Android application, start by reading the [Contributing guide](/CONTRIBUTING.md).
 
-## License
-
+# License
 [LICENSE](/LICENSE)

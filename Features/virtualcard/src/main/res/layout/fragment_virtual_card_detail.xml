@@ -1,0 +1,168 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="mViewModel"
+            type="com.thalesgroup.d1.templates.virtualcard.ui.virtualcarddetail.VirtualCardDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="0dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/vertical_spacer_high">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <FrameLayout
+                        android:id="@+id/card_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="10dp"
+                        app:layout_constraintDimensionRatio="w,1:1.58"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ProgressBar
+                            android:id="@+id/pb_card_art"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:elevation="@dimen/card_item_elevation"
+                            android:translationZ="@dimen/card_item_elevation" />
+
+                        <ImageView
+                            android:id="@+id/card_art"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/card_art_loading"
+                            android:scaleType="fitCenter" />
+
+                        <RelativeLayout
+                            android:id="@+id/card_wrap_front"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingHorizontal="@dimen/card_art_padding_hor"
+                            android:paddingVertical="@dimen/card_art_padding_ver">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentBottom="true"
+                                android:orientation="vertical">
+
+                                <com.thalesgroup.gemalto.d1.DisplayTextView
+                                    android:id="@+id/tv_pan"
+                                    style="@style/TextView.Emboss"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{mViewModel.mPan}" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            style="@style/TextView.Emboss.Label"
+                                            android:layout_width="26dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:text="@string/card_label_valid_thru" />
+
+                                        <com.thalesgroup.gemalto.d1.DisplayTextView
+                                            android:id="@+id/tv_exp"
+                                            style="@style/TextView.Emboss.Small"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:text="@{mViewModel.mExpr}" />
+
+                                        <TextView
+                                            style="@style/TextView.Emboss.Label"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_marginStart="75dp"
+                                            android:layout_marginEnd="6dp"
+                                            android:gravity="bottom"
+                                            android:paddingBottom="3dp"
+                                            android:text="@string/card_label_cvv" />
+
+                                        <com.thalesgroup.gemalto.d1.DisplayTextView
+                                            android:id="@+id/tv_cvv"
+                                            style="@style/TextView.Emboss.Small"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:text="@{mViewModel.mCvv}" />
+
+                                    </LinearLayout>
+
+                                    <com.thalesgroup.gemalto.d1.DisplayTextView
+                                        android:id="@+id/tv_card_name"
+                                        style="@style/TextView.Emboss.Small"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:text="@{mViewModel.mCardName}" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </FrameLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/show_pan_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_eye_button" />
+
+                    <ImageButton
+                        android:id="@+id/hide_pan_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_cross_eye_button" />
+
+                </LinearLayout>
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+</layout>
