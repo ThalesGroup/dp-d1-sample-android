@@ -4,6 +4,8 @@
 
 package com.thalesgroup.d1.templates.ui.card;
 
+import android.app.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -11,14 +13,17 @@ import com.thalesgroup.d1.templates.core.D1Core;
 import com.thalesgroup.d1.templates.core.ui.base.BaseViewModel;
 import com.thalesgroup.d1.templates.pay.D1Pay;
 import com.thalesgroup.d1.templates.pay.model.D1PayDigitizationListener;
+import com.thalesgroup.d1.templates.push.D1Push;
+import com.thalesgroup.d1.templates.push.model.D1PushDigitizationListener;
 import com.thalesgroup.gemalto.d1.D1Exception;
 import com.thalesgroup.gemalto.d1.card.CardDigitizationState;
+import com.thalesgroup.gemalto.d1.card.OEMPayType;
 import com.thalesgroup.gemalto.d1.card.State;
 
 /**
  * CardModel.
  */
-public class CardModel extends BaseViewModel implements D1PayDigitizationListener {
+public class CardModel extends BaseViewModel implements D1PayDigitizationListener, D1PushDigitizationListener {
 
     private final Boolean mIsD1PayEnabled = D1Core.getInstance().isD1PayEnabled();
 
@@ -43,6 +48,11 @@ public class CardModel extends BaseViewModel implements D1PayDigitizationListene
     private final MutableLiveData<Boolean> mD1PayDigitizationStarted = new MutableLiveData<>();
 
     /**
+     * D1Push digitisation completed stored in LiveData as {@code Boolean}.
+     */
+    private final MutableLiveData<Boolean> mD1PushDigitizationCompleted = new MutableLiveData<>();
+
+    /**
      * Digitizes card for D1Pay.
      *
      * @param cardId Card ID.
@@ -62,6 +72,10 @@ public class CardModel extends BaseViewModel implements D1PayDigitizationListene
 
             D1Pay.getInstance().digitizeToDigitalPayCard(cardId, this);
         }
+    }
+
+    public void digitizeVirtualCardToDigitalPushCard(@NonNull final String cardId, @NonNull final Activity activity) {
+        D1Push.getInstance().digitizeToDigitalPushCard(cardId, OEMPayType.GOOGLE_PAY, activity, this);
     }
 
     /**
@@ -101,7 +115,7 @@ public class CardModel extends BaseViewModel implements D1PayDigitizationListene
     }
 
     /**
-     * Checks if card is digitized.
+     * Checks if card is digitized for D1Pay.
      *
      * @param cardId Card ID.
      */
@@ -109,6 +123,15 @@ public class CardModel extends BaseViewModel implements D1PayDigitizationListene
         if (mIsD1PayEnabled) {
             D1Pay.getInstance().isDigitizedAsDigitalPayCard(cardId, this);
         }
+    }
+
+    /**
+     * Checks if card is digitized for D1Push.
+     *
+     * @param cardId Card ID.
+     */
+    public void isDigitizedAsDigitalPushCard(@NonNull final String cardId) {
+        D1Push.getInstance().isDigitizedAsDigitalPushCard(cardId, OEMPayType.GOOGLE_PAY, this);
     }
 
     @Override
@@ -137,6 +160,39 @@ public class CardModel extends BaseViewModel implements D1PayDigitizationListene
 
     @Override
     public void onDigitalPayCardDigitizationError(final D1Exception exception) {
+        onError(exception);
+    }
+
+    @Override
+    public void onDigitalPushCardDigitizedResult(final CardDigitizationState cardDigitizationState) {
+        switch (cardDigitizationState) {
+            case NOT_DIGITIZED:
+                mAddToGPayButtonVisible.postValue(true);
+                break;
+            case DIGITIZED:
+            case PENDING_IDV:
+            case DIGITIZATION_IN_PROGRESS:
+                mAddToGPayButtonVisible.postValue(false);
+                break;
+            default:
+                break;
+        }
+
+        mIsOperationSuccessful.postValue(true);
+    }
+
+    @Override
+    public void onDigitizeDigitalPushCardOk(final Object generic) {
+        mD1PushDigitizationCompleted.postValue(true);
+        mAddToGPayButtonVisible.postValue(false);
+    }
+
+    @Override
+    public void onDigitalPushCardDigitizationError(final D1Exception exception) {
+        onError(exception);
+    }
+
+    private void onError(final D1Exception exception) {
         if (exception.getErrorCode() == D1Exception.ErrorCode.ERROR_NOT_LOGGED_IN) {
             mIsLoginExpired.postValue(true);
         } else {

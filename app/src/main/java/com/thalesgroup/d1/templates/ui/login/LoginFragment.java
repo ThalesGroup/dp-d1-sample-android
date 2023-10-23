@@ -51,8 +51,6 @@ public class LoginFragment extends AbstractBaseFragment<LoginViewModel> {
 
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        initModel();
-
         view.findViewById(R.id.login_button).setOnClickListener(v -> {
 
             showProgressDialog(getString(R.string.login_in_progress));
@@ -86,19 +84,6 @@ public class LoginFragment extends AbstractBaseFragment<LoginViewModel> {
 
         return view;
     }
-
-    /**
-     * Init ViewModel.
-     */
-    public void initModel() {
-        mViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
-            hideProgressDialog();
-            showToast(errorMessage);
-        });
-
-        mViewModel.getToastMessage().observe(getViewLifecycleOwner(), this::showToast);
-    }
-
 
     @Override
     public void onResume() {

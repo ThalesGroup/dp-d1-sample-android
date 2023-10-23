@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.thalesgroup.d1.templates.core.ui.base.UiDelegate;
 import com.thalesgroup.d1.templates.core.utils.CoreUtils;
+import com.thalesgroup.d1.templates.push.D1Push;
 import com.thalesgroup.d1.templates.ui.login.LoginFragment;
 import com.thalesgroup.gemalto.d1.d1pay.D1HCEService;
 
@@ -193,6 +195,13 @@ public class MainActivity extends AppCompatActivity implements UiDelegate {
         }
 
         showFragment(LoginFragment.newInstance(), false);
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, @Nullable final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        D1Push.getInstance().handleCardResult(requestCode, resultCode, data);
     }
 
     /**

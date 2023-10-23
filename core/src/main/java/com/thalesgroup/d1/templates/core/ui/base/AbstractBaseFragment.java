@@ -5,6 +5,7 @@
 package com.thalesgroup.d1.templates.core.ui.base;
 
 import com.thalesgroup.d1.templates.core.Constants;
+import com.thalesgroup.d1.templates.core.enums.InternetState;
 import com.thalesgroup.d1.templates.core.utils.NetworkUtils;
 
 import android.content.BroadcastReceiver;
@@ -34,6 +35,7 @@ import java.util.Objects;
  */
 public abstract class AbstractBaseFragment<VM extends BaseViewModel> extends Fragment {
     protected static final String ARG_CARD_ID = "ARG_CARD_ID";
+    protected static final String ARG_DIGITAL_CARD_ID = "ARG_DIGITAL_CARD_ID";
 
     protected static final String ARG_TRANSACTION_RECORDS = "ARG_TRANSACTION_RECORDS";
 
@@ -69,7 +71,7 @@ public abstract class AbstractBaseFragment<VM extends BaseViewModel> extends Fra
 
         requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
         requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED));
-        requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        // requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
         requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter(Constants.DIGITAL_PAY_CARD_RECENT_TRANSACTION_RECORD_RECEIVED));
     }
 
@@ -84,11 +86,7 @@ public abstract class AbstractBaseFragment<VM extends BaseViewModel> extends Fra
     public void onDestroy() {
         super.onDestroy();
 
-        try {
-            requireContext().unregisterReceiver(mBroadcastReceiver);
-        } catch (IllegalArgumentException e) {
-            Log.e("AbstractBaseFragment", e.toString());
-        }
+        requireContext().unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -110,6 +108,13 @@ public abstract class AbstractBaseFragment<VM extends BaseViewModel> extends Fra
                 mViewModel.mToastMessage.postValue("Internet state changed: " + internetState.name());
             }
         });
+
+        mViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
+            showToast(message);
+            hideProgressDialog();
+        });
+
+        mViewModel.getToastMessage().observe(getViewLifecycleOwner(), this::showToast);
 
         mViewModel.getRecentTransactionRecord().observe(getViewLifecycleOwner(), transactionRecord -> mViewModel.mToastMessage.postValue(String.format(Locale.ENGLISH, "Transaction of amount %.2f %s was successful", transactionRecord.getAmount(), UtilsCurrenciesConstants.getCurrency(transactionRecord.getCurrencyCode()).getCurrencyCode())));
     }

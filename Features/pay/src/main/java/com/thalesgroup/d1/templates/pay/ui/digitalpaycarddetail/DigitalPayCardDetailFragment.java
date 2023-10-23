@@ -1,11 +1,10 @@
 package com.thalesgroup.d1.templates.pay.ui.digitalpaycarddetail;
 
-import com.thalesgroup.d1.templates.core.Constants;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,9 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+
+import com.thalesgroup.d1.core.BuildConfig;
+import com.thalesgroup.d1.pay.R;
+import com.thalesgroup.d1.pay.databinding.FragmentDigitalPayCardDetailBinding;
+import com.thalesgroup.d1.templates.core.Constants;
+import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
+import com.thalesgroup.d1.templates.pay.Configuration;
+import com.thalesgroup.d1.templates.pay.enums.ReplenishmentState;
+import com.thalesgroup.gemalto.d1.card.State;
+
+import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,16 +31,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.thalesgroup.d1.core.BuildConfig;
-import com.thalesgroup.d1.pay.R;
-import com.thalesgroup.d1.pay.databinding.FragmentDigitalPayCardDetailBinding;
-import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
-import com.thalesgroup.d1.templates.pay.Configuration;
-import com.thalesgroup.d1.templates.pay.enums.ReplenishmentState;
-import com.thalesgroup.gemalto.d1.card.State;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * DigitalPayCardDetailFragment.
@@ -43,8 +40,8 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
     private final static int MENU_INDEX_RESUME = 1;
     private final static int MENU_INDEX_HISTORY = 2;
     private final static int MENU_INDEX_DELETE = 3;
-    private ImageView mCardBackground;
-    private ProgressBar mCardImageProgress;
+
+    private final static int MENU_INDEX_ACTIVATE = 4;
     private ImageButton mDefaultCardButton;
     private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -59,10 +56,6 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
             }
         }
     };
-    private TextView mPanTextView;
-    private TextView mExpTextView;
-    private TextView mNumberOfPaymentsLeftTextView;
-    private TextView mCardStateTextView;
 
     /**
      * Creates a new instance of {@code DigitalCardDetailFragment}.
@@ -100,7 +93,6 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
     public View onCreateView(@NotNull final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
-
         final FragmentDigitalPayCardDetailBinding binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_digital_pay_card_detail, container, false);
 
@@ -113,15 +105,10 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
 
-        mCardBackground = view.findViewById(R.id.iv_card_art);
-        mCardImageProgress = view.findViewById(R.id.pb_card);
+        super.onViewCreated(view, savedInstanceState);
+
         mDefaultCardButton = view.findViewById(R.id.default_card_button);
-        final ImageButton mContextMenuButton = view.findViewById(R.id.context_menu_button);
-        mPanTextView = view.findViewById(R.id.tv_pan);
-        mExpTextView = view.findViewById(R.id.tv_exp);
-        mCardStateTextView = view.findViewById(R.id.tv_card_state);
-        mNumberOfPaymentsLeftTextView = view.findViewById(R.id.tv_number_of_payments_left);
-        final FrameLayout cardHolder = view.findViewById(R.id.card_holder);
+        final FrameLayout cardHolder = view.findViewById(com.thalesgroup.d1.core.R.id.card_holder);
 
         mDefaultCardButton.setOnClickListener(v -> {
             if (Boolean.TRUE.equals(mViewModel.getIsDefault().getValue())) {
@@ -138,13 +125,7 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
             });
         }
 
-        mContextMenuButton.setOnClickListener(this::showContextMenu);
-
-        if (BuildConfig.DEBUG) {
-            mNumberOfPaymentsLeftTextView.setVisibility(View.VISIBLE);
-        } else {
-            mNumberOfPaymentsLeftTextView.setVisibility(View.GONE);
-        }
+        view.findViewById(R.id.context_menu_button).setOnClickListener(this::showContextMenu);
 
         initModel();
     }
@@ -152,6 +133,10 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
     @Override
     public void onResume() {
         super.onResume();
+
+        mViewModel.setDefaultCardImage(new BitmapDrawable(getResources(),
+                                                          BitmapFactory.decodeResource(getResources(),
+                                                                                       com.thalesgroup.d1.core.R.drawable.card_art_default)));
 
         mViewModel.getDigitalPayCard(mViewModel.getCardId());
         mViewModel.getCardArt(requireContext(), mViewModel.getCardId());
@@ -176,20 +161,8 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
      * Sets up observers for the ViewModel.
      */
     private void initModel() {
-        mViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
-            hideProgressDialog();
-            showToast(errorMessage);
-        });
-
-        mViewModel.getCardBackground().observe(getViewLifecycleOwner(), bitmap -> {
-            mCardImageProgress.setVisibility(View.GONE);
-            mCardBackground.setBackground(new BitmapDrawable(getResources(), bitmap));
-        });
-
         mViewModel.getIsOperationSuccessful().observe(getViewLifecycleOwner(), aBoolean ->
                 hideProgressDialog());
-
-        mViewModel.getToastMessage().observe(getViewLifecycleOwner(), this::showToast);
 
         mViewModel.getIsDefault().observe(getViewLifecycleOwner(), value -> {
             if (value) {
@@ -221,15 +194,9 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
             }
         });
 
-        mViewModel.getNumberOfPaymentsLeft().observe(getViewLifecycleOwner(), value -> mNumberOfPaymentsLeftTextView.setText(String.valueOf(value)));
-
-        mViewModel.getCardState().observe(getViewLifecycleOwner(), value -> mCardStateTextView.setText(value));
-
-        mViewModel.getLast4Pan().observe(getViewLifecycleOwner(), value -> mPanTextView.setText(value));
-
-        mViewModel.getExpr().observe(getViewLifecycleOwner(), value -> mExpTextView.setText(value));
-
         mViewModel.getNoDigitalPayCard().observe(getViewLifecycleOwner(), value -> {
+            hideProgressDialog();
+
             if (value) {
                 showToast(getString(com.thalesgroup.d1.core.R.string.no_digital_pay_card));
             }
@@ -242,23 +209,21 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
      * @param view View.
      */
     public void showContextMenu(@NonNull final View view) {
+        if (mViewModel.getDigitalPayCard() == null) {
+            return;
+        }
+
         final PopupMenu mPopupMenu = new PopupMenu(view.getContext(), view);
         mPopupMenu.inflate(com.thalesgroup.d1.core.R.menu.context_menu_digital_pay_card);
 
         final Menu menu = mPopupMenu.getMenu();
 
-        if (mViewModel.getDigitalPayCard().getState() == State.ACTIVE) {
-
-            menu.getItem(MENU_INDEX_SUSPEND).setVisible(true);
-            menu.getItem(MENU_INDEX_RESUME).setVisible(false);
-        } else {
-            menu.getItem(MENU_INDEX_SUSPEND).setVisible(false);
-            menu.getItem(MENU_INDEX_RESUME).setVisible(true);
-        }
-        menu.getItem(MENU_INDEX_SUSPEND).setVisible(true);
+        menu.getItem(MENU_INDEX_SUSPEND).setVisible(mViewModel.getDigitalPayCard().getState() == State.ACTIVE);
+        menu.getItem(MENU_INDEX_RESUME).setVisible(mViewModel.getDigitalPayCard().getState() == State.INACTIVE);
 
         menu.getItem(MENU_INDEX_DELETE).setVisible(true);
         menu.getItem(MENU_INDEX_HISTORY).setVisible(true);
+        menu.getItem(MENU_INDEX_ACTIVATE).setVisible(false);
 
         mPopupMenu.setOnMenuItemClickListener(item -> {
 

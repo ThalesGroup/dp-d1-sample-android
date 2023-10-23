@@ -128,6 +128,8 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         mCardBackground = view.findViewById(R.id.card_art);
         mShowPanButton = view.findViewById(R.id.show_pan_button);
         mHidePanButton = view.findViewById(R.id.hide_pan_button);
@@ -202,8 +204,6 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
 
         mViewModel.getIsOperationSuccessful().observe(getViewLifecycleOwner(), aBoolean ->
                 hideProgressDialog());
-
-        mViewModel.getToastMessage().observe(getViewLifecycleOwner(), this::showToast);
 
         mViewModel.getUpdateDigitalPayCardList().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean) {

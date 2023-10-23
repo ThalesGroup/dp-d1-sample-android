@@ -18,7 +18,7 @@
 
             <include
                 android:id="@+id/view_card"
-                layout="@layout/layout_digital_pay_card" />
+                layout="@layout/card" />
 
             <FrameLayout
                 android:id="@+id/fragment_container"

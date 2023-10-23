@@ -15,9 +15,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.thalesgroup.d1.templates.R;
+import com.thalesgroup.d1.templates.core.Configuration;
 import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
 import com.thalesgroup.d1.templates.ui.card.CardFragment;
 import com.thalesgroup.d1.templates.ui.digitalpaycard.DigitalPayCardFragment;
+import com.thalesgroup.d1.templates.ui.digitalpushcard.DigitalPushCardFragment;
 import com.thalesgroup.d1.templates.ui.login.LoginFragment;
 
 /**
@@ -46,22 +48,17 @@ public class HomeFragment extends AbstractBaseFragment<HomeViewModel> {
 
         view.findViewById(R.id.digital_pay_card_button).setOnClickListener(v -> showFragment(DigitalPayCardFragment.newInstance(), true));
 
+        view.findViewById(R.id.digital_push_card_button).setOnClickListener(view1 -> showFragment(DigitalPushCardFragment.newInstance(
+                Configuration.cardId), true));
+
         view.findViewById(R.id.logout_button).setOnClickListener(v -> showAlertDialog(getString(com.thalesgroup.d1.core.R.string.logout), getString(com.thalesgroup.d1.core.R.string.are_you_sure), getString(com.thalesgroup.d1.core.R.string.yes), () -> {
             mViewModel.logout();
         }, getString(com.thalesgroup.d1.core.R.string.no)));
 
-        mViewModel.getIsLogoutSuccess().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(final Boolean isLogoutSuccess) {
-                if(isLogoutSuccess) {
-                    showFragment(LoginFragment.newInstance(), false);
-                }
+        mViewModel.getIsLogoutSuccess().observe(getViewLifecycleOwner(), isLogoutSuccess -> {
+            if(isLogoutSuccess) {
+                showFragment(LoginFragment.newInstance(), false);
             }
-        });
-
-        mViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
-            hideProgressDialog();
-            showToast(message);
         });
 
         return view;

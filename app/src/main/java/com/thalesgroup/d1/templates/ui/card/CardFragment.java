@@ -39,6 +39,7 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
 
     private ViewPager2 mViewPager;
     private ConstraintLayout mEnableNfcButton;
+    private FrameLayout mAddToGPayButton;
 
     /**
      * List of card Id to display Virtual Card.
@@ -80,11 +81,6 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
 
         mViewModel.getIsOperationSuccessful().observe(getViewLifecycleOwner(), aBoolean -> hideProgressDialog());
 
-        mViewModel.getErrorMessage().observe(getViewLifecycleOwner(), message -> {
-            showToast(message);
-            hideProgressDialog();
-        });
-
         mViewModel.getIsLoginExpired().observe(getViewLifecycleOwner(), isLoginExpired -> {
             if (isLoginExpired) {
                 mViewModel.mToastMessage.postValue(getString(com.thalesgroup.d1.core.R.string.login_expired));
@@ -113,7 +109,7 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
         mViewPager.setAdapter(viewPagerAdapter);
 
         // Attach Tab Layout (dots) if there are 2 cards and more
-        if (viewPagerAdapter.getItemCount() >= 2) {
+        if (viewPagerAdapter.getItemCount() >= 2 && !tabLayout.isAttachedToWindow()) {
             tabLayoutMediator.attach();
         }
 
@@ -126,6 +122,9 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
                 mEnableNfcButton.setAlpha(0.3F);
 
                 mViewModel.isDigitizedAsDigitalPayCard(mVirtualCardIdList.get(position));
+
+                // D1Push not supported on SANDBOX ENV.
+                // mViewModel.isDigitizedAsDigitalPushCard(mVirtualCardIdList.get(position));
             }
         });
     }
@@ -158,14 +157,24 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
     }
 
     private void initGPayButton(final View view) {
-        final FrameLayout addToGPayButton = view.findViewById(R.id.add_to_gpay_button);
+        mAddToGPayButton = view.findViewById(R.id.add_to_gpay_button);
 
         mViewModel.getAddToGPayButtonVisible().observe(getViewLifecycleOwner(), isButtonEnabled -> {
-            addToGPayButton.setEnabled(isButtonEnabled);
-            addToGPayButton.setAlpha(isButtonEnabled? 1 : 0.3F);
+            mAddToGPayButton.setEnabled(isButtonEnabled);
+            mAddToGPayButton.setAlpha(isButtonEnabled? 1 : 0.3F);
         });
 
-        addToGPayButton.setOnClickListener(v -> mViewModel.mToastMessage.postValue(getString(com.thalesgroup.d1.core.R.string.coming_soon)));
+        mAddToGPayButton.setOnClickListener(v -> {
+            // Check if device has HCE feature.
+            final Activity activity = getActivity();
+
+            if (activity != null) {
+                showProgressDialog(getString(com.thalesgroup.d1.core.R.string.operation_in_progress));
+                mViewModel.digitizeVirtualCardToDigitalPushCard(mVirtualCardIdList.get(mViewPager.getCurrentItem()), activity);
+            } else {
+                Log.d("VirtualCardDetailFragment", "activity == null");
+            }
+        });
     }
 
     /**

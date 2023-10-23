@@ -78,6 +78,7 @@ public class TransactionHistoryFragment extends AbstractBaseFragment<Transaction
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         final RecyclerView transactionHistoryList = view.findViewById(R.id.history_list);
         emptyText = view.findViewById(R.id.emptyText);

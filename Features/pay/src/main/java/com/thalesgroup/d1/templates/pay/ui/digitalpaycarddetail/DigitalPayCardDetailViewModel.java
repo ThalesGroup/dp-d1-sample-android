@@ -1,14 +1,9 @@
 package com.thalesgroup.d1.templates.pay.ui.digitalpaycarddetail;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
-
-import com.thalesgroup.d1.templates.core.ui.base.BaseViewModel;
-import com.thalesgroup.d1.templates.core.utils.CoreUtils;
+import com.thalesgroup.d1.templates.core.ui.base.CardViewModel;
 import com.thalesgroup.d1.templates.pay.D1Pay;
 import com.thalesgroup.d1.templates.pay.model.D1PayListener;
 import com.thalesgroup.d1.templates.pay.ui.transactionhistory.TransactionHistoryFragment;
@@ -20,36 +15,32 @@ import com.thalesgroup.gemalto.d1.d1pay.TransactionRecord;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+
 /**
  * DigitalPayCardDetailViewModel.
  */
-public class DigitalPayCardDetailViewModel extends BaseViewModel implements D1PayListener {
+public class DigitalPayCardDetailViewModel extends CardViewModel implements D1PayListener {
 
-    private final MutableLiveData<String> mCardState = new MutableLiveData<>();
-    private final MutableLiveData<String> mLast4Pan = new MutableLiveData<>();
-    private final MutableLiveData<String> mExpr = new MutableLiveData<>();
-    private final MutableLiveData<Integer> mNumberOfPaymentsLeft = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsDefault = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsDeleteCardStartedSuccess = new MutableLiveData<>(Boolean.FALSE);
     private final MutableLiveData<Boolean> mIsDeleteCardFinishSuccess = new MutableLiveData<>(Boolean.FALSE);
     private final MutableLiveData<Boolean> mNoDigitalPayCard = new MutableLiveData<>(Boolean.FALSE);
     private final MutableLiveData<List<TransactionRecord>> mTransactionHistory = new MutableLiveData<>();
-    private String mCardId;
     private D1PayDigitalCard mDigitalPayCard;
+
+    public DigitalPayCardDetailViewModel() {
+        super();
+
+        mD1PayDefaultVisibility.postValue(View.VISIBLE);
+    }
 
     /**
      * @param cardId Card Id as String.
      */
     public void getDigitalPayCard(@NonNull final String cardId) {
         D1Pay.getInstance().getDigitalPayCard(cardId, this);
-    }
-
-    /**
-     * @param context Context.
-     * @param cardId  Card Id as String.
-     */
-    public void getDigitalPayCardMetadata(@NonNull final Context context, @NonNull final String cardId) {
-        D1Pay.getInstance().getDigitalPayCardMetaData(context, cardId, this);
     }
 
     /**
@@ -129,12 +120,12 @@ public class DigitalPayCardDetailViewModel extends BaseViewModel implements D1Pa
             mNoDigitalPayCard.postValue(true);
         } else {
             mDigitalPayCard = digitalPayCard;
-            mCardState.postValue(digitalPayCard.getState().toString());
-            mLast4Pan.postValue("**** **** **** " + digitalPayCard.getLast4());
+            mState.postValue(digitalPayCard.getState().toString());
+            mMaskedPan.postValue("**** **** **** " + digitalPayCard.getLast4());
             mExpr.postValue(digitalPayCard.getExpiryDate());
             mIsDefault.postValue(digitalPayCard.isDefaultCard());
             mIsOperationSuccessful.postValue(true);
-            mNumberOfPaymentsLeft.postValue(digitalPayCard.getNumberOfPaymentsLeft());
+            mPaymentsLeft.postValue(Integer.toString(digitalPayCard.getNumberOfPaymentsLeft()));
 
             if (digitalPayCard.isReplenishmentNeeded()) {
                 D1Pay.getInstance().replenishDigitalPayCard(getCardId(), false);
@@ -202,7 +193,7 @@ public class DigitalPayCardDetailViewModel extends BaseViewModel implements D1Pa
      * @param cardId Card Id as String.
      */
     public void setCardId(final String cardId) {
-        this.mCardId = cardId;
+        mCardId = cardId;
     }
 
     /**
@@ -210,34 +201,6 @@ public class DigitalPayCardDetailViewModel extends BaseViewModel implements D1Pa
      */
     public D1PayDigitalCard getDigitalPayCard() {
         return mDigitalPayCard;
-    }
-
-    /**
-     * @return Card state as String.
-     */
-    public MutableLiveData<String> getCardState() {
-        return mCardState;
-    }
-
-    /**
-     * @return String of last 4 PAN.
-     */
-    public MutableLiveData<String> getLast4Pan() {
-        return mLast4Pan;
-    }
-
-    /**
-     * @return String of Expiration.
-     */
-    public MutableLiveData<String> getExpr() {
-        return mExpr;
-    }
-
-    /**
-     * @return Number of Payments left as Integer.
-     */
-    public MutableLiveData<Integer> getNumberOfPaymentsLeft() {
-        return mNumberOfPaymentsLeft;
     }
 
     /**
@@ -273,21 +236,5 @@ public class DigitalPayCardDetailViewModel extends BaseViewModel implements D1Pa
      */
     public MutableLiveData<Boolean> getNoDigitalPayCard() {
         return mNoDigitalPayCard;
-    }
-
-    /**
-     * @param context Context.
-     * @param cardId  Card Id as String.
-     */
-    public void getCardArt(@NonNull final Context context, @NonNull final String cardId) {
-
-        final byte[] imageBytes = CoreUtils.getInstance().readFromFile(context, cardId);
-
-        if (imageBytes.length > 0) {
-            final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            mCardBackground.postValue(bitmap);
-        } else {
-            getDigitalPayCardMetadata(context, cardId);
-        }
     }
 }

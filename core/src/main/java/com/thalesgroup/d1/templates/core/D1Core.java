@@ -10,6 +10,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.thalesgroup.d1.templates.core.model.CardMetaDataListener;
 import com.thalesgroup.d1.templates.core.model.D1CoreApi;
 import com.thalesgroup.d1.templates.core.model.D1CoreListener;
 import com.thalesgroup.d1.templates.core.model.D1ModuleConnector;
@@ -20,6 +21,7 @@ import com.thalesgroup.gemalto.d1.ConfigParams;
 import com.thalesgroup.gemalto.d1.D1Exception;
 import com.thalesgroup.gemalto.d1.D1Params;
 import com.thalesgroup.gemalto.d1.D1Task;
+import com.thalesgroup.gemalto.d1.card.CardMetadata;
 import com.thalesgroup.gemalto.d1.card.OEMPayType;
 
 import java.lang.ref.WeakReference;
@@ -167,6 +169,21 @@ final public class D1Core implements D1CoreApi {
     @Override
     public void logout(@NonNull final D1CoreListener listener) {
         getD1Task().logout(lambda(listener::onLogoutSuccess, listener));
+    }
+
+    @Override
+    public void getCardMetaData(@NonNull Context context, @NonNull final String cardId, @NonNull final CardMetaDataListener listener) {
+        getD1Task().getCardMetadata(cardId, new D1Task.Callback<CardMetadata>() {
+            @Override
+            public void onSuccess(final CardMetadata cardMetadata) {
+                listener.onCardMetaData(context, cardMetadata);
+            }
+
+            @Override
+            public void onError(@NonNull final D1Exception exception) {
+                listener.onCardMetaDataError(exception);
+            }
+        });
     }
 
     @Override

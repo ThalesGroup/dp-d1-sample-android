@@ -211,21 +211,6 @@ public final class D1Pay implements D1PayApi {
     }
 
     @Override
-    public void getDigitalPayCardMetaData(@NonNull final Context context, @NonNull final String cardId, @NonNull final D1PayListener listener) {
-        getTask().getCardMetadata(cardId, new D1Task.Callback<CardMetadata>() {
-            @Override
-            public void onSuccess(final CardMetadata cardMetadata) {
-                listener.onDigitalPayCardMetadata(context, cardId, cardMetadata);
-            }
-
-            @Override
-            public void onError(@NonNull final D1Exception exception) {
-                listener.onDigitalPayCardOperationError(exception);
-            }
-        });
-    }
-
-    @Override
     public void getDefaultDigitalPayCardId(@NonNull final D1Task.Callback<String> callback) {
         getWallet().getDefaultPaymentDigitalCard(callback);
     }

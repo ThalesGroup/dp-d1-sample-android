@@ -47,6 +47,17 @@ public interface D1CoreApi {
     void logout(@NonNull final D1CoreListener listener);
 
     /**
+     * Retrieves the card meta data.
+     *
+     * @param context  Context.
+     * @param cardId   Card ID.
+     * @param listener Listener.
+     */
+    void getCardMetaData(@NonNull Context context,
+                         @NonNull final String cardId,
+                         @NonNull final CardMetaDataListener listener);
+
+    /**
      * Creates the Core related {@code D1ModuleConnector}.
      *
      * @param consumerId Consumer ID.

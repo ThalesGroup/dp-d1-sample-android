@@ -10,6 +10,8 @@
     <string name="suspend">Suspend</string>
     <string name="resume">Resume</string>
     <string name="delete">Delete</string>
+    <string name="activate">Activate</string>
+
     <string name="transaction_history">Transaction history</string>
 
     <string name="card_label_valid_thru">Valid Thru</string>
@@ -34,6 +36,7 @@
     <string name="done">Done</string>
     <string name="try_again">Try again</string>
     <string name="payments_left">Payments left</string>
+    <string name="wallet">Wallet</string>
 
     <string name="card_deletion_started">Card deletion started</string>
     <string name="card_was_deleted">Card was deleted</string>

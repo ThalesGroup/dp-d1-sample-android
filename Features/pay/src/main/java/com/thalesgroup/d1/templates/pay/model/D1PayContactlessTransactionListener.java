@@ -87,7 +87,7 @@ public class D1PayContactlessTransactionListener extends ContactlessTransactionL
             public void onTimeout() {
                 // The mobile application should inform end user of the timeout error.
                 updateAmountAndCurrency();
-
+                deactivate();
                 updateState(PaymentState.STATE_ON_ERROR, new PaymentErrorData(null, mContext.getString(com.thalesgroup.d1.core.R.string.transaction_timeout), mAmount, mCurrency, mCardId));
             }
         });

@@ -2,7 +2,7 @@
  * Copyright © 2023 THALES. All rights reserved.
  */
 
-package com.thalesgroup.d1.templates.ui.digitalpaycard;
+package com.thalesgroup.d1.templates.ui.digitalpushcard;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +15,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.thalesgroup.d1.templates.R;
 import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
 import com.thalesgroup.d1.templates.core.ui.base.ViewPagerAdapter;
-import com.thalesgroup.d1.templates.pay.ui.digitalpaycarddetail.DigitalPayCardDetailFragment;
+import com.thalesgroup.d1.templates.push.model.D1PushDeleteCardDelegate;
+import com.thalesgroup.d1.templates.push.ui.digitalpushcarddetail.DigitalPushCardDetailFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,19 +24,25 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 /**
- * Digital Pay Card Fragment.
+ * Digital Push Card Fragment.
  */
-public class DigitalPayCardFragment extends AbstractBaseFragment<DigitalPayCardModel> {
+public class DigitalPushCardFragment extends AbstractBaseFragment<DigitalPushCardModel> implements D1PushDeleteCardDelegate {
 
     private ViewPagerAdapter mViewPagerAdapter;
+    private String mCardId;
 
     /**
-     * Creates a new instance of {@code DigitalPayCardFragment}.
+     * Creates a new instance of {@code DigitalPushCardFragment}.
      *
-     * @return Instance of {@code DigitalPayCardFragment}.
+     * @param cardId Card ID.
+     * @return Instance of {@code DigitalPushCardFragment}.
      */
-    public static DigitalPayCardFragment newInstance() {
-        return new DigitalPayCardFragment();
+    public static DigitalPushCardFragment newInstance(@NonNull final String cardId) {
+        final DigitalPushCardFragment digitalPushCardFragment = new DigitalPushCardFragment();
+        final Bundle args = new Bundle();
+        args.putString(ARG_CARD_ID, cardId);
+        digitalPushCardFragment.setArguments(args);
+        return digitalPushCardFragment;
     }
 
     @Nullable
@@ -55,13 +62,17 @@ public class DigitalPayCardFragment extends AbstractBaseFragment<DigitalPayCardM
         mViewPagerAdapter = new ViewPagerAdapter(requireActivity().getSupportFragmentManager(), getLifecycle());
 
         // Set screen title
-        screenText.setText(getString(R.string.no_digital_pay_card));
+        screenText.setText(getString(R.string.no_digital_push_card));
 
-        // Observe Mutable Live Data of Digital Pay Card Fragment List
-        mViewModel.getDigitalPayCardDetailFragmentList().observe(getViewLifecycleOwner(), digitalCardDetailFragmentsList -> {
+        // Observe Mutable Live Data of Digital Push Card Fragment List
+        mViewModel.getDigitalPushCardDetailFragmentList().observe(getViewLifecycleOwner(), digitalCardDetailFragmentsList -> {
             // Add fragments to View Pager Adapter
             mViewPagerAdapter.clear();
-            for (final DigitalPayCardDetailFragment fragment : digitalCardDetailFragmentsList) {
+            for (final DigitalPushCardDetailFragment fragment : digitalCardDetailFragmentsList) {
+                fragment.setD1PushDeleteDelegate(() -> {
+                    // reload d1push card list on card deletion
+                    mViewModel.getD1PushDigitalCardList(mCardId);
+                });
                 mViewPagerAdapter.addFragment(fragment);
             }
 
@@ -75,7 +86,7 @@ public class DigitalPayCardFragment extends AbstractBaseFragment<DigitalPayCardM
 
             // Update screen title
             if (mViewPagerAdapter.getItemCount() >= 1) {
-                screenText.setText(getString(R.string.your_digital_pay_card));
+                screenText.setText(getString(R.string.your_digital_push_card));
             }
         });
 
@@ -93,10 +104,25 @@ public class DigitalPayCardFragment extends AbstractBaseFragment<DigitalPayCardM
     }
 
     @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mCardId = getArguments().getString(ARG_CARD_ID);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
-        mViewModel.getD1PayDigitalCardList();
+        mViewModel.getD1PushDigitalCardList(mCardId);
+    }
+
+    @NonNull
+    @Override
+    protected DigitalPushCardModel createViewModel() {
+        return new ViewModelProvider(this).get(DigitalPushCardModel.class);
     }
 
     private void hideNfcAndGPay(final View view){
@@ -104,9 +130,9 @@ public class DigitalPayCardFragment extends AbstractBaseFragment<DigitalPayCardM
         view.findViewById(R.id.add_to_gpay_button).setVisibility(View.GONE);
     }
 
-    @NonNull
     @Override
-    protected DigitalPayCardModel createViewModel() {
-        return new ViewModelProvider(this).get(DigitalPayCardModel.class);
+    public void onCardDeleted() {
+        // reload d1push card list on card deleted
+        mViewModel.getD1PushDigitalCardList(mCardId);
     }
 }

@@ -159,12 +159,12 @@ public class PaymentActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_payment);
 
-        mPanTextView = findViewById(R.id.tv_pan);
-        mExpTextView = findViewById(R.id.tv_exp);
-        mCardStateTextView = findViewById(R.id.tv_card_state);
-        mNumberOfPaymentsLeftTextView = findViewById(R.id.tv_number_of_payments_left);
-        mCardImageProgress = findViewById(R.id.pb_card);
-        mCardBackground = findViewById(R.id.iv_card_art);
+        mPanTextView = findViewById(com.thalesgroup.d1.core.R.id.tv_pan);
+        mExpTextView = findViewById(com.thalesgroup.d1.core.R.id.tv_exp);
+        mCardStateTextView = findViewById(com.thalesgroup.d1.core.R.id.tv_card_state);
+        mNumberOfPaymentsLeftTextView = findViewById(com.thalesgroup.d1.core.R.id.tv_number_of_payments_left);
+        mCardImageProgress = findViewById(com.thalesgroup.d1.core.R.id.pb_card);
+        mCardBackground = findViewById(com.thalesgroup.d1.core.R.id.iv_card_art);
 
         // Register for payment activity.
         mPaymentCountdownReceiver = InternalNotificationsUtils.registerForPaymentCountdown(this, seconds -> {
@@ -250,6 +250,8 @@ public class PaymentActivity extends AppCompatActivity {
         super.onStop();
 
         LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mBroadcastReceiver);
+
+        D1Pay.getInstance().getD1PayContactlessTransactionListener().deactivate();
     }
 
     @Override
@@ -484,7 +486,6 @@ public class PaymentActivity extends AppCompatActivity {
      */
     public void closePaymentActivity() {
         D1Pay.getInstance().getD1PayContactlessTransactionListener().onDelegatedDeviceAuthenticationCancelled();
-        D1Pay.getInstance().getD1PayContactlessTransactionListener().deactivate();
         finish();
     }
 

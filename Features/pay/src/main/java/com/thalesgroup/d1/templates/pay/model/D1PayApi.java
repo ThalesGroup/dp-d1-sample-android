@@ -49,18 +49,6 @@ public interface D1PayApi {
      */
     void getDigitalPayCard(@NonNull final String cardId,
                            @NonNull final D1PayListener listener);
-
-    /**
-     * Retrieves the D1Pay digital card images for an associated card ID.
-     *
-     * @param context  Context.
-     * @param cardId   Card ID.
-     * @param listener Listener.
-     */
-    void getDigitalPayCardMetaData(@NonNull final Context context,
-                                   @NonNull final String cardId,
-                                   @NonNull final D1PayListener listener);
-
     /**
      * Resumes the D1Pay digital card.
      *
