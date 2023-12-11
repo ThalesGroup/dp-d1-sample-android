@@ -14,8 +14,8 @@ android {
         applicationId "com.thalesgroup.d1.templates"
         minSdk buildVersions.minSdk
         targetSdk buildVersions.targetSdk
-        versionCode 15
-        versionName "3.1.0"
+        versionCode 16
+        versionName "3.2.0"
     }
 
     signingConfigs {
