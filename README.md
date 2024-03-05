@@ -49,7 +49,7 @@ For more details, please refer to the [D1 SDK Setup](https://thales-dis-dbp.stop
 
 ## D1 SDK Binaries
 
-This sample application was tested with **D1 SDK version 3.2.0**.
+This sample application was tested with **D1 SDK version 3.3.1**.
 Please refer to the sample application `build.gradle` files for the correct location of D1 SDK.
 
 **`app/build.gradle`**
