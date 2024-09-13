@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">D1 Templates</string>
+
+    <string name="home_header">Good Afternoon</string>
+    <string name="your_virtual_card">Your virtual card</string>
+    <string name="your_digital_pay_card">Your digital pay card</string>
+    <string name="your_digital_push_card">Your digital push card</string>
+    <string name="no_digital_pay_card">No digital pay card</string>
+    <string name="no_digital_push_card">No digital push card</string>
+    <string name="your_virtual_digital_pay_card">Your virtual and digital pay card</string>
+    <string name="virtual_card">Virtual Card</string>
+    <string name="digital_pay_card">Digital Pay Card</string>
+    <string name="digital_push_card">Digital Push Card</string>
+    <string name="virtual_amp_digital_pay_card"><![CDATA[Virtual & Digital Pay Card]]></string>
+
+    <string name="login_in_progress">D1 login in progress</string>
+    <string name="initializing_d1_sdk">Initializing D1 SDK</string>
+</resources>

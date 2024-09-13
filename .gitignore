@@ -1,0 +1,40 @@
+syntax: glob
+
+# General
+.DS_Store
+*.orig
+*.swp
+
+# Build folder
+build/
+
+# Libs
+*.aar
+*.jar
+*.so
+
+# Env
+.gradle/
+.idea/
+*.iml
+local.properties
+
+# Google services
+google-services.json
+
+# Keystore files
+*.jks
+*.keystore
+app/keystore/
+app/src/main/assets/keystore.properties
+
+# Include gradle wrapper jar
+!gradle-wrapper.jar
+
+# configuration property files
+Features/pay/src/main/assets/*.properties
+core/src/main/assets/d1.properties
+
+# static code analysis
+quality.gradle
+config/

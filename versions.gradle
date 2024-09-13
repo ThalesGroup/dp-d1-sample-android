@@ -1,0 +1,14 @@
+def buildVersions = [:]
+buildVersions.minSdk = 24
+buildVersions.targetSdk = 34
+buildVersions.compileSdk = 34
+ext.buildVersions = buildVersions
+
+def versions = [:]
+versions.support_multidex = "2.0.1"
+
+ext {
+    supportDep = [
+            multidex         : "androidx.multidex:multidex:$versions.support_multidex"
+    ]
+}

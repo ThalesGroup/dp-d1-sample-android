@@ -1,0 +1,151 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/card_holder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintDimensionRatio="w,1:1.58"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_card_art"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="false"
+                android:background="@{mViewModel.mCardBackground, default=@drawable/card_art_loading}"
+                android:scaleType="fitCenter" />
+
+            <ProgressBar
+                android:id="@+id/pb_card"
+                android:visibility="@{mViewModel.mProgressVisibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:elevation="@dimen/card_item_elevation"
+                android:translationZ="@dimen/card_item_elevation" />
+
+            <RelativeLayout
+                android:id="@+id/rl_card_wrap_front"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/card_art_padding_hor"
+                android:paddingVertical="@dimen/card_art_padding_ver">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_pan"
+                            android:text="@{mViewModel.mMaskedPan}"
+                            style="@style/TextView.Emboss"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextView.Emboss.Label"
+                                android:layout_width="26dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/card_label_valid_thru" />
+
+                            <TextView
+                                android:id="@+id/tv_exp"
+                                android:text="@{mViewModel.mExpr}"
+                                style="@style/TextView.Emboss.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical" />
+
+                            <TextView
+                                style="@style/TextView.Emboss.Label"
+                                android:visibility="@{mViewModel.mD1PushDefaultVisibility, default=gone}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="6dp"
+                                android:layout_marginStart="75dp"
+                                android:gravity="bottom"
+                                android:paddingBottom="3dp"
+                                android:text="@string/wallet" />
+
+                            <TextView
+                                android:text="@{mViewModel.mWallet}"
+                                android:visibility="@{mViewModel.mD1PushDefaultVisibility, default=gone}"
+                                style="@style/TextView.Emboss.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical" />
+
+                            <TextView
+                                style="@style/TextView.Emboss.Label"
+                                android:visibility="@{mViewModel.mD1PayDefaultVisibility, default=gone}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="75dp"
+                                android:layout_marginEnd="6dp"
+                                android:gravity="bottom"
+                                android:paddingBottom="3dp"
+                                android:text="@string/payments_left" />
+
+                            <TextView
+                                android:id="@+id/tv_number_of_payments_left"
+                                style="@style/TextView.Emboss.Small"
+                                android:text="@{mViewModel.mPaymentsLeft}"
+                                android:visibility="@{mViewModel.mD1PayDefaultVisibility, default=gone}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_card_state"
+                            android:text="@{mViewModel.mState}"
+                            style="@style/TextView.Emboss.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="mViewModel"
+            type="com.thalesgroup.d1.templates.core.ui.base.CardViewModel" />
+    </data>
+
+
+</layout>

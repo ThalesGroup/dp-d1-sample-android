@@ -1,0 +1,98 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+}
+
+def modulesProperties = new Properties()
+modulesProperties.load(new FileInputStream(rootProject.file("modules.properties")))
+
+android {
+    namespace 'com.thalesgroup.d1.templates'
+    compileSdk buildVersions.compileSdk
+
+    defaultConfig {
+        applicationId "com.thalesgroup.d1.templates"
+        minSdk buildVersions.minSdk
+        targetSdk buildVersions.targetSdk
+        versionCode 17
+        versionName "4.0.0"
+    }
+
+    signingConfigs {
+        def keystorePropertiesFile = rootProject.file("app/src/main/assets/keystore.properties")
+        def keystoreProperties = new Properties()
+
+        release {
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+
+        debug {
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    implementation "androidx.multidex:multidex:2.0.1"
+
+    implementation project(':core')
+    implementation project(':features:pay')
+    implementation project(':features:virtualcard')
+    implementation project(':features:push')
+
+    debugImplementation project(":libs:d1-debug")
+    releaseImplementation project(":libs:d1-release")
+
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
+    // Do not update to later versions. JNA 5.5 AAR is required.
+    implementation 'net.java.dev.jna:jna:5.5.0@aar'
+
+    implementation platform('com.google.firebase:firebase-bom:33.2.0')
+    implementation 'com.google.firebase:firebase-messaging'
+
+    // Fixes duplicate class error with kotlin-stdlib <> kotlin-stdlib-jdk8
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
+}

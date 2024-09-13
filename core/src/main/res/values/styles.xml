@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.TextView" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="colorControlNormal">@color/text_color_primary</item>
+        <item name="fontFamily">?attr/fontFamily</item>
+    </style>
+
+    <style name="TextView.Montserrat" parent="AppTheme.TextView">
+        <item name="fontFamily">@font/montserrat_family</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/accent_blue</item>
+    </style>
+
+    <style name="AppTheme.EditText" parent="Widget.AppCompat.EditText">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="colorPrimary">@color/accent_blue</item>
+    </style>
+
+    <!-- Button Style -->
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+
+        <item name="android:clickable">true</item>
+        <item name="android:paddingStart">@dimen/bt_application_main_margin_se</item>
+        <item name="android:paddingEnd">@dimen/bt_application_main_margin_se</item>
+        <item name="android:paddingTop">@dimen/bt_application_main_margin_tb</item>
+        <item name="android:paddingBottom">@dimen/bt_application_main_margin_tb</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">@color/black</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:textSize">@dimen/bt_application_main</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="fontFamily">?attr/fontFamily</item>
+    </style>
+
+    <style name="TextView.Body" parent="TextView.Montserrat">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TextView.Emboss" parent="AppTheme.TextView">
+        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:shadowColor">@color/black</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
+    </style>
+
+    <style name="TextView.Emboss.Small" parent="AppTheme.TextView">
+        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:shadowColor">@color/black</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="TextView.Emboss.Label" parent="AppTheme.TextView">
+        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">7sp</item>
+    </style>
+
+    <style name="Button.Oval" parent="AppTheme.Button">
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textColor">@color/accent_blue</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:background">@drawable/default_button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/montserrat_semibold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:colorButtonNormal">@color/green</item>
+    </style>
+
+    <style name="Button.Oval.Red" parent="AppTheme.Button">
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:background">@drawable/red_button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/montserrat_semibold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Button.Blue.Oval" parent="AppTheme.Button">
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:background">@drawable/blue_button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/montserrat_semibold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TextView.Black.Title.33" parent="TextView.Montserrat">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">33sp</item>
+        <item name="fontFamily">@font/montserrat_light</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
+</resources>
