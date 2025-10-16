@@ -49,7 +49,7 @@ For more details, please refer to the [D1 SDK Setup](https://thales-dis-dbp.stop
 
 ## D1 SDK Binaries
 
-This sample application was tested with **D1 SDK version 4.0.0**.
+This sample application was tested with **D1 SDK version 4.1.0**.
 Please refer to the sample application `build.gradle` files for the correct location of D1 SDK.
 
 **`app/build.gradle`**
@@ -62,10 +62,10 @@ releaseImplementation project(":libs:d1-release")
 Libs/
 ├── D1-debug
 │   ├── build.gradle
-│   └── d1-debug-d1pay-4.0.0.aar
+│   └── d1-debug-d1pay-4.1.0.aar
 └── D1-release
     ├── build.gradle
-    └── d1-release-d1pay-4.0.0.aar
+    └── d1-release-d1pay-4.1.0.aar
 ```
 
 **`settings.gradle`**

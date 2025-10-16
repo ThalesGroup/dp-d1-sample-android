@@ -182,6 +182,13 @@ public class MainActivity extends AppCompatActivity implements UiDelegate {
     }
 
     @Override
+    public void clearFragmentBackStack() {
+        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i ++) {
+            getSupportFragmentManager().popBackStack();
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(final int requestCode,
                                            @NonNull final String[] permissions,
                                            @NonNull final int[] grantResults) {

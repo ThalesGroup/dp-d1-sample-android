@@ -60,6 +60,7 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
     public View onCreateView(@NonNull final LayoutInflater inflater,
                              @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.fragment_card, container, false);
 
@@ -80,14 +81,6 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
         });
 
         mViewModel.getIsOperationSuccessful().observe(getViewLifecycleOwner(), aBoolean -> hideProgressDialog());
-
-        mViewModel.getIsLoginExpired().observe(getViewLifecycleOwner(), isLoginExpired -> {
-            if (isLoginExpired) {
-                mViewModel.mToastMessage.postValue(getString(com.thalesgroup.d1.core.R.string.login_expired));
-                popFromBackStack();
-                showLoginFragment();
-            }
-        });
 
         return view;
     }

@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace = "com.thalesgroup.d1.virtualcard"
-    compileSdk buildVersions.compileSdk
 
     defaultConfig {
-        minSdk buildVersions.minSdk
-        targetSdk buildVersions.targetSdk
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
+        compileSdkVersion libs.versions.compileSdk.get().toInteger()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -19,13 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        coreLibraryDesugaringEnabled true
-
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     buildFeatures {
         dataBinding true
         viewBinding true
@@ -34,5 +27,12 @@ android {
 
 dependencies {
     api project(':core')
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
+
+    api libs.localbroadcastmanager
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }

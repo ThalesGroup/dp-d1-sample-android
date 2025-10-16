@@ -116,6 +116,7 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
     public View onCreateView(@NotNull final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         final FragmentVirtualCardDetailBinding binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_virtual_card_detail, container, false);

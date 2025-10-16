@@ -44,6 +44,8 @@ public class DigitalPayCardFragment extends AbstractBaseFragment<DigitalPayCardM
                              @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
 
+        super.onCreateView(inflater, container, savedInstanceState);
+
         final View view = inflater.inflate(R.layout.fragment_card, container, false);
 
         final ViewPager2 viewPager = view.findViewById(R.id.card_viewpager);
@@ -76,14 +78,6 @@ public class DigitalPayCardFragment extends AbstractBaseFragment<DigitalPayCardM
             // Update screen title
             if (mViewPagerAdapter.getItemCount() >= 1) {
                 screenText.setText(getString(R.string.your_digital_pay_card));
-            }
-        });
-
-        mViewModel.getIsLoginExpired().observe(getViewLifecycleOwner(), isLoginExpired -> {
-            if (isLoginExpired) {
-                mViewModel.mToastMessage.postValue(getString(com.thalesgroup.d1.core.R.string.login_expired));
-                popFromBackStack();
-                showLoginFragment();
             }
         });
 

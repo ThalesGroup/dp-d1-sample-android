@@ -11,6 +11,7 @@
     <string name="virtual_card">Virtual Card</string>
     <string name="digital_pay_card">Digital Pay Card</string>
     <string name="digital_push_card">Digital Push Card</string>
+    <string name="physical_card">Physical Card</string>
     <string name="virtual_amp_digital_pay_card"><![CDATA[Virtual & Digital Pay Card]]></string>
 
     <string name="login_in_progress">D1 login in progress</string>

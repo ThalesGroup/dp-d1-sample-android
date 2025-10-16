@@ -50,6 +50,7 @@ public class DigitalPushCardFragment extends AbstractBaseFragment<DigitalPushCar
     public View onCreateView(@NonNull final LayoutInflater inflater,
                              @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.fragment_card, container, false);
 
@@ -87,14 +88,6 @@ public class DigitalPushCardFragment extends AbstractBaseFragment<DigitalPushCar
             // Update screen title
             if (mViewPagerAdapter.getItemCount() >= 1) {
                 screenText.setText(getString(R.string.your_digital_push_card));
-            }
-        });
-
-        mViewModel.getIsLoginExpired().observe(getViewLifecycleOwner(), isLoginExpired -> {
-            if (isLoginExpired) {
-                mViewModel.mToastMessage.postValue(getString(com.thalesgroup.d1.core.R.string.login_expired));
-                popFromBackStack();
-                showLoginFragment();
             }
         });
 

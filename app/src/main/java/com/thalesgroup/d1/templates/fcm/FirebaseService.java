@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.thalesgroup.d1.core.BuildConfig;
 import com.thalesgroup.d1.templates.core.utils.CoreUtils;
 import com.thalesgroup.d1.templates.pay.D1Pay;
+import com.thalesgroup.gemalto.d1.BuildConfig;
 
 /**
  * FirebaseService.

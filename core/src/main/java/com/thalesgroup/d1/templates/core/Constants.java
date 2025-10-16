@@ -28,8 +28,8 @@ public class Constants {
         D1PAY(1),
         D1PUSH(1 << 1),
         VIRTUAL_CARD(1 << 2),
-
-        CORE(1 << 3);
+        CORE(1 << 3),
+        PHYSICAL_CARD(1 << 4);
 
         private final int mValue;
 

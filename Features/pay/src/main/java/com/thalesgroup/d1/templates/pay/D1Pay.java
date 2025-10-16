@@ -415,7 +415,7 @@ public final class D1Pay implements D1PayApi {
     }
 
     private D1Task getTaskWithoutThrow(final Context context) {
-        D1Task retValue = D1Core.getInstance().getD1Task();
+        D1Task retValue = D1Core.getInstance().getTaskWithoutThrow();
         if (retValue == null) {
             retValue = new D1Task.Builder()
                     .setContext(context)

@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('d1-release-d1pay-4.0.0.aar'))
+artifacts.add("default", file('d1-release-d1pay-4.1.0.aar'))

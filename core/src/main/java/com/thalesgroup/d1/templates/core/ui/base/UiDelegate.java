@@ -69,4 +69,9 @@ public interface UiDelegate {
      * @param fragment Fragment.
      */
     void showOverlayFragment(final Fragment fragment);
+
+    /**
+     * Clears the fragment backstack.
+     */
+    void clearFragmentBackStack();
 }

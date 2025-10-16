@@ -9,10 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-
+import com.thalesgroup.d1.physicalcard.ui.main.PhysicalCardDetailFragment;
 import com.thalesgroup.d1.templates.R;
 import com.thalesgroup.d1.templates.core.Configuration;
 import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
@@ -20,6 +17,10 @@ import com.thalesgroup.d1.templates.ui.card.CardFragment;
 import com.thalesgroup.d1.templates.ui.digitalpaycard.DigitalPayCardFragment;
 import com.thalesgroup.d1.templates.ui.digitalpushcard.DigitalPushCardFragment;
 import com.thalesgroup.d1.templates.ui.login.LoginFragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 /**
  * Home Fragment.
@@ -45,17 +46,26 @@ public class HomeFragment extends AbstractBaseFragment<HomeViewModel> {
 
         view.findViewById(R.id.virtual_card_button).setOnClickListener(v -> showFragment(CardFragment.newInstance(), true));
 
-        view.findViewById(R.id.digital_pay_card_button).setOnClickListener(v -> showFragment(DigitalPayCardFragment.newInstance(), true));
+        view.findViewById(R.id.digital_pay_card_button)
+            .setOnClickListener(v -> showFragment(DigitalPayCardFragment.newInstance(), true));
 
-        view.findViewById(R.id.digital_push_card_button).setOnClickListener(view1 -> showFragment(DigitalPushCardFragment.newInstance(
-                Configuration.cardId), true));
+        view.findViewById(R.id.digital_push_card_button)
+            .setOnClickListener(view1 -> showFragment(DigitalPushCardFragment.newInstance(Configuration.cardId), true));
 
-        view.findViewById(R.id.logout_button).setOnClickListener(v -> showAlertDialog(getString(com.thalesgroup.d1.core.R.string.logout), getString(com.thalesgroup.d1.core.R.string.are_you_sure), getString(com.thalesgroup.d1.core.R.string.yes), () -> {
-            mViewModel.logout();
-        }, getString(com.thalesgroup.d1.core.R.string.no)));
+        view.findViewById(R.id.physical_card_button)
+            .setOnClickListener(view1 -> showFragment(PhysicalCardDetailFragment.newInstance(Configuration.cardId), true));
+
+        view.findViewById(R.id.logout_button)
+            .setOnClickListener(v -> showAlertDialog(getString(com.thalesgroup.d1.core.R.string.logout),
+                                                     getString(com.thalesgroup.d1.core.R.string.are_you_sure),
+                                                     getString(com.thalesgroup.d1.core.R.string.yes),
+                                                     () -> {
+                                                         mViewModel.logout();
+                                                     },
+                                                     getString(com.thalesgroup.d1.core.R.string.no)));
 
         mViewModel.getIsLogoutSuccess().observe(getViewLifecycleOwner(), isLogoutSuccess -> {
-            if(isLogoutSuccess) {
+            if (isLogoutSuccess) {
                 showFragment(LoginFragment.newInstance(), false);
             }
         });

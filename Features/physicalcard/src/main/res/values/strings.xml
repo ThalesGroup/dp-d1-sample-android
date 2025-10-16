@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activate_cvv">Please use CVV to activate card.</string>
+    <string name="activate_last4">Please use the 4 last digits of PAN to activate card.</string>
+    <string name="activate_my_card">Activate My Card</string>
+    <string name="display_my_pin">Display My PIN</string>
+    <string name="change_my_pin">Change My PIN</string>
+    <string name="activate_card">Activate Card</string>
+    <string name="card_activation_method">Card Activation Method:</string>
+    <string name="display_pin">Display PIN</string>
+    <string name="change_pin">Change PIN</string>
+    <string name="card_activation_ok">Card activation OK.</string>
+    <string name="retrieving_card_activation_method">Retrieving card activation method.</string>
+    <string name="retrieving_pin">Retrieving PIN.</string>
+    <string name="enter_new_pin">Enter new PIN.</string>
+    <string name="confirm_new_pin">Confirm new PIN.</string>
+</resources>

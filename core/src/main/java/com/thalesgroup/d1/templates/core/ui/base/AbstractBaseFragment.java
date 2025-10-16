@@ -14,12 +14,13 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.thalesgroup.d1.core.BuildConfig;
 import com.thalesgroup.d1.templates.core.Constants;
 import com.thalesgroup.d1.templates.core.utils.NetworkUtils;
 import com.thalesgroup.d1.templates.core.utils.UtilsCurrenciesConstants;
+import com.thalesgroup.gemalto.d1.BuildConfig;
 import com.thalesgroup.gemalto.d1.d1pay.TransactionRecord;
 
 import java.util.Locale;
@@ -66,10 +67,10 @@ public abstract class AbstractBaseFragment<VM extends BaseViewModel> extends Fra
     public void onStart() {
         super.onStart();
 
-        requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
-        requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED));
+        ContextCompat.registerReceiver(requireContext(), mBroadcastReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED), ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(requireContext(), mBroadcastReceiver, new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED), ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(requireContext(), mBroadcastReceiver, new IntentFilter(Constants.DIGITAL_PAY_CARD_RECENT_TRANSACTION_RECORD_RECEIVED), ContextCompat.RECEIVER_NOT_EXPORTED);
         // requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
-        requireContext().registerReceiver(mBroadcastReceiver, new IntentFilter(Constants.DIGITAL_PAY_CARD_RECENT_TRANSACTION_RECORD_RECEIVED));
     }
 
     @Override
@@ -88,6 +89,8 @@ public abstract class AbstractBaseFragment<VM extends BaseViewModel> extends Fra
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         mViewModel.getNfcState().observe(getViewLifecycleOwner(), nfcState -> {
             if (BuildConfig.DEBUG) {
                 mViewModel.mToastMessage.postValue("NFC state changed: " + nfcState.name());
@@ -114,6 +117,14 @@ public abstract class AbstractBaseFragment<VM extends BaseViewModel> extends Fra
         mViewModel.getToastMessage().observe(getViewLifecycleOwner(), this::showToast);
 
         mViewModel.getRecentTransactionRecord().observe(getViewLifecycleOwner(), transactionRecord -> mViewModel.mToastMessage.postValue(String.format(Locale.ENGLISH, "Transaction of amount %.2f %s was successful", transactionRecord.getAmount(), UtilsCurrenciesConstants.getCurrency(transactionRecord.getCurrencyCode()).getCurrencyCode())));
+
+        mViewModel.getIsLoginExpired().observe(getViewLifecycleOwner(), isLoginExpired -> {
+            if (isLoginExpired) {
+                mViewModel.mToastMessage.postValue(getString(com.thalesgroup.d1.core.R.string.login_expired));
+                showLoginFragment();
+            }
+        });
+
     }
 
     /**
@@ -187,11 +198,12 @@ public abstract class AbstractBaseFragment<VM extends BaseViewModel> extends Fra
     }
 
     /**
-     * Shows login fragment.
+     * Clears the fragment back stack and shows login fragment.
      */
     protected void showLoginFragment() {
         final UiDelegate uiDelegate = (UiDelegate) getActivity();
         if (uiDelegate != null) {
+            uiDelegate.clearFragmentBackStack();
             uiDelegate.showLoginFragment();
         }
     }

@@ -21,13 +21,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.thalesgroup.d1.core.BuildConfig;
 import com.thalesgroup.d1.pay.R;
 import com.thalesgroup.d1.pay.databinding.FragmentDigitalPayCardDetailBinding;
 import com.thalesgroup.d1.templates.core.Constants;
 import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
 import com.thalesgroup.d1.templates.pay.Configuration;
 import com.thalesgroup.d1.templates.pay.enums.ReplenishmentState;
+import com.thalesgroup.gemalto.d1.BuildConfig;
 import com.thalesgroup.gemalto.d1.card.State;
 
 import org.jetbrains.annotations.NotNull;
@@ -93,6 +93,8 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
     public View onCreateView(@NotNull final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         final FragmentDigitalPayCardDetailBinding binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_digital_pay_card_detail, container, false);
 

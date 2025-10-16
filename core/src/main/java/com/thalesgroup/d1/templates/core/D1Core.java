@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.thalesgroup.d1.templates.core.model.CardMetaDataListener;
@@ -157,6 +158,15 @@ final public class D1Core implements D1CoreApi {
             throw new IllegalStateException(errDesc);
         }
 
+        return mD1Task;
+    }
+
+    /**
+     * Retrieves the {@code D1Task} instance.
+     *
+     * @return {@code D1Task} instance or {@code null} if D1 SDK not configured.
+     */
+    @Nullable public D1Task getTaskWithoutThrow() {
         return mD1Task;
     }
 

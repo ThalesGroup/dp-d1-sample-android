@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace = "com.thalesgroup.d1.push"
-    compileSdk buildVersions.compileSdk
 
     defaultConfig {
-        minSdk buildVersions.minSdk
-        targetSdk buildVersions.targetSdk
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
+        compileSdkVersion libs.versions.compileSdk.get().toInteger()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -19,12 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        coreLibraryDesugaringEnabled true
-
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 
     buildFeatures {
         dataBinding true
@@ -33,12 +27,14 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.8.2'
+    //noinspection GradleDependency
+    implementation libs.annotation
 
     api project(':core')
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+}
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }

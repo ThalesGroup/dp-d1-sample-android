@@ -28,7 +28,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.thalesgroup.d1.core.BuildConfig;
 import com.thalesgroup.d1.pay.R;
 import com.thalesgroup.d1.templates.core.Constants;
 import com.thalesgroup.d1.templates.core.utils.CoreUtils;
@@ -45,6 +44,7 @@ import com.thalesgroup.d1.templates.pay.ui.payment.ready.PaymentReadyFragment;
 import com.thalesgroup.d1.templates.pay.ui.payment.started.PaymentStartedFragment;
 import com.thalesgroup.d1.templates.pay.ui.payment.success.PaymentSuccessFragment;
 import com.thalesgroup.d1.templates.pay.utils.InternalNotificationsUtils;
+import com.thalesgroup.gemalto.d1.BuildConfig;
 import com.thalesgroup.gemalto.d1.D1Exception;
 import com.thalesgroup.gemalto.d1.D1Task;
 import com.thalesgroup.gemalto.d1.card.AssetContent;
