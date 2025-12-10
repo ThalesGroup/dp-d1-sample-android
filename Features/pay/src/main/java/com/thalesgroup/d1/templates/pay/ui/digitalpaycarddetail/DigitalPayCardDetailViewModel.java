@@ -107,11 +107,10 @@ public class DigitalPayCardDetailViewModel extends CardViewModel implements D1Pa
     }
 
     /**
-     * @param applicationContext Context.
      * @param cardId             Card Id as String.
      */
-    public void startManualModePayment(@NonNull final Context applicationContext, @NonNull final String cardId) {
-        D1Pay.getInstance().startManualModePayment(applicationContext, cardId);
+    public void startManualModePayment(@NonNull final String cardId) {
+        D1Pay.getInstance().startManualModePayment(cardId);
     }
 
     @Override

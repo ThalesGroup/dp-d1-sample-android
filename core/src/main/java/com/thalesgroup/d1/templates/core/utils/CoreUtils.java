@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2025 THALES. All rights reserved.
+ */
+
 package com.thalesgroup.d1.templates.core.utils;
 
 import android.content.Context;

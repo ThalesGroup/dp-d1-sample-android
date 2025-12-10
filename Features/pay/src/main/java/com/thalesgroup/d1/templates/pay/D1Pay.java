@@ -4,8 +4,6 @@
 
 package com.thalesgroup.d1.templates.pay;
 
-import static com.thalesgroup.gemalto.d1.core.D1Core.getApplicationContext;
-
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -20,6 +18,7 @@ import com.thalesgroup.d1.templates.core.D1Core;
 import com.thalesgroup.d1.templates.core.enums.NotificationState;
 import com.thalesgroup.d1.templates.core.model.D1ModuleConnector;
 import com.thalesgroup.d1.templates.core.model.D1TaskCallbackLambda;
+import com.thalesgroup.d1.templates.core.utils.ApplicationContextResolver;
 import com.thalesgroup.d1.templates.pay.enums.ReplenishmentState;
 import com.thalesgroup.d1.templates.pay.model.D1PayApi;
 import com.thalesgroup.d1.templates.pay.model.D1PayContactlessTransactionListener;
@@ -62,13 +61,13 @@ public final class D1Pay implements D1PayApi {
     private final DeviceAuthenticationCallback mDeviceAuthenticationCallback = new DeviceAuthenticationCallback() {
         @Override
         public void onSuccess() {
-            broadcastReplenishmentState(ReplenishmentState.DEVICE_AUTHENTICATION_SUCCESS, getApplicationContext().getString(R.string.replenishment_DEVICE_AUTHENTICATION_SUCCESS));
+            broadcastReplenishmentState(ReplenishmentState.DEVICE_AUTHENTICATION_SUCCESS, ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_DEVICE_AUTHENTICATION_SUCCESS));
         }
 
         @Override
         public void onFailed() {
             // User authentication failed, the mobile app may ask end user to retry
-            broadcastReplenishmentState(ReplenishmentState.DEVICE_AUTHENTICATION_FAILED, getApplicationContext().getString(R.string.replenishment_DEVICE_AUTHENTICATION_FAILED));
+            broadcastReplenishmentState(ReplenishmentState.DEVICE_AUTHENTICATION_FAILED, ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_DEVICE_AUTHENTICATION_FAILED));
         }
 
         @Override
@@ -81,7 +80,7 @@ public final class D1Pay implements D1PayApi {
                     ReplenishmentState.DEVICE_AUTHENTICATION_ERROR,
                     String.format(
                             Locale.ENGLISH,
-                            getApplicationContext().getString(R.string.replenishment_DEVICE_AUTHENTICATION_ERROR),
+                            ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_DEVICE_AUTHENTICATION_ERROR),
                             fpErrorCode
                     )
             );
@@ -96,7 +95,7 @@ public final class D1Pay implements D1PayApi {
                     ReplenishmentState.DEVICE_AUTHENTICATION_HELP,
                     String.format(
                             Locale.ENGLISH,
-                            getApplicationContext().getString(R.string.replenishment_DEVICE_AUTHENTICATION_HELP),
+                            ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_DEVICE_AUTHENTICATION_HELP),
                             detail,
                             fpCode
                     )
@@ -156,7 +155,7 @@ public final class D1Pay implements D1PayApi {
             @Override
             public void onSuccess(final Map<PushResponseKey, String> pushResponseKeyStringMap) {
 
-                broadcastNotificationState(NotificationState.PROCESS_NOTIFICATION_SUCCESS, getApplicationContext().getString(R.string.replenishment_PROCESS_NOTIFICATION_SUCCESS));
+                broadcastNotificationState(NotificationState.PROCESS_NOTIFICATION_SUCCESS, ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_PROCESS_NOTIFICATION_SUCCESS));
 
                 if (pushResponseKeyStringMap != null) {
                     final String messageType = pushResponseKeyStringMap.get(PushResponseKey.MESSAGE_TYPE);
@@ -174,7 +173,7 @@ public final class D1Pay implements D1PayApi {
 
             @Override
             public void onError(@NonNull final D1Exception exception) {
-                broadcastNotificationState(NotificationState.PROCESS_NOTIFICATION_ERROR, exception.getLocalizedMessage() != null ? exception.getLocalizedMessage() : getApplicationContext().getString(R.string.replenishment_PROCESS_NOTIFICATION_ERROR));
+                broadcastNotificationState(NotificationState.PROCESS_NOTIFICATION_ERROR, exception.getLocalizedMessage() != null ? exception.getLocalizedMessage() : ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_PROCESS_NOTIFICATION_ERROR));
             }
         });
     }
@@ -255,13 +254,13 @@ public final class D1Pay implements D1PayApi {
                 new D1Task.Callback<Void>() {
                     @Override
                     public void onSuccess(final Void unused) {
-                        broadcastReplenishmentState(ReplenishmentState.SUCCESS, getApplicationContext().getString(R.string.replenishment_SUCCESS));
+                        broadcastReplenishmentState(ReplenishmentState.SUCCESS, ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_SUCCESS));
                     }
 
                     @Override
                     public void onError(@NonNull final D1Exception exception) {
                         broadcastReplenishmentState(ReplenishmentState.ERROR, exception.getLocalizedMessage() != null ? exception.getLocalizedMessage()
-                                : getApplicationContext().getString(R.string.replenishment_ERROR));
+                                : ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_ERROR));
                     }
                 });
     }
@@ -298,13 +297,13 @@ public final class D1Pay implements D1PayApi {
                 new D1Task.Callback<Void>() {
                     @Override
                     public void onSuccess(final Void unused) {
-                        broadcastReplenishmentState(ReplenishmentState.ODA_SUCCESS, getApplicationContext().getString(R.string.replenishment_ODA_SUCCESS));
+                        broadcastReplenishmentState(ReplenishmentState.ODA_SUCCESS, ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_ODA_SUCCESS));
                     }
 
                     @Override
                     public void onError(@NonNull final D1Exception exception) {
                         broadcastReplenishmentState(ReplenishmentState.ODA_ERROR, exception.getLocalizedMessage() != null ? exception.getLocalizedMessage()
-                                : getApplicationContext().getString(R.string.replenishment_ODA_ERROR));
+                                : ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_ODA_ERROR));
                     }
                 });
     }
@@ -360,9 +359,9 @@ public final class D1Pay implements D1PayApi {
     }
 
     @Override
-    public void startManualModePayment(@NonNull final Context applicationContext, @NonNull final String cardId) {
+    public void startManualModePayment(@NonNull final String cardId) {
         final D1PayConfigParams d1PayConfigParams = D1PayConfigParams.getInstance();
-        d1PayConfigParams.setManualModeContactlessTransactionListener(mD1PayContactlessTransactionListener = new D1PayContactlessTransactionListener(applicationContext, cardId));
+        d1PayConfigParams.setManualModeContactlessTransactionListener(mD1PayContactlessTransactionListener = new D1PayContactlessTransactionListener(cardId));
 
         getWallet().startManualModePayment(cardId);
     }
@@ -375,7 +374,7 @@ public final class D1Pay implements D1PayApi {
      */
     private void broadcastReplenishmentState(@NonNull final ReplenishmentState replenishmentState, @NonNull final String message) {
 
-        final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+        final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(ApplicationContextResolver.getApplicationContext());
 
         final Intent intent = new Intent();
         intent.setAction(Constants.DIGITAL_PAY_CARD_REPLENISHMENT);
@@ -391,7 +390,7 @@ public final class D1Pay implements D1PayApi {
      */
     private void broadcastRecentTransaction(@NonNull final TransactionRecord transactionRecord) {
 
-        final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+        final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(ApplicationContextResolver.getApplicationContext());
 
         final Intent intent = new Intent();
         intent.setAction(Constants.DIGITAL_PAY_CARD_RECENT_TRANSACTION_RECORD_RECEIVED);
@@ -401,7 +400,7 @@ public final class D1Pay implements D1PayApi {
 
     private void broadcastNotificationState(@NonNull final NotificationState notificationState, @NonNull final String message) {
 
-        final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+        final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(ApplicationContextResolver.getApplicationContext());
 
         final Intent intent = new Intent();
         intent.setAction(Constants.DIGITAL_PAY_CARD_NOTIFICATION);
@@ -475,7 +474,9 @@ public final class D1Pay implements D1PayApi {
 
     @Override
     public D1ModuleConnector createModuleConnector(@NonNull final Context applicationContext) {
-        return new D1PayModuleConnector(mD1PayContactlessTransactionListener = new D1PayContactlessTransactionListener(applicationContext, null));
+        mD1PayContactlessTransactionListener = new D1PayContactlessTransactionListener(null);
+
+        return new D1PayModuleConnector(mD1PayContactlessTransactionListener);
     }
 
     /**
@@ -492,10 +493,11 @@ public final class D1Pay implements D1PayApi {
         public D1Params getConfiguration() {
             final D1PayConfigParams d1PayConfigParams = D1PayConfigParams.getInstance();
             d1PayConfigParams.setContactlessTransactionListener(mD1PayContactlessTransactionListener);
-            d1PayConfigParams.setReplenishAuthenticationUIStrings(getApplicationContext().getString(R.string.replenishment_authentication_title),
-                                                                  getApplicationContext().getString(R.string.replenishment_authentication_subtitle),
-                                                                  getApplicationContext().getString(R.string.replenishment_authentication_description),
-                                                                  getApplicationContext().getString(R.string.replenishment_authentication_cancel));
+            d1PayConfigParams.setReplenishAuthenticationUIStrings(
+                    ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_authentication_title),
+                    ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_authentication_subtitle),
+                    ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_authentication_description),
+                    ApplicationContextResolver.getApplicationContext().getString(R.string.replenishment_authentication_cancel));
 
             return d1PayConfigParams;
         }

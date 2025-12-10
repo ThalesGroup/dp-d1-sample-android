@@ -122,7 +122,7 @@ public class DigitalPayCardDetailFragment extends AbstractBaseFragment<DigitalPa
 
         if (Configuration.DIGITAL_PAY_CARD_MANUAL_PAYMENT_MODE_ENABLED) {
             cardHolder.setOnLongClickListener(v -> {
-                mViewModel.startManualModePayment(requireActivity().getApplicationContext(), mViewModel.getCardId());
+                mViewModel.startManualModePayment(mViewModel.getCardId());
                 return true;
             });
         }

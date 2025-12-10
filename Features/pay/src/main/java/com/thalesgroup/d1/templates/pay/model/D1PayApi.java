@@ -189,10 +189,9 @@ public interface D1PayApi {
     TransactionHistoryFragment getTransactionHistoryFragment(@NonNull final List<TransactionRecord> transactionRecords);
 
     /**
-     * @param applicationContext Context.
      * @param cardId             Card Id as String.
      */
-    void startManualModePayment(@NonNull final Context applicationContext, @NonNull final String cardId);
+    void startManualModePayment(@NonNull final String cardId);
 
     /**
      * Retrieves the D1Pay digital card for an associated card ID.

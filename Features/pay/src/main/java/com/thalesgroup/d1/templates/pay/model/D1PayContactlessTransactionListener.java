@@ -10,7 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.thalesgroup.d1.templates.core.utils.ApplicationContextResolver;
 import com.thalesgroup.d1.templates.core.utils.CoreUtils;
 import com.thalesgroup.d1.templates.core.utils.UtilsCurrenciesConstants;
 import com.thalesgroup.d1.templates.pay.enums.PaymentState;
@@ -26,7 +28,6 @@ import com.thalesgroup.gemalto.d1.d1pay.VerificationMethod;
  * D1PayContactlessTransactionListener.
  */
 public class D1PayContactlessTransactionListener extends ContactlessTransactionListener {
-    protected Context mContext;
     private double mAmount;
     private String mCurrency;
     private final String mCardId;
@@ -34,13 +35,11 @@ public class D1PayContactlessTransactionListener extends ContactlessTransactionL
     /**
      * Creates a new instance of {@code D1PayContactlessTransactionListener}.
      *
-     * @param context Context.
      * @param cardId  CardId
      */
-    public D1PayContactlessTransactionListener(@NonNull final Context context, final String cardId) {
+    public D1PayContactlessTransactionListener(@Nullable final String cardId) {
         super();
 
-        mContext = context;
         mCardId = cardId;
 
         resetState();
@@ -80,7 +79,7 @@ public class D1PayContactlessTransactionListener extends ContactlessTransactionL
             @Override
             public void onTimer(final int remain) {
                 // The mobile application should update the countdown screen with current "remaining" time.
-                CoreUtils.getInstance().runInMainThread(() -> InternalNotificationsUtils.updatePaymentCountdown(mContext, remain));
+                CoreUtils.getInstance().runInMainThread(() -> InternalNotificationsUtils.updatePaymentCountdown(ApplicationContextResolver.getApplicationContext(), remain));
             }
 
             @Override
@@ -88,7 +87,7 @@ public class D1PayContactlessTransactionListener extends ContactlessTransactionL
                 // The mobile application should inform end user of the timeout error.
                 updateAmountAndCurrency();
                 deactivate();
-                updateState(PaymentState.STATE_ON_ERROR, new PaymentErrorData(null, mContext.getString(com.thalesgroup.d1.core.R.string.transaction_timeout), mAmount, mCurrency, mCardId));
+                updateState(PaymentState.STATE_ON_ERROR, new PaymentErrorData(null, ApplicationContextResolver.getApplicationContext().getString(com.thalesgroup.d1.core.R.string.transaction_timeout), mAmount, mCurrency, mCardId));
             }
         });
 
@@ -155,11 +154,11 @@ public class D1PayContactlessTransactionListener extends ContactlessTransactionL
 
         // Notify rest of the application in UI thread.
         CoreUtils.getInstance().runInMainThread(() -> {
-            final Intent intent = new Intent(mContext, PaymentActivity.class);
+            final Intent intent = new Intent(ApplicationContextResolver.getApplicationContext(), PaymentActivity.class);
             intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(PaymentActivity.STATE_EXTRA_KEY, state);
             intent.putExtra(PaymentActivity.PAYMENT_DATA_EXTRA_KEY, data);
-            mContext.startActivity(intent);
+            ApplicationContextResolver.getApplicationContext().startActivity(intent);
         });
     }
 }

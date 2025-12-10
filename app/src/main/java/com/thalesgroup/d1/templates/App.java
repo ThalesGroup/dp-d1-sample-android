@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.thalesgroup.d1.templates.core.Configuration;
 import com.thalesgroup.d1.templates.core.D1Core;
 import com.thalesgroup.d1.templates.core.model.D1CoreListener;
+import com.thalesgroup.d1.templates.core.utils.ApplicationContextResolver;
 import com.thalesgroup.d1.templates.pay.D1Pay;
 import com.thalesgroup.gemalto.d1.D1Exception;
 
@@ -28,6 +29,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Set the context resolver for all helpers like accessing text resources etc...
+        ApplicationContextResolver.setApplicationContext(this);
 
         Configuration.loadConfigurationFromAssets(this);
 
