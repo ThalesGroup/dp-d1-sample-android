@@ -33,6 +33,10 @@ public class Configuration {
     public static String jwtUrl;
     public static String jwtUsername;
     public static String jwtPassword;
+    public static String kid;
+    public static String iss;
+    public static String aud;
+    public static String scope;
 
     /**
      * Loads the D1 configuration from assets file.
@@ -50,6 +54,10 @@ public class Configuration {
         jwtUrl = getProperty("JWT_URL", context, FILENAME);
         jwtUsername = getProperty("JWT_USERNAME", context, FILENAME);
         jwtPassword = getProperty("JWT_PASSWORD", context, FILENAME);
+        kid = getProperty("KID", context, FILENAME);
+        iss = getProperty("ISS", context, FILENAME);
+        aud = getProperty("AUD", context, FILENAME);
+        scope = getProperty("SCOPE", context, FILENAME);
     }
 
     /**

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.thalesgroup.d1.core"
+    namespace = "com.thalesgroup.d1.clicktopay"
 
     defaultConfig {
         minSdk libs.versions.minSdk.get().toInteger()
@@ -19,7 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     buildFeatures {
         dataBinding true
         viewBinding true
@@ -27,18 +26,7 @@ android {
 }
 
 dependencies {
-    api libs.appcompat
-    api libs.material
-    api libs.constraintlayout
-    api libs.constraintlayout
-    api libs.biometric
-    api libs.gson
-
-    debugApi project(":libs:d1-debug")
-    releaseApi project(":libs:d1-release")
-
-    implementation platform(libs.firebase.bom)
-    implementation libs.firebase.messaging
+    api project(':core')
 }
 
 java {

@@ -32,5 +32,6 @@ include ':app',
         ':features:push',
         ':features:virtualcard',
         ':features:physicalcard',
+        ':features:clicktopay',
         ':libs:d1-debug',
         ':libs:d1-release'

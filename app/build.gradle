@@ -75,6 +75,7 @@ dependencies {
     implementation project(':features:virtualcard')
     implementation project(':features:push')
     implementation project(':features:physicalcard')
+    implementation project(':features:clicktopay')
 
     debugImplementation project(":libs:d1-debug")
     releaseImplementation project(":libs:d1-release")

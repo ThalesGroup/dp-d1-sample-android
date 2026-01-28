@@ -41,6 +41,10 @@ CARD_ID =
 JWT_URL = 
 JWT_USERNAME = 
 JWT_PASSWORD = 
+KID = 
+ISS = 
+AUD = 
+SCOPE = 
 ```
 
 The `d1.properties` file is **not** kept under version control to prevent it from being overwritten during repository update.

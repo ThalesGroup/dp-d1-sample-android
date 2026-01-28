@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -27,6 +28,9 @@ import com.thalesgroup.d1.templates.core.Configuration;
 import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
 import com.thalesgroup.d1.templates.core.ui.base.ViewPagerAdapter;
 import com.thalesgroup.d1.templates.virtualcard.D1VirtualCard;
+import com.thalesgroup.gemalto.d1.card.BillingAddress;
+import com.thalesgroup.gemalto.d1.card.ConsumerInfo;
+import com.thalesgroup.gemalto.d1.card.D1ClickToPay;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +44,7 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
     private ViewPager2 mViewPager;
     private ConstraintLayout mEnableNfcButton;
     private FrameLayout mAddToGPayButton;
+    private ConstraintLayout mEnrollClickToPay;
 
     /**
      * List of card Id to display Virtual Card.
@@ -66,6 +71,7 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
 
         initNfcButton(view);
         initGPayButton(view);
+        initEnrollClickToPayButton(view);
         initViewPager(view);
 
         mViewModel.getD1PayDigitizationStarted().observe(getViewLifecycleOwner(), value -> {
@@ -79,6 +85,8 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
                 mViewModel.mToastMessage.postValue(getString(com.thalesgroup.d1.core.R.string.digitization_completed));
             }
         });
+
+        mViewModel.getClickToPayStatus().observe(getViewLifecycleOwner(), status -> mViewModel.mToastMessage.postValue(status.toString()));
 
         mViewModel.getIsOperationSuccessful().observe(getViewLifecycleOwner(), aBoolean -> hideProgressDialog());
 
@@ -114,11 +122,41 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
                 mEnableNfcButton.setEnabled(false);
                 mEnableNfcButton.setAlpha(0.3F);
 
+                mEnrollClickToPay.setEnabled(false);
+                mEnrollClickToPay.setAlpha(0.3F);
+
                 mViewModel.isDigitizedAsDigitalPayCard(mVirtualCardIdList.get(position));
+                mViewModel.isClickToPayEnrolled(mVirtualCardIdList.get(position));
 
                 // D1Push not supported on SANDBOX ENV.
                 // mViewModel.isDigitizedAsDigitalPushCard(mVirtualCardIdList.get(position));
             }
+        });
+    }
+
+    private void initEnrollClickToPayButton(final View view) {
+        mEnrollClickToPay = view.findViewById(R.id.enable_click_to_pay_button);
+        mEnrollClickToPay.setOnClickListener(view1 -> {
+            // TODO: using dummy data for now
+            final ConsumerInfo consumerInfo = new ConsumerInfo(
+                    "Bella",
+                    "middle name",
+                    "Lin",
+                    "en-US",
+                    "+65",
+                    "99998888",
+                    "email@thalesgroup.com"
+            );
+            final BillingAddress billingAddress = new BillingAddress("CZ");
+            final String name = "Bella Lin";
+            final String cardId = mVirtualCardIdList.get(mViewPager.getCurrentItem());
+
+            mViewModel.enrolClickToPay(cardId, consumerInfo, billingAddress, name);
+        });
+
+        mViewModel.getClickToPayIsEnrolled().observe(getViewLifecycleOwner(), isCardEnrolled -> {
+            mEnrollClickToPay.setEnabled(!isCardEnrolled);
+            mEnrollClickToPay.setAlpha(!isCardEnrolled ? 1 : 0.3F);
         });
     }
 
