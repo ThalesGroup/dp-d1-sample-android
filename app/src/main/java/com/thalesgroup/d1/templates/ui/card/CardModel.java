@@ -244,6 +244,7 @@ public class CardModel extends BaseViewModel implements D1PayDigitizationListene
     @Override
     public void onEnrolClickToPay(final D1ClickToPay.Status status) {
         mIsOperationSuccessful.postValue(true);
+        mClickToPayIsEnrolled.postValue(true);
         mClickToPayStatus.postValue(status);
     }
 

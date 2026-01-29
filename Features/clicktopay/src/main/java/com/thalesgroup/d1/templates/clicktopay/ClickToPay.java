@@ -12,6 +12,7 @@ import com.thalesgroup.gemalto.d1.card.ConsumerInfo;
 import com.thalesgroup.gemalto.d1.card.DigitalCard;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ClickToPay implements ClickToPayApi {
 
@@ -57,12 +58,8 @@ public class ClickToPay implements ClickToPayApi {
             public void onSuccess(final List<DigitalCard> digitalCards) {
                 for (final DigitalCard digitalCard :
                         digitalCards) {
-                    if (digitalCard.getTokenRequestorID().equals(VISA_REQUESTOR_ID)) {
-                        d1ClickToPayListener.onClickToPayCardEnrolled(true);
-                        return;
-                    }
-
-                    if (digitalCard.getTokenRequestorID().equals(VISA_REQUESTOR_ID)) {
+                    if (Objects.equals(digitalCard.getTokenRequestorID(), VISA_REQUESTOR_ID) ||
+                            Objects.equals(digitalCard.getTokenRequestorID(), MASTERCARD_REQUESTOR_ID)) {
                         d1ClickToPayListener.onClickToPayCardEnrolled(true);
                         return;
                     }

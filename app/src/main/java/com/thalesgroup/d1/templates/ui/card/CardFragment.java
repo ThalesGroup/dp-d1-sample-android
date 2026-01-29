@@ -151,6 +151,7 @@ public class CardFragment extends AbstractBaseFragment<CardModel> {
             final String name = "Bella Lin";
             final String cardId = mVirtualCardIdList.get(mViewPager.getCurrentItem());
 
+            showProgressDialog(getString(com.thalesgroup.d1.core.R.string.operation_in_progress));
             mViewModel.enrolClickToPay(cardId, consumerInfo, billingAddress, name);
         });
 
