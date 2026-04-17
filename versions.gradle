@@ -1,0 +1,5 @@
+def buildVersions = [:]
+buildVersions.minSdk = 26
+buildVersions.targetSdk = 36
+buildVersions.compileSdk = 36
+ext.buildVersions = buildVersions

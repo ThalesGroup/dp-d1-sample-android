@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="accent_blue">#186e9e</color>
+    <color name="accent_light_blue">#16CFF3</color>
+    <color name="almost_black">#333333</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="lightGray">#f3f3f5</color>
+    <color name="darkGray">#888888</color>
+    <color name="grey">#8c9797</color>
+    <color name="blue">#4BA8DA</color>
+    <color name="red">#ef3d56</color>
+    <color name="green">#00af50</color>
+
+    <color name="menu_background">#dd2189bc</color>
+
+    <color name="color_success">@color/green</color>
+    <color name="color_warning">#f7c851</color>
+    <color name="color_error">@color/red</color>
+    <color name="text_error">@color/black</color>
+    <color name="text_error_hint">@color/grey</color>
+    <color name="text_color_primary">#666666</color>
+    <color name="text_color_secondary">#999999</color>
+    <color name="disabled_color">#AEB1B3</color>
+    <color name="disabled_blue_color">#8AB5CE</color>
+
+    <!-- Layout separator colors -->
+    <color name="separator_color_1">#e8e8e8</color>
+    <color name="separator_color_2">#c6c6c6</color>
+    <color name="separator_color_3">#c6c6c6</color>
+
+    <!-- Main menu navigation drawer -->
+    <color name="navigation_bar_background">#efefef</color>
+
+    <color name="colorPrimaryDark">#2c4250</color>
+
+    <color name="ic_launcher_background">#fff</color>
+
+    <!-- Progress wheel colors -->
+    <color name="pw_overlay_color">@color/transparent</color>
+    <color name="pw_bar_color">@color/accent_blue</color>
+    <color name="pw_rim_color">#bdc3c7</color>
+    <color name="pw_text_color">@color/black</color>
+</resources>

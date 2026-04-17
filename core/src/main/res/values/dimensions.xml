@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="activity_horizontal_margin">30dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="large_text_size">22sp</dimen>
+    <dimen name="medium_text_size">17sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="button_text_size">15sp</dimen>
+
+    <dimen name="card_art_padding_hor">66dp</dimen>
+    <dimen name="card_art_padding_ver">28dp</dimen>
+
+    <dimen name="vertical_spacer_high">20dp</dimen>
+    <dimen name="vertical_spacer">20dp</dimen>
+
+    <dimen name="bt_application_main">22sp</dimen>
+
+    <dimen name="bt_application_main_margin">12dp</dimen>
+
+    <dimen name="bt_application_main_margin_lr">20dp</dimen>
+
+    <dimen name="card_item_elevation">2dp</dimen>
+
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="bt_application_main_margin_se">25dp</dimen>
+    <dimen name="bt_application_main_margin_tb">10dp</dimen>
+    <dimen name="corner_radius">24dp</dimen>
+</resources>

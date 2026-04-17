@@ -1,0 +1,33 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.D1Templates" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/accent_blue</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/accent_light_blue</item>
+        <item name="colorSecondaryVariant">@color/accent_light_blue</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- TextView -->
+        <item name="android:editTextStyle">@style/AppTheme.EditText</item>
+        <item name="android:buttonStyle">@style/AppTheme.Button</item>
+
+        <!--
+            Disable multitouch for the whole application.
+            Force single touch across an entire app.
+        -->
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
+    </style>
+
+    <style name="Theme.D1Templates.Translucent" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

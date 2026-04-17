@@ -1,0 +1,41 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace = "com.thalesgroup.d1.pay"
+
+    defaultConfig {
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
+        compileSdkVersion libs.versions.compileSdk.get().toInteger()
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+}
+
+dependencies {
+    api project(':core')
+
+    api platform(libs.firebase.bom)
+    api libs.firebase.messaging
+    api libs.localbroadcastmanager
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
