@@ -132,7 +132,7 @@ storeFile=keystore/keystore
 ### 2. Additional Backend Configuration
 The following files with a working NFC Payment backend configuration need to be added:
 
-**`1. features/pay/src/main/assets/gemcbp.properties`**
+**`1. Features/pay/src/main/assets/gemcbp.properties`**
 ```bash
 
 # The URL of the CPS server.
@@ -156,7 +156,7 @@ CPS_CONNECTION_RETRY_COUNT=5
 CPS_CONNECTION_RETRY_INTERVAL=10000
 ```
 
-**`2. features/pay/src/main/assets/mobilegateway.properties`**
+**`2. Features/pay/src/main/assets/mobilegateway.properties`**
 ```bash
 
 # The URL of the MG server.
@@ -190,7 +190,7 @@ MG_CONNECTION_RETRY_INTERVAL=10000
 MG_TRANSACTION_HISTORY_CONNECTION_URL=https://dummy.endpoint.test/mobile/mg
 ```
 
-**`3. features/pay/src/main/assets/rages.properties`**
+**`3. Features/pay/src/main/assets/rages.properties`**
 ```bash
 
 # A fixed parameter
@@ -258,7 +258,7 @@ The sample application is divided in to multiple modules.
 ├── app
 ├── core
 │
-├── features
+├── Features
 │   ├── clicktopay
 │   ├── pay
 │   ├── physicalcard
@@ -274,11 +274,11 @@ The sample application is divided in to multiple modules.
 ## Use Cases
 * app - Main application.
 * core - Common classes and components for all modules.
-* features/clicktopay - [Click to Pay](https://docs.payments.thalescloud.io/click-to-pay)
-* features/pay - [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment)
-* features/physicalcard - [Physical Issuance](https://docs.payments.thalescloud.io/pin-management)
-* features/push - [Push Provisioning](https://docs.payments.thalescloud.io/push-provisioning)
-* features/virtualCard - [Secure Card Display](https://docs.payments.thalescloud.io/secure-card-display)
+* Features/clicktopay - [Click to Pay](https://docs.payments.thalescloud.io/click-to-pay)
+* Features/pay - [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment)
+* Features/physicalcard - [Physical Issuance](https://docs.payments.thalescloud.io/pin-management)
+* Features/push - [Push Provisioning](https://docs.payments.thalescloud.io/push-provisioning)
+* Features/virtualCard - [Secure Card Display](https://docs.payments.thalescloud.io/secure-card-display)
 * libs - D1 SDK binaries.
 
 
