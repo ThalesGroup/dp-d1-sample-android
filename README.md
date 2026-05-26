@@ -1,13 +1,12 @@
-# D1 SDK Sample Android application v2
+# D1 SDK Sample Android application
 
-Sample application to show the integration of D1 SDK in to an Android application. This serves not only as a guide but also 
-as a ready made solution if code needs to be transferred 1:1 to client applications.
+This project provides a code demonstrating an integration of Thales D1 SDK into an Android application. This serves not only as a guide but also as a ready made solution if code needs to be transferred 1:1 to a client application.
+
 
 # Getting started
 
-*Note: Thales SDK support team will supply all config files directly via email.*
 
-The following files need to be added to the project:
+The following files need to be added to the project and updated based on the client [onboarding](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/configuration/2.-onboarding):
 
 ## TLDR files to add:
 ```bash
@@ -16,7 +15,7 @@ The following files need to be added to the project:
 │   ├── d1.properties
 │   └── D1 SDK Binaries
 │
-└── D1-Pay-Extra
+└── NFC Payment Extras
     ├── Android Keystore
     ├── keystore.properties
     ├── gemcbp.properties
@@ -24,6 +23,9 @@ The following files need to be added to the project:
     ├── rages.properties
     └── google-services.json
 ```
+
+>[!NOTE]
+> Thales SDK support team could provide a configuration package to connect the app to the [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox) environment. If you are interested in this option please reach out to your Thales project manager or sales representative.
 
 ## D1 Backend Configuration
    
@@ -36,6 +38,10 @@ ISSUER_ID =
 D1_SERVICE_RSA_EXPONENT = 
 D1_SERVICE_RSA_MODULUS = 
 DIGITAL_CARD_URL = 
+```
+For using [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox) the file must also include:
+
+```bash
 CONSUMER_ID = 
 CARD_ID = 
 JWT_URL = 
@@ -47,13 +53,13 @@ AUD =
 SCOPE = 
 ```
 
+
 The `d1.properties` file is **not** kept under version control to prevent it from being overwritten during repository update.
 
-For more details, please refer to the [D1 SDK Setup](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/4f003bf306c04-initial-setup) section of the D1 Developer Portal.
 
 ## D1 SDK Binaries
 
-This sample application was tested with **D1 SDK version 4.1.0**.
+This sample application was tested with **D1 SDK version 4.2.0**.
 Please refer to the sample application `build.gradle` files for the correct location of D1 SDK.
 
 **`app/build.gradle`**
@@ -63,13 +69,13 @@ releaseImplementation project(":libs:d1-release")
 ```
 
 ```bash
-Libs/
-├── D1-debug
+libs/
+├── d1-debug
 │   ├── build.gradle
-│   └── d1-debug-d1pay-4.1.0.aar
-└── D1-release
+│   └── d1-debug-d1pay-4.2.0.aar
+└── d1-release
     ├── build.gradle
-    └── d1-release-d1pay-4.1.0.aar
+    └── d1-release-d1pay-4.2.0.aar
 ```
 
 **`settings.gradle`**
@@ -79,17 +85,17 @@ include':app',
     ':libs:d1-release'
 ```
 
-For more details, please refer to the [D1 SDK Integration](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/f2c8e49a37919-integrate-sdk-binary-into-your-android-application) section of the D1 Developer Portal.
+For more details, please refer to the [Binary Integration](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/configuration/1.-binary-integration/android) section of the D1 Developer Portal.
 
-## Additional D1-Pay Configuration:
-To use [D1-Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/d6a8ba3f3c186-d1-pay-introduction) services, the following configurations need to be added:
+## Additional NFC Payment Configuration:
+To use [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment/get-started/overview) service, the following configurations need to be added:
 
-* Android Keystore
-* D1-Pay Backend Configuration
-* Google Services
+1. Android Keystore
+2. Additional Backend Configuration
+3. Google Services
 
-### Android Keystore
-To use [D1Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/d6a8ba3f3c186-d1-pay-introduction) services, the sample application needs to be signed with a specific keystore - [Mobile banking application signing key](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/627614736c261-what-is-app-pk-value-and-how-to-obtain-it). The sample application needs to be updated with the appropriate keystore and signing configuration.
+### 1. Android Keystore
+To use [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment/get-started/overview) service, the sample application needs to be signed with a specific keystore - see: [Issuer Application Signing Key section](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/configuration/2.-onboarding/initial-setup#issuer-application-signing-key). The sample application needs to be updated with the appropriate keystore and signing configuration.
 
 ```bash
 app/keystore/keystore
@@ -100,19 +106,10 @@ app/keystore/keystore
 
 android {
     signingConfigs {
-        def keystorePropertiesFile = rootProject.file("app/src/main/assets/keystore.properties")
+        def keystorePropertiesFile = rootProject.file("app/keystore/keystore.properties")
         def keystoreProperties = new Properties()
 
-        release {
-            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-        }
-
-        debug {
+        dev {
             keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
             storeFile file(keystoreProperties['storeFile'])
@@ -124,7 +121,7 @@ android {
 }
 ```
 
-**`app/src/main/assets/keystore.properties`**
+**`app/keystore/keystore.properties`**
 ```bash
 storePassword= 
 keyPassword= 
@@ -132,10 +129,10 @@ keyAlias=
 storeFile=keystore/keystore
 ```
 
-### 2. D1-Pay Backend Configuration
-The following files with a working D1Pay backend configuration need to be added:
+### 2. Additional Backend Configuration
+The following files with a working NFC Payment backend configuration need to be added:
 
-**`1. Features/pay/src/main/assets/gemcbp.properties`**
+**`1. features/pay/src/main/assets/gemcbp.properties`**
 ```bash
 
 # The URL of the CPS server.
@@ -159,7 +156,7 @@ CPS_CONNECTION_RETRY_COUNT=5
 CPS_CONNECTION_RETRY_INTERVAL=10000
 ```
 
-**`2. Features/pay/src/main/assets/mobilegateway.properties`**
+**`2. features/pay/src/main/assets/mobilegateway.properties`**
 ```bash
 
 # The URL of the MG server.
@@ -193,7 +190,7 @@ MG_CONNECTION_RETRY_INTERVAL=10000
 MG_TRANSACTION_HISTORY_CONNECTION_URL=https://dummy.endpoint.test/mobile/mg
 ```
 
-**`3. Features/pay/src/main/assets/rages.properties`**
+**`3. features/pay/src/main/assets/rages.properties`**
 ```bash
 
 # A fixed parameter
@@ -230,23 +227,23 @@ CPS_CONNECTION_RETRY_INTERVAL=10000
 
 These files are not kept under version control to prevent them from being overwritten during repository update.
 
-For more details, please refer to the [D1Pay Service Application Setup](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/09e7447f9cb9b-d1-pay-application-setup) section of the D1 Developer Portal.
 
 ### 3. Google Services
 
-[D1Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/d6a8ba3f3c186-d1-pay-introduction) services use [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging). For this reason the corresponding `google-services.json` file needs to be added to the sample application.
+[NFC Payment](https://docs.payments.thalescloud.io/nfc-payment/get-started/overview) service requires [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) integration. For this reason the corresponding `google-services.json` file needs to be added to the sample application.
 
 ```bash
 app/google-services.json
 ```
 
 # Authentication
-To receive access to all D1 services, the user needs to authenticate with D1. This authentication is done using a [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens). For the [sandbox environment](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/fa46cefb0ef05-mobile-sdk-sandbox) a web service is used to fetch the JWT. The JWT configuration is part of the `d1.properties` file.
+To receive access to all D1 services, the user needs to authenticate with D1. This authentication is done using a [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens). For the [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox) a web service is used to fetch the JWT. The JWT configuration is part of the `d1.properties` file.
 
-For more details, please refer to the [D1 SDK Login](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/97566495c786d-sdk-login) section of the D1 Developer Portal.
+For more details, please refer to the [D1 SDK Login](https://docs.payments.thalescloud.io/push-provisioning/integrate-the-d1-sdk/getting-started/configuration/5.-authentication/sdk-login) section of the D1 Developer Portal.
+
 
 # Build and run project
-After all of the configurations have been added, the application can be build. Application can be build either using Android Studio, or from the command line.
+After all of the configurations have been added, the application can be build either using Android Studio, or from the command line.
 
 ```bash
 >> ./gradlew assemble
@@ -261,25 +258,32 @@ The sample application is divided in to multiple modules.
 ├── app
 ├── core
 │
-├── Features
+├── features
+│   ├── clicktopay
 │   ├── pay
+│   ├── physicalcard
 │   ├── push
 │   └── virtualcard
 │
-└── Libs
+└── libs
     ├── D1-debug
     └── D1-release
 ```
+
+
 ## Use Cases
 * app - Main application.
 * core - Common classes and components for all modules.
-* Features/pay - [D1-Pay](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/d6a8ba3f3c186-d1-pay-introduction) use cases.
-* Features/push - [D1-Push](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/294f33eaf2378-introduction) use cases.
-* Features/virtualCard - [Virtual Card](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/3c8a7e6f0a81a-card-display-introduction) use cases.
-* Libs - D1 SDK binaries.
+* features/clicktopay - [Click to Pay](https://docs.payments.thalescloud.io/click-to-pay)
+* features/pay - [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment)
+* features/physicalcard - [Physical Issuance](https://docs.payments.thalescloud.io/pin-management)
+* features/push - [Push Provisioning](https://docs.payments.thalescloud.io/push-provisioning)
+* features/virtualCard - [Secure Card Display](https://docs.payments.thalescloud.io/secure-card-display)
+* libs - D1 SDK binaries.
+
 
 # Documentation
-[D1 Developer portal](https://thales-dis-dbp.stoplight.io/docs/d1-developer-portal/branches/main/de9abde9af194-thales-d1-a-card-api-to-modernise-card-issuance)
+[Thales D1 Platform Developer Portal](https://docs.payments.thalescloud.io/)
 
 
 # Contributing
