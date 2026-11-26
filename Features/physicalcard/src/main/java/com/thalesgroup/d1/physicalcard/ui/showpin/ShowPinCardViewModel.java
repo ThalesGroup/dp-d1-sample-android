@@ -4,16 +4,14 @@
 
 package com.thalesgroup.d1.physicalcard.ui.showpin;
 
+import androidx.annotation.NonNull;
+
 import com.thalesgroup.d1.physicalcard.D1PhysicalCard;
 import com.thalesgroup.d1.physicalcard.model.D1PhysicalCardListener;
 import com.thalesgroup.d1.templates.core.ui.base.BaseViewModel;
 import com.thalesgroup.gemalto.d1.D1Exception;
 import com.thalesgroup.gemalto.d1.PINDisplayTextView;
-import com.thalesgroup.gemalto.d1.SecureEditText;
 import com.thalesgroup.gemalto.d1.card.CardActivationMethod;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 
 /**
  * Show PIN ViewModel.

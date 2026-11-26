@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="physical_card_services_title">Physical card</string>
+    <string name="physical_card_services_subtitle">Activation and PIN services</string>
+    <string name="activation_description">Activate your physical card</string>
+    <string name="display_pin_description">View your physical card PIN</string>
+    <string name="change_pin_description">Choose a new card PIN</string>
     <string name="activate_cvv">Please use CVV to activate card.</string>
     <string name="activate_last4">Please use the 4 last digits of PAN to activate card.</string>
     <string name="activate_my_card">Activate My Card</string>
     <string name="display_my_pin">Display My PIN</string>
     <string name="change_my_pin">Change My PIN</string>
     <string name="activate_card">Activate Card</string>
-    <string name="card_activation_method">Card Activation Method:</string>
     <string name="display_pin">Display PIN</string>
     <string name="change_pin">Change PIN</string>
     <string name="card_activation_ok">Card activation OK.</string>

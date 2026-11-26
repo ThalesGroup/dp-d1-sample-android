@@ -23,6 +23,11 @@ public interface UiDelegate {
      */
     void popFromBackstack();
 
+    /** Delay expensive main-thread-only view setup until navigation motion has settled. */
+    default void runAfterNavigation(@NonNull Fragment owner, @NonNull Runnable action) {
+        action.run();
+    }
+
     /**
      * Shows a progress dialog.
      *
@@ -34,6 +39,16 @@ public interface UiDelegate {
      * Hides the progress dialog.
      */
     void hideProgressDialog();
+
+    /** Shows loading owned by a particular screen, retaining legacy delegate compatibility. */
+    default void showProgressDialog(@NonNull final String message, @NonNull final Object owner) {
+        showProgressDialog(message);
+    }
+
+    /** Dismisses only this screen's loading, not a subsequent screen's operation. */
+    default void hideProgressDialog(@NonNull final Object owner) {
+        hideProgressDialog();
+    }
 
     /**
      * Show Alert Dialog.

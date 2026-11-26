@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="card_placeholder_surface">#F5F8FC</color>
+    <color name="card_placeholder_outline">@color/banking_blue</color>
+    <color name="card_placeholder_text">@color/banking_text</color>
+    <color name="card_placeholder_label">@color/banking_secondary</color>
+</resources>

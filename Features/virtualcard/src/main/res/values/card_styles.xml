@@ -1,0 +1,7 @@
+<resources>
+    <!-- Full secure PANs need a wider autosize range than a masked payment card. -->
+    <style name="VirtualCardPan" parent="BankingCardPan.Reference">
+        <item name="autoSizeMinTextSize">8sp</item>
+        <item name="android:autoSizeMinTextSize">8sp</item>
+    </style>
+</resources>

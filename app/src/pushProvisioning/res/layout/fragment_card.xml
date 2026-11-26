@@ -1,0 +1,89 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/banking_background">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+        <LinearLayout style="@style/BankingScreenContent"
+            android:paddingBottom="0dp">
+            <LinearLayout style="@style/BankingCompactHeaderContainer"
+                android:transitionName="banking_page_header">
+                <TextView
+                    android:id="@+id/screen_title"
+                    style="@style/BankingCompactHeaderTitle"
+                    android:text="@string/virtual_card_page_title" />
+                <TextView
+                    android:id="@+id/screen_text"
+                    style="@style/BankingCompactHeaderDescription"
+                    android:text="@string/your_virtual_card" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/card_viewpager"
+                    style="@style/BankingCardPager" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View style="@style/BankingDivider" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@id/card_details_button"
+                style="@style/BankingCardAction"
+                android:enabled="false">
+                <ImageView
+                    android:id="@+id/card_details_icon"
+                    style="@style/BankingCardActionIcon"
+                    android:src="@drawable/card_details_eye" />
+                <TextView
+                    android:id="@id/card_details_label"
+                    style="@style/BankingCardActionLabel"
+                    android:text="@string/show_card_details"
+                    app:layout_constraintStart_toEndOf="@id/card_details_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn_click_to_pay"
+                style="@style/BankingCardAction">
+                <ImageView
+                    android:id="@+id/enable_click_to_pay_ico"
+                    style="@style/BankingCardActionIcon"
+                    android:src="@drawable/click_to_pay" />
+                <TextView
+                    android:id="@+id/enable_click_to_pay_text"
+                    style="@style/BankingCardActionLabel"
+                    android:text="@string/click_to_pay"
+                    app:layout_constraintStart_toEndOf="@id/enable_click_to_pay_ico" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/add_to_gpay_button"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/googlepay_button_background_shape"
+                android:clickable="true"
+                android:contentDescription="@string/googlepay_button_content_description"
+                android:focusable="true"
+                android:minWidth="267dp">
+                <ImageView
+                    android:layout_width="227dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/text_content_description"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/add_to_googlepay_button_content" />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+        <include layout="@layout/card_page_indicators" />
+    </LinearLayout>
+</layout>

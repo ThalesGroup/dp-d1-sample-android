@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ready for a future dark app theme without changing the card layout. -->
+    <color name="card_placeholder_surface">#1D2939</color>
+    <color name="card_placeholder_outline">#72AFE8</color>
+    <color name="card_placeholder_text">#EAF0FA</color>
+    <color name="card_placeholder_label">#B3C0D2</color>
+</resources>

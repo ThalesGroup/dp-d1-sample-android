@@ -4,15 +4,15 @@
 
 package com.thalesgroup.d1.physicalcard.ui.activate;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+
 import com.thalesgroup.d1.physicalcard.D1PhysicalCard;
 import com.thalesgroup.d1.physicalcard.model.D1PhysicalCardListener;
 import com.thalesgroup.d1.templates.core.ui.base.BaseViewModel;
 import com.thalesgroup.gemalto.d1.D1Exception;
 import com.thalesgroup.gemalto.d1.SecureEditText;
 import com.thalesgroup.gemalto.d1.card.CardActivationMethod;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 
 /**
  * Card activation ViewModel.

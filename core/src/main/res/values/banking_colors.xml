@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="banking_background">#FFFFFF</color>
+    <color name="banking_text">#111B35</color>
+    <color name="banking_secondary">#667085</color>
+    <color name="banking_blue">#0866BD</color>
+    <color name="banking_surface">#F5F8FC</color>
+    <color name="banking_divider">#DFE5ED</color>
+    <color name="banking_disabled">#E8EDF3</color>
+    <color name="banking_disabled_text">#748093</color>
+    <color name="banking_danger">#BA3446</color>
+    <color name="banking_ripple">#180866BD</color>
+</resources>

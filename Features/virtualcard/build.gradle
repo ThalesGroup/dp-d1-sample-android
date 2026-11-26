@@ -23,6 +23,28 @@ android {
         dataBinding true
         viewBinding true
     }
+
+    flavorDimensions "sample"
+    productFlavors {
+        pushProvisioning {
+            dimension "sample"
+        }
+
+        nfcPayment {
+            dimension "sample"
+        }
+    }
+
+    sourceSets{
+
+        pushProvisioning {
+            java.srcDirs = ['src/pushProvisioning/java']
+        }
+
+        nfcPayment {
+            java.srcDirs = ['src/nfcPayment/java']
+        }
+    }
 }
 
 dependencies {

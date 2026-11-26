@@ -4,8 +4,6 @@
 
 package com.thalesgroup.d1.templates.push.ui.digitalpushcarddetail;
 
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -109,9 +107,6 @@ public class DigitalPushCardDetailFragment extends AbstractBaseFragment<DigitalP
     @Override
     public void onResume() {
         super.onResume();
-        mViewModel.setDefaultCardImage(new BitmapDrawable(getResources(),
-                                                          BitmapFactory.decodeResource(getResources(),
-                                                                                       com.thalesgroup.d1.core.R.drawable.card_art_default)));
         mViewModel.getDigitalPushCard(mViewModel.getCardId(), mViewModel.getDigitalCardId());
         mViewModel.getCardArt(requireContext(), mViewModel.getCardId());
     }

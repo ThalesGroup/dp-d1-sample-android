@@ -4,17 +4,32 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/accent_blue</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/accent_light_blue</item>
         <item name="colorSecondaryVariant">@color/accent_light_blue</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/banking_background</item>
+        <item name="android:navigationBarColor">@color/banking_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowBackground">@color/banking_background</item>
+        <item name="android:colorBackground">@color/banking_background</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColorPrimary">@color/banking_text</item>
+        <item name="android:textColorSecondary">@color/banking_secondary</item>
+        <item name="colorControlActivated">@color/banking_blue</item>
+        <item name="colorControlHighlight">@color/banking_ripple</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="textInputStyle">@style/BankingInputLayout</item>
 
         <!-- TextView -->
         <item name="android:editTextStyle">@style/AppTheme.EditText</item>
         <item name="android:buttonStyle">@style/AppTheme.Button</item>
+        <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="editTextStyle">@style/AppTheme.EditText</item>
 
         <!--
             Disable multitouch for the whole application.
@@ -22,12 +37,5 @@
         -->
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
-    </style>
-
-    <style name="Theme.D1Templates.Translucent" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

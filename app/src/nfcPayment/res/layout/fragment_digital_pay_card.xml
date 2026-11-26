@@ -1,0 +1,64 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/banking_background">
+        <LinearLayout
+            style="@style/BankingCompactHeaderContainer"
+            android:paddingStart="@dimen/banking_gutter"
+            android:paddingEnd="@dimen/banking_gutter"
+            android:transitionName="banking_page_header">
+            <TextView
+                android:id="@+id/screen_title"
+                style="@style/BankingCompactHeaderTitle"
+                android:text="@string/digital_pay_card_page_title" />
+            <TextView
+                android:id="@+id/screen_text"
+                style="@style/BankingCompactHeaderDescription"
+                android:text="@string/your_digital_pay_card" />
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/card_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <!-- Visible from inflation, including while the SDK list has not returned. -->
+            <LinearLayout
+                android:id="@+id/digital_pay_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingStart="@dimen/banking_gutter"
+                android:paddingEnd="@dimen/banking_gutter"
+                android:background="@color/banking_background"
+                android:clickable="true">
+                <ProgressBar
+                    android:id="@+id/digital_pay_loading_progress"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:importantForAccessibility="no" />
+                <TextView
+                    android:id="@+id/digital_pay_loading_message"
+                    style="@style/BankingBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:text="@string/loading_digital_pay_card" />
+                <Button
+                    android:id="@+id/digital_pay_retry"
+                    style="@style/BankingSecondaryButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/retry_digital_pay_card"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </FrameLayout>
+        <include layout="@layout/card_page_indicators" />
+    </LinearLayout>
+</layout>

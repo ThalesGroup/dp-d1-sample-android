@@ -1,64 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    tools:context=".ui.activate.ActivateCardFragment">
-
-    <androidx.cardview.widget.CardView
+    android:orientation="vertical"
+    android:background="@color/banking_background">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="2dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:src="@drawable/logo_digibank_notext"
-                app:layout_constraintBottom_toTopOf="@+id/virtual_card_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                style="@style/TextView.Black.Title.33"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/activate_my_card" />
-
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+        <LinearLayout style="@style/BankingScreenContent">
+            <LinearLayout style="@style/BankingCompactHeaderContainer"
+                android:transitionName="banking_page_header">
+                <TextView
+                    style="@style/BankingCompactHeaderTitle"
+                    android:text="@string/activate_my_card" />
+                <TextView
+                    style="@style/BankingCompactHeaderDescription"
+                    android:text="@string/activation_description" />
+            </LinearLayout>
             <TextView
                 android:id="@+id/tv_activation_text"
-                style="@style/TextView.Body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
+                style="@style/BankingBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
+            <!-- Keep the SDK secure field and its existing reveal lifecycle. -->
             <com.thalesgroup.gemalto.d1.SecureEditText
                 android:id="@+id/ste_activation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="56dp"
                 android:visibility="invisible" />
-
-            <Button
-                android:id="@+id/bt_activate_card"
-                style="@style/Button.Blue.Oval"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/activate_card" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
 
-</FrameLayout>
+    <LinearLayout style="@style/BankingActionFooter">
+        <View style="@style/BankingDivider" />
+        <Button
+            android:id="@+id/bt_activate_card"
+            style="@style/BankingBottomAction"
+            android:text="@string/activate_card" />
+    </LinearLayout>
+</LinearLayout>

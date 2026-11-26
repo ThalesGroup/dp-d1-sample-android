@@ -2,11 +2,9 @@
 <resources>
 
     <!-- Common -->
-    <string name="view_more">View more</string>
-    <string name="error_details">Error details</string>
-    <string name="show_error_details">Show details</string>
-    <string name="hide_error_details">Hide details</string>
-    <string name="back">Back</string>
+    <string name="card_actions">Card actions</string>
+    <string name="show_card_details">Show card details</string>
+    <string name="hide_card_details">Hide card details</string>
     <string name="suspend">Suspend</string>
     <string name="resume">Resume</string>
     <string name="delete">Delete</string>
@@ -18,7 +16,6 @@
     <string name="card_label_cvv">CVV</string>
 
     <string name="operation_in_progress">Operation in progress.</string>
-    <string name="retrieving_card_information">Retrieving card information.</string>
     <string name="cancel">Cancel</string>
     <string name="delete_card">Delete card</string>
     <string name="yes">Yes</string>
@@ -26,21 +23,15 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
-    <string name="successfully_logged_out">Successfully logged out from D1</string>
-    <string name="close">Close</string>
     <string name="authenticate">Authenticate</string>
-    <string name="ok">OK</string>
     <string name="hold_near_reader">Hold your phone near the payment terminal to pay</string>
     <string name="transaction_sent">Transaction sent</string>
-    <string name="timer_seconds">seconds remaining</string>
     <string name="done">Done</string>
     <string name="try_again">Try again</string>
-    <string name="payments_left">Payments left</string>
     <string name="wallet">Wallet</string>
 
     <string name="card_deletion_started">Card deletion started</string>
     <string name="card_was_deleted">Card was deleted</string>
-    <string name="coming_soon">Coming soon</string>
     <string name="login_expired">D1 Login expired, please login again</string>
     <string name="cardid_null_or_empty">CardId is null or empty</string>
     <string name="digitization_started">Digitization started</string>
@@ -50,25 +41,18 @@
     <string name="biometric_prompt_virtual_card_detail_title">Authentication required</string>
     <string name="biometric_prompt_virtual_card_detail_description">Please authenticate yourself to display full card data</string>
     <string name="biometric_prompt_virtual_card_detail_on_error">Authentication required to display full card data</string>
-    <string name="biometric_prompt_virtual_card_detail_on_failed">Authentication failed</string>
     <string name="biometric_check_BIOMETRIC_ERROR_HW_UNAVAILABLE">Biometric Authentication currently unavailable</string>
     <string name="biometric_check_BIOMETRIC_ERROR_NO_HARDWARE">Your device does\'t support Biometric Authentication</string>
     <string name="biometric_check_BIOMETRIC_ERROR_NONE_ENROLLED">Your device doesn\'t have any fingerprint enrolled</string>
     <string name="biometric_check_BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED">The user can\'t authenticate because a security vulnerability has been discovered with one or more hardware sensors. The affected sensor(s) are unavailable until a security update has addressed the issue.</string>
     <string name="biometric_check_BIOMETRIC_ERROR_UNSUPPORTED">The user can\'t authenticate because the specified options are incompatible with the current Android version.</string>
     <string name="biometric_check_BIOMETRIC_STATUS_UNKNOWN">Unable to determine whether the user can authenticate.</string>
-    <string name="add_to_d1_pay">Add to My Pay</string>
-    <string name="added_to_d1_pay">Added to My Pay</string>
-    <string name="add_to_gpay">Add to GPay</string>
-    <string name="enable">Enable</string>
     <string name="click_to_pay">Click To Pay</string>
-    <string name="enabled">Enabled</string>
 
     <!-- Pay -->
 
     <string name="biometric_prompt_pay_title">Authentication required</string>
     <string name="biometric_prompt_pay_subtitle">Please authenticate yourself for payment</string>
-    <string name="biometric_prompt_pay_on_error">Authentication required for payment</string>
     <string name="biometric_prompt_pay_on_failed">Authentication failed</string>
     <string name="biometric_prompt_pay_description">Amount: %.2f %s</string>
     <string name="biometric_prompt_pay_description_no_amount">See amount on the POS</string>
@@ -103,9 +87,6 @@
     <string name="default_transaction_type">Transaction</string>
     <string name="default_date">Date</string>
     <string name="no_history_record">No transaction found</string>
-    <string name="notification_payment_made">Payment approved - %1$s at %2$s %3$s</string>
-    <string name="notification_payment_refund">Payment refunded - %1$s at %2$s %3$s</string>
-    <string name="notification_payment_declined">Payment declined - %1$s at %2$s %3$s</string>
     <string name="cleared_approved_status">Approved</string>
     <string name="refund_status">Refunded</string>
     <string name="declined_status">Declined</string>

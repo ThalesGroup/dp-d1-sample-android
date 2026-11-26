@@ -1,5 +1,7 @@
 package com.thalesgroup.d1.physicalcard;
 
+import androidx.annotation.NonNull;
+
 import com.thalesgroup.d1.physicalcard.model.D1PhysicalCardApi;
 import com.thalesgroup.d1.physicalcard.model.D1PhysicalCardChangePinListener;
 import com.thalesgroup.d1.physicalcard.model.D1PhysicalCardListener;
@@ -16,8 +18,6 @@ import com.thalesgroup.gemalto.d1.PINDisplayTextView;
 import com.thalesgroup.gemalto.d1.PINEntryUI;
 import com.thalesgroup.gemalto.d1.SecureEditText;
 import com.thalesgroup.gemalto.d1.card.CardActivationMethod;
-
-import androidx.annotation.NonNull;
 
 public class D1PhysicalCard implements D1PhysicalCardApi {
 

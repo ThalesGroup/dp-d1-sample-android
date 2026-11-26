@@ -12,15 +12,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.thalesgroup.d1.physicalcard.R;
 import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
 import com.thalesgroup.gemalto.d1.SecureEditText;
-import com.thalesgroup.gemalto.d1.card.CardActivationMethod;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 /**
  * Card activation fragment.

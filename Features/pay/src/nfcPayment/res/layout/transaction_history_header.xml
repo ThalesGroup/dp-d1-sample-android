@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/BankingScreenContent"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp">
+    <LinearLayout
+        android:id="@+id/screen_header"
+        style="@style/BankingCompactHeaderContainer"
+        android:transitionName="banking_page_header">
+        <TextView
+            android:id="@+id/screen_title"
+            style="@style/BankingCompactHeaderTitle"
+            android:text="@string/transaction_history" />
+        <TextView
+            style="@style/BankingCompactHeaderDescription"
+            android:text="@string/banking_history_description" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/emptyText"
+        style="@style/BankingBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:text="@string/no_history_record"
+        android:visibility="gone" />
+</LinearLayout>

@@ -46,10 +46,10 @@
 
                         <ImageButton
                             android:id="@+id/context_menu_button"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/grey_radius"
-                            android:scaleType="center"
+                            style="@style/BankingIconButton"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:contentDescription="@string/card_actions"
                             android:src="@drawable/ic_more_vert" />
                     </LinearLayout>
 

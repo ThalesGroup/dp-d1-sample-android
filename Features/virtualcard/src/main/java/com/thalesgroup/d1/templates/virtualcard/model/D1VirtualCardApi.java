@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.thalesgroup.d1.templates.core.model.D1ModuleConnector;
 import com.thalesgroup.d1.templates.virtualcard.ui.virtualcarddetail.VirtualCardDetailFragment;
 import com.thalesgroup.gemalto.d1.CardDetailsUI;
+import com.thalesgroup.gemalto.d1.card.cardservice.Card;
 
 /**
  * D1VirtualCardApi.
@@ -42,12 +43,12 @@ public interface D1VirtualCardApi {
     /**
      * Gets Virtual card detail fragment.
      *
-     * @param cardId Card id
+     * @param card Card object
      *               return {@code VirtualCardDetailFragment}
      *
      * @return {@code VirtualCardDetailFragment}.
      */
-    VirtualCardDetailFragment getVirtualCardDetailFragment(@NonNull final String cardId);
+    VirtualCardDetailFragment getVirtualCardDetailFragment(@NonNull final Card card);
 
     /**
      * Creates the VirtualCard related {@code D1ModuleConnector}.

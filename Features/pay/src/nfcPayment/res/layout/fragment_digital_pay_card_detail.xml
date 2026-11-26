@@ -1,0 +1,143 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="mViewModel"
+            type="com.thalesgroup.d1.templates.pay.ui.digitalpaycarddetail.DigitalPayCardDetailViewModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/banking_background">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:scrollbars="none">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="32dp">
+                <Space
+                    android:id="@+id/card_dimensions"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="@dimen/banking_gutter"
+                    android:layout_marginVertical="20dp"
+                    app:layout_constraintDimensionRatio="H,337:212"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/banking_action_footer"
+                    app:layout_constraintVertical_bias="0.5" />
+                <FrameLayout
+                    android:id="@+id/card_section"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/banking_action_footer">
+                    <include
+                        android:id="@+id/view_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        layout="@layout/digital_pay_card"
+                        app:mViewModel="@{mViewModel}" />
+                    <ProgressBar
+                        android:id="@+id/card_entry_progress"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:visibility="gone" />
+                </FrameLayout>
+        <LinearLayout style="@style/BankingActionFooter"
+            android:id="@id/banking_action_footer"
+            android:layout_width="0dp"
+            android:minHeight="@dimen/banking_card_actions_min_height"
+            android:alpha="0"
+            android:importantForAccessibility="noHideDescendants"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <View style="@style/BankingDivider" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/default_card_button"
+                style="@style/BankingCardAction"
+                android:enabled="false">
+                <ImageView
+                    android:id="@+id/default_card_icon"
+                    style="@style/BankingCardActionIcon"
+                    android:src="@drawable/banking_ic_contactless" />
+                <TextView
+                    android:id="@+id/default_card_label"
+                    style="@style/BankingCardActionLabel"
+                    android:text="@string/default_card_label"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintStart_toEndOf="@id/default_card_icon"
+                    app:layout_constraintEnd_toStartOf="@id/default_card_status" />
+                <TextView
+                    android:id="@+id/default_card_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/accent_blue"
+                    android:gravity="end"
+                    android:importantForAccessibility="no"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/suspend_resume_button"
+                style="@style/BankingCardAction"
+                android:enabled="false">
+                <ImageView
+                    android:id="@+id/suspend_resume_icon"
+                    style="@style/BankingCardActionIcon"
+                    android:src="@drawable/banking_ic_card_pause" />
+                <TextView
+                    android:id="@+id/suspend_resume_label"
+                    style="@style/BankingCardActionLabel"
+                    android:text="@string/suspend"
+                    app:layout_constraintStart_toEndOf="@id/suspend_resume_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/history_button"
+                style="@style/BankingCardAction"
+                android:enabled="false">
+                <ImageView
+                    android:id="@+id/history_icon"
+                    style="@style/BankingCardActionIcon"
+                    android:src="@drawable/banking_ic_history" />
+                <TextView
+                    style="@style/BankingCardActionLabel"
+                    android:text="@string/transaction_history"
+                    app:layout_constraintStart_toEndOf="@id/history_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/delete_card_button"
+                style="@style/BankingCardAction"
+                android:enabled="false">
+                <ImageView
+                    android:id="@+id/delete_card_icon"
+                    style="@style/BankingCardActionIcon"
+                    android:src="@drawable/banking_ic_delete"
+                    app:tint="@color/banking_danger_text" />
+                <TextView
+                    style="@style/BankingCardActionLabel"
+                    android:text="@string/delete_card"
+                    android:textColor="@color/banking_danger_text"
+                    app:layout_constraintStart_toEndOf="@id/delete_card_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

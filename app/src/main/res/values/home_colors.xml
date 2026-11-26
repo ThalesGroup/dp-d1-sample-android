@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Compatibility aliases keep the approved home appearance on shared tokens. -->
+    <color name="home_background">@color/banking_background</color>
+    <color name="home_blue">@color/banking_blue</color>
+</resources>

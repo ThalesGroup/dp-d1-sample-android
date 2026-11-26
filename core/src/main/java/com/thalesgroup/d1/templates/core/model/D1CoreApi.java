@@ -8,6 +8,11 @@ import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.thalesgroup.gemalto.d1.card.cardservice.Card;
+
+import java.util.List;
 
 /**
  * D1CoreApi.
@@ -45,6 +50,25 @@ public interface D1CoreApi {
      * @param listener Listener.
      */
     void logout(@NonNull final D1CoreListener listener);
+
+
+    void fetchCardList(@NonNull final CardListListener listener);
+
+    /**
+     * Retrieves the cached card list.
+     *
+     * @return Cached card list.
+     */
+    List<Card> getCardList();
+
+    /**
+     * Retrieves a card by its ID from the cache.
+     *
+     * @param cardId Card ID.
+     * @return {@code Card} or {@code null} if not found.
+     */
+    @Nullable
+    Card getCard(@NonNull final String cardId);
 
     /**
      * Retrieves the card meta data.

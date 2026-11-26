@@ -4,17 +4,19 @@
 
 package com.thalesgroup.d1.templates.virtualcard.ui.virtualcarddetail;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,12 +28,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.thalesgroup.d1.templates.core.Constants;
+import com.thalesgroup.d1.templates.core.ui.ViewEffects;
 import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
 import com.thalesgroup.d1.templates.virtualcard.Configuration;
 import com.thalesgroup.d1.virtualcard.R;
 import com.thalesgroup.d1.virtualcard.databinding.FragmentVirtualCardDetailBinding;
 import com.thalesgroup.gemalto.d1.CardDetailsUI;
 import com.thalesgroup.gemalto.d1.DisplayTextView;
+import com.thalesgroup.gemalto.d1.card.cardservice.Card;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,12 +46,23 @@ import java.util.concurrent.Executors;
  * Virtual card detail Fragment.
  */
 public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardDetailViewModel> {
+    private Card mCard;
     private String mCardId;
-    private ImageButton mShowPanButton;
-    private ImageButton mHidePanButton;
+    private View mDetailsAction;
+    private TextView mDetailsActionLabel;
     private ImageView mCardBackground;
     private CardDetailsUI mCardDetailsUI;
     private ProgressBar mCardImageProgress;
+    private boolean mArtVisible;
+    private Runnable mShowLoading;
+    private Runnable mFinishArtSwap;
+    private final Handler mDetailsHandler = new Handler(android.os.Looper.getMainLooper());
+    private final Runnable mHideDetails = () -> {
+        if (mCardDetailsUI != null) {
+            mCardDetailsUI.maskCardDetails();
+        }
+        mViewModel.mFullPan.setValue(false);
+    };
     private Boolean mAuthenticationRequired;
     private BiometricPrompt mBiometricPrompt = null;
     private final Executor mBiometricPromptExecutor = Executors.newSingleThreadExecutor();
@@ -80,13 +95,13 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
     /**
      * Creates a new instance of {@code VirtualCardDetailFragment}.
      *
-     * @param cardId Card ID.
+     * @param card Card object.
      * @return Instance of {@code VirtualCardDetailFragment}.
      */
-    public static VirtualCardDetailFragment newInstance(@NonNull final String cardId) {
+    public static VirtualCardDetailFragment newInstance(@NonNull final Card card) {
         final VirtualCardDetailFragment virtualCardDetailFragment = new VirtualCardDetailFragment();
         final Bundle args = new Bundle();
-        args.putString(ARG_CARD_ID, cardId);
+        args.putString(ARG_CARD_ID, card.getCardID());
         virtualCardDetailFragment.setArguments(args);
         return virtualCardDetailFragment;
     }
@@ -97,6 +112,7 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
 
         if (getArguments() != null) {
            mCardId = getArguments().getString(ARG_CARD_ID);
+           mCard = com.thalesgroup.d1.templates.core.D1Core.getInstance().getCard(mCardId);
         }
 
         mAuthenticationRequired = Configuration.VIRTUAL_CARD_DETAIL_AUTHENTICATION_REQUIRED;
@@ -132,30 +148,26 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
         super.onViewCreated(view, savedInstanceState);
 
         mCardBackground = view.findViewById(R.id.card_art);
-        mShowPanButton = view.findViewById(R.id.show_pan_button);
-        mHidePanButton = view.findViewById(R.id.hide_pan_button);
         mCardImageProgress = view.findViewById(R.id.pb_card_art);
+        mArtVisible = false;
+        ViewEffects.register(getViewLifecycleOwner(), 0f, view.findViewById(R.id.card_content));
+        mShowLoading = () -> {
+            if (getView() != view || mArtVisible) {
+                return;
+            }
+            mCardImageProgress.setVisibility(View.VISIBLE);
+            mCardImageProgress.setAlpha(ValueAnimator.areAnimatorsEnabled() ? 0f : 1f);
+            if (ValueAnimator.areAnimatorsEnabled()) {
+                mCardImageProgress.animate().alpha(1f).setDuration(160).start();
+            }
+        };
+        mCardImageProgress.postDelayed(mShowLoading, 180);
         final DisplayTextView mPanTextView = view.findViewById(R.id.tv_pan);
         final DisplayTextView mExpiryDateTextView = view.findViewById(R.id.tv_exp);
         final DisplayTextView mCvvTextView = view.findViewById(R.id.tv_cvv);
         final DisplayTextView mCardHolderNameTextView = view.findViewById(R.id.tv_card_name);
 
         mCardDetailsUI = CardDetailsUI.getInstance(mPanTextView, mExpiryDateTextView, mCvvTextView, mCardHolderNameTextView);
-
-        mShowPanButton.setOnClickListener(v -> {
-            if (mAuthenticationRequired) {
-                checkAndAuthenticate();
-            } else {
-                showProgressDialog(getString(com.thalesgroup.d1.core.R.string.operation_in_progress));
-
-                mViewModel.displayCardDetails(mCardId, mCardDetailsUI);
-            }
-        });
-
-        mHidePanButton.setOnClickListener(v -> {
-            mCardDetailsUI.maskCardDetails();
-            mViewModel.mFullPan.postValue(false);
-        });
 
         if (mCardId == null || mCardId.equals("")) {
             mViewModel.mToastMessage.postValue(getString(com.thalesgroup.d1.core.R.string.cardid_null_or_empty));
@@ -168,9 +180,14 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
     public void onResume() {
         super.onResume();
 
-        mViewModel.mFullPan.postValue(false);
+        mViewModel.mFullPan.setValue(false);
+        bindDetailsAction();
 
-        mViewModel.getCardMetadata(requireContext(), mCardId);
+        if (mCard != null && mCard.getCardMetadata() != null) {
+            mViewModel.onGetCardMetadata(requireContext(), mCardId, mCard.getCardMetadata());
+        } else {
+            mViewModel.getCardMetadata(requireContext(), mCardId);
+        }
 
         mViewModel.getCardArt(requireContext(), mCardId);
     }
@@ -182,25 +199,56 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
 
         mViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
             hideProgressDialog();
-            mCardImageProgress.setVisibility(View.GONE);
+            showArtFallback();
             showToast(errorMessage);
         });
 
         mViewModel.getCardBackground().observe(getViewLifecycleOwner(), bitmap -> {
-            mCardImageProgress.setVisibility(View.GONE);
-            mCardBackground.setBackground(new BitmapDrawable(getResources(), bitmap));
+            if (bitmap == null) {
+                return;
+            }
+            mCardImageProgress.removeCallbacks(mShowLoading);
+            mCardImageProgress.animate().cancel();
+            mCardImageProgress.animate().alpha(0f).setDuration(120)
+                    .withEndAction(() -> mCardImageProgress.setVisibility(View.GONE)).start();
+            if (mFinishArtSwap != null) {
+                mCardBackground.removeCallbacks(mFinishArtSwap);
+            }
+            Drawable next = new android.graphics.drawable.BitmapDrawable(getResources(), bitmap);
+            if (!mArtVisible || !ValueAnimator.areAnimatorsEnabled()) {
+                mCardBackground.setImageDrawable(next);
+            } else {
+                TransitionDrawable blend = new TransitionDrawable(new Drawable[]{mCardBackground.getDrawable(), next});
+                // Keep the old art opaque underneath: no white flash halfway through a refresh.
+                blend.setCrossFadeEnabled(false);
+                mCardBackground.setImageDrawable(blend);
+                blend.startTransition(240);
+                mFinishArtSwap = () -> {
+                    if (mCardBackground.getDrawable() == blend) {
+                        mCardBackground.setImageDrawable(next);
+                    }
+                };
+                mCardBackground.postDelayed(mFinishArtSwap, 240);
+            }
+            if (!mArtVisible) {
+                mArtVisible = true;
+                ViewEffects.fadeTo(requireView().findViewById(R.id.card_content), 1f);
+            }
+        });
+
+        mViewModel.getCardArtUnavailable().observe(getViewLifecycleOwner(), unavailable -> {
+            if (Boolean.TRUE.equals(unavailable)) {
+                showArtFallback();
+            }
         });
 
         mViewModel.mFullPan.observe(getViewLifecycleOwner(), value -> {
-            if (value) {
-                mShowPanButton.setVisibility(View.GONE);
-                mHidePanButton.setVisibility(View.VISIBLE);
+            if (Boolean.TRUE.equals(value)) {
                 setDisplayCardDetailsTimer();
+            } else {
+                mDetailsHandler.removeCallbacks(mHideDetails);
             }
-            else {
-                mShowPanButton.setVisibility(View.VISIBLE);
-                mHidePanButton.setVisibility(View.GONE);
-            }
+            updateDetailsActionLabel();
         });
 
         mViewModel.getIsOperationSuccessful().observe(getViewLifecycleOwner(), aBoolean ->
@@ -224,6 +272,92 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
                 showLoginFragment();
             }
         });
+    }
+
+    /** Only the resumed pager page owns the hosting page's shared details action. */
+    private void bindDetailsAction() {
+        if (getParentFragment() == null || getParentFragment().getView() == null) {
+            return;
+        }
+        View host = getParentFragment().getView();
+        mDetailsAction = host.findViewById(R.id.card_details_button);
+        mDetailsActionLabel = host.findViewById(R.id.card_details_label);
+        if (mDetailsAction == null || mDetailsActionLabel == null) {
+            return;
+        }
+        mDetailsAction.setEnabled(true);
+        mDetailsAction.setOnClickListener(v -> {
+            if (!isResumed() || mCardDetailsUI == null) {
+                return;
+            }
+            if (Boolean.TRUE.equals(mViewModel.mFullPan.getValue())) {
+                mCardDetailsUI.maskCardDetails();
+                mViewModel.mFullPan.setValue(false);
+            } else if (Boolean.TRUE.equals(mAuthenticationRequired)) {
+                checkAndAuthenticate();
+            } else {
+                showProgressDialog(getString(com.thalesgroup.d1.core.R.string.operation_in_progress));
+                mViewModel.displayCardDetails(mCardId, mCardDetailsUI);
+            }
+        });
+        updateDetailsActionLabel();
+    }
+
+    private void updateDetailsActionLabel() {
+        if (!isResumed() || mDetailsActionLabel == null) {
+            return;
+        }
+        mDetailsActionLabel.setText(Boolean.TRUE.equals(mViewModel.mFullPan.getValue())
+                ? com.thalesgroup.d1.core.R.string.hide_card_details
+                : com.thalesgroup.d1.core.R.string.show_card_details);
+    }
+
+    private void releaseDetailsAction() {
+        if (mDetailsAction != null) {
+            mDetailsAction.setEnabled(false);
+            mDetailsAction.setOnClickListener(null);
+        }
+        mDetailsAction = null;
+        mDetailsActionLabel = null;
+    }
+
+    @Override public void onPause() {
+        mDetailsHandler.removeCallbacks(mHideDetails);
+        releaseDetailsAction();
+        if (mCardDetailsUI != null) {
+            mCardDetailsUI.maskCardDetails();
+        }
+        mViewModel.mFullPan.setValue(false);
+        super.onPause();
+    }
+
+    private void showArtFallback() {
+        mCardImageProgress.removeCallbacks(mShowLoading);
+        mCardImageProgress.animate().cancel();
+        mCardImageProgress.setVisibility(View.GONE);
+        if (mArtVisible) {
+            return;
+        }
+        // A terminal error uses the same real card frame and live secure controls;
+        // never reintroduce the differently sized host loading card.
+        mCardBackground.setImageResource(com.thalesgroup.d1.core.R.drawable.card_placeholder);
+        mArtVisible = true;
+        ViewEffects.fadeTo(requireView().findViewById(R.id.card_content), 1f);
+    }
+
+    @Override public void onDestroyView() {
+        mDetailsHandler.removeCallbacks(mHideDetails);
+        releaseDetailsAction();
+        if (mCardImageProgress != null) {
+            mCardImageProgress.removeCallbacks(mShowLoading);
+            mCardImageProgress.animate().cancel();
+        }
+        if (mCardBackground != null && mFinishArtSwap != null) {
+            mCardBackground.removeCallbacks(mFinishArtSwap);
+        }
+        mShowLoading = null;
+        mFinishArtSwap = null;
+        super.onDestroyView();
     }
 
     private BiometricPrompt.PromptInfo buildBiometricPrompt() {
@@ -267,12 +401,9 @@ public class VirtualCardDetailFragment extends AbstractBaseFragment<VirtualCardD
     }
 
     private void setDisplayCardDetailsTimer() {
+        mDetailsHandler.removeCallbacks(mHideDetails);
         if (Configuration.VIRTUAL_CARD_DETAIL_DISPLAY_TIMEOUT_MS > 0) {
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                mCardDetailsUI.maskCardDetails();
-                mViewModel.mFullPan.postValue(false);
-            }, Configuration.VIRTUAL_CARD_DETAIL_DISPLAY_TIMEOUT_MS);
+            mDetailsHandler.postDelayed(mHideDetails, Configuration.VIRTUAL_CARD_DETAIL_DISPLAY_TIMEOUT_MS);
         }
     }
 }

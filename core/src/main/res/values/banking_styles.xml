@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BankingTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/banking_text</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+
+    <style name="BankingBody" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/banking_secondary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+    </style>
+
+    <!-- One header geometry for service menus, login and physical-card forms. -->
+    <style name="BankingScreenContent" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingStart">@dimen/banking_gutter</item>
+        <item name="android:paddingEnd">@dimen/banking_gutter</item>
+        <item name="android:paddingBottom">24dp</item>
+    </style>
+    <style name="BankingHeaderContainer" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingTop">36dp</item>
+        <item name="android:paddingBottom">36dp</item>
+    </style>
+    <style name="BankingHeaderLogo" parent="">
+        <item name="android:layout_width">192dp</item>
+        <item name="android:layout_height">96dp</item>
+        <item name="android:src">@drawable/logo_digibank_notext</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+    <style name="BankingHeaderTitle" parent="BankingTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:accessibilityHeading">true</item>
+    </style>
+    <style name="BankingHeaderDescription" parent="BankingBody">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingExtra">0dp</item>
+    </style>
+
+    <!-- Service pages reclaim the home logo's space without changing their text bindings. -->
+    <style name="BankingCompactHeaderContainer" parent="BankingHeaderContainer">
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">24dp</item>
+    </style>
+    <style name="BankingCompactHeaderTitle" parent="BankingHeaderTitle">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="BankingCompactHeaderDescription" parent="BankingHeaderDescription">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Reserve card height in scrolling pages; ViewPager2 cannot wrap its pages. -->
+    <style name="BankingCardPager" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="layout_constraintDimensionRatio">H,1.58:1</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+    </style>
+
+    <style name="BankingCardPan" parent="TextView.Emboss">
+        <item name="android:textSize">22sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMinTextSize">8sp</item>
+        <item name="autoSizeMaxTextSize">22sp</item>
+        <item name="autoSizeStepGranularity">1sp</item>
+    </style>
+    <style name="BankingCardPan.Reference" parent="BankingCardPan">
+        <item name="android:textSize">32sp</item>
+        <item name="autoSizeMaxTextSize">32sp</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">14sp</item>
+        <item name="android:autoSizeMaxTextSize">32sp</item>
+        <item name="android:autoSizeStepGranularity">1sp</item>
+    </style>
+    <style name="BankingCardName" parent="TextView.Emboss.Small">
+        <item name="android:maxLines">1</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMinTextSize">8sp</item>
+        <item name="autoSizeMaxTextSize">15sp</item>
+        <item name="autoSizeStepGranularity">1sp</item>
+    </style>
+
+    <style name="BankingSection" parent="BankingBody">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/banking_text</item>
+        <item name="android:gravity">start</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+
+    <style name="BankingButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/banking_secondary_text</item>
+        <item name="android:background">@drawable/default_button</item>
+    </style>
+
+    <style name="BankingPrimaryButton" parent="BankingButton">
+        <item name="android:textColor">@color/banking_primary_text</item>
+        <item name="android:background">@drawable/blue_button</item>
+    </style>
+    <style name="BankingSecondaryButton" parent="BankingButton" />
+    <style name="BankingDestructiveButton" parent="BankingButton">
+        <item name="android:textColor">@color/banking_danger_text</item>
+        <item name="android:background">@drawable/red_button</item>
+    </style>
+
+    <!-- Shared by the home and physical-card menus, including identical icon spacing. -->
+    <style name="BankingServiceRow" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:background">@drawable/banking_service_background</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:drawableEnd">@drawable/banking_chevron</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/banking_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+    <style name="BankingActionRow" parent="BankingServiceRow" />
+
+    <style name="BankingDivider" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/banking_divider</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <style name="BankingActionFooter" parent="">
+        <item name="android:id">@id/banking_action_footer</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingStart">@dimen/banking_gutter</item>
+        <item name="android:paddingEnd">@dimen/banking_gutter</item>
+        <!-- The activity version label supplies the symmetric 8dp vertical inset. -->
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+    <style name="BankingBottomAction" parent="BankingPrimaryButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="BankingCardAction" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:background">@drawable/banking_card_action_background</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+    <style name="BankingCardActionIcon" parent="">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+    </style>
+    <style name="BankingCardActionLabel" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/accent_blue</item>
+        <item name="android:textSize">15sp</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+    </style>
+
+    <style name="BankingInputText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/banking_text</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+    <style name="BankingInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/banking_background</item>
+        <item name="boxStrokeColor">@color/banking_input_stroke</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="hintTextColor">@color/banking_blue</item>
+        <item name="android:textColorHint">@color/banking_secondary</item>
+    </style>
+    <!-- Retain the exposed-dropdown behavior of consumer selection. -->
+    <style name="BankingDropdownLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxBackgroundColor">@color/banking_background</item>
+        <item name="boxStrokeColor">@color/banking_input_stroke</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="hintTextColor">@color/banking_blue</item>
+        <item name="android:textColorHint">@color/banking_secondary</item>
+    </style>
+
+    <style name="BankingIconButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/banking_icon_background</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+</resources>

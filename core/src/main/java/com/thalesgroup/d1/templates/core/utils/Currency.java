@@ -49,10 +49,6 @@ public class Currency {
      */
     private final int mPosition;
     /**
-     * The amount value will be multiplied by this coefficient before displaying it.
-     */
-    private int mDisplayMultiplier;
-    /**
      * Decimal separator position from left (0=no decimal places, 1=one decimal place, ...).
      * Also used for parsing from the string where the decimal separator position is implicit.
      */
@@ -81,32 +77,7 @@ public class Currency {
         mCurrencySymbol = currencySymbol;
         mConversionRate = conversionRate;
         mPosition = position;
-        mDisplayMultiplier = 1;
         mDecimalSeparatorPosition = 2;
-    }
-
-    /**
-     * @param currencyCode CurrencyCode as Integer.
-     * @param amount       Amount as String.
-     * @param iType        Type as Integer.
-     *
-     * @return String of formatted Amount.
-     */
-    static public String formatAmountDisplay(final int currencyCode, final String amount, final int iType) {
-        String display;
-        final int index = UtilsCurrenciesConstants.getTableIndex(currencyCode);
-        if (index != -1) {
-            final String currencySymbol = UtilsCurrenciesConstants.CURRENCY_TABLE[index].mCurrencySymbol;
-            if (iType == Currency.BEFORE) {
-                display = currencySymbol + amount;
-            } else {
-                display = amount + currencySymbol;
-            }
-        } else {
-            display = amount;
-        }
-
-        return display;
     }
 
     /**
@@ -181,41 +152,9 @@ public class Currency {
         return output;
     }
 
-    /**
-     * Retrieves the display multiplier. The amount value shall be multiplied with this coefficient
-     * before displaying it.
-     *
-     * @return The display multiplier. In most of the cases, it is {@code 1}.
-     */
-    public int getDisplayMultiplier() {
-        return mDisplayMultiplier;
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Getting properties
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Sets the display multiplier value (defaults to {@code 1}).
-     *
-     * @param multiplier The display multiplier to set.
-     *
-     * @return Self for call chaining.
-     */
-    public Currency setDisplayMultiplier(final int multiplier) {
-        mDisplayMultiplier = multiplier;
-        return this;
-    }
-
-    /**
-     * Retrieves the decimal separator position for parsing the currency value.
-     *
-     * @return The position of the decimal separator, left aligned (0=no decimal places, 1=one
-     * decimal place, ...).
-     */
-    public int getDecimalSeparatorPosition() {
-        return mDecimalSeparatorPosition;
-    }
 
     /**
      * Sets the decimal separator position (defaults to {@code 2}).
@@ -248,37 +187,6 @@ public class Currency {
         return mCurrencyCode;
     }
 
-    /**
-     * Retrieves the conversion rate.
-     *
-     * @return The conversion rate.
-     */
-    public int getConversionRate() {
-        return mConversionRate;
-    }
-
-    /**
-     * Retrieves the currency symbol position.
-     *
-     * @return {@link #BEFORE} or {@link #AFTER}.
-     */
-    public int getPosition() {
-        return mPosition;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Display utilities
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Retrieves the currency symbol for the display.
-     *
-     * @return The currency symbol.
-     */
-    public String getCurrencySymbol() {
-        return mCurrencySymbol;
-    }
-
     @NonNull
     @Override
     public String toString() {
@@ -288,7 +196,6 @@ public class Currency {
                 ", mCurrencySymbol='" + mCurrencySymbol + '\'' +
                 ", mConversionRate=" + mConversionRate +
                 ", mPosition=" + mPosition +
-                ", mDisplayMultiplier=" + mDisplayMultiplier +
                 ", mDecimalSeparatorPosition=" + mDecimalSeparatorPosition +
                 '}';
     }

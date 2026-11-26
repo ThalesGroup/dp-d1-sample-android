@@ -20,6 +20,7 @@ import com.thalesgroup.gemalto.d1.D1Exception;
 import com.thalesgroup.gemalto.d1.D1Params;
 import com.thalesgroup.gemalto.d1.D1Task;
 import com.thalesgroup.gemalto.d1.card.CardMetadata;
+import com.thalesgroup.gemalto.d1.card.cardservice.Card;
 
 /**
  * D1VirtualCard.
@@ -63,8 +64,8 @@ public final class D1VirtualCard implements D1VirtualCardApi {
     }
 
     @Override
-    public VirtualCardDetailFragment getVirtualCardDetailFragment(@NonNull final String cardId) {
-        return VirtualCardDetailFragment.newInstance(cardId);
+    public VirtualCardDetailFragment getVirtualCardDetailFragment(@NonNull final Card card) {
+        return VirtualCardDetailFragment.newInstance(card);
     }
 
     @Override

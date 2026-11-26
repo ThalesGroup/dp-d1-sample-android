@@ -1,19 +1,33 @@
 <resources>
     <string name="app_name">D1 Templates</string>
 
-    <string name="home_header">Good Afternoon</string>
-    <string name="your_virtual_card">Your virtual card</string>
-    <string name="your_digital_pay_card">Your digital pay card</string>
-    <string name="your_digital_push_card">Your digital push card</string>
+    <string name="login_title">Sign in</string>
+    <string name="login_subtitle">Choose a consumer to continue</string>
+    <string name="consumer_id">Consumer ID</string>
+    <string name="sdk_versions_format">SDK versions: %1$s</string>
+    <string name="home_services_title">Card services</string>
+    <string name="home_services_subtitle">Choose a service to continue</string>
+    <string name="enable_nfc_payment">Enable NFC Payment</string>
+    <string name="virtual_card_page_title">Virtual card</string>
+    <string name="digital_pay_card_page_title">Digital pay card</string>
+    <string name="digital_push_card_page_title">Digital push card</string>
+    <string name="your_virtual_card">View your card details and manage payment options</string>
+    <string name="your_digital_pay_card">Manage your card for contactless payments</string>
+    <string name="your_digital_push_card">Manage your card in your digital wallet</string>
     <string name="no_digital_pay_card">No digital pay card</string>
+    <string name="loading_digital_pay_card">Loading your digital pay card…</string>
+    <string name="digital_pay_card_load_failed">Unable to load your digital pay card.</string>
+    <string name="retry_digital_pay_card">Try again</string>
     <string name="no_digital_push_card">No digital push card</string>
-    <string name="your_virtual_digital_pay_card">Your virtual and digital pay card</string>
     <string name="virtual_card">Virtual Card</string>
     <string name="digital_pay_card">Digital Pay Card</string>
     <string name="digital_push_card">Digital Push Card</string>
     <string name="physical_card">Physical Card</string>
-    <string name="virtual_amp_digital_pay_card"><![CDATA[Virtual & Digital Pay Card]]></string>
 
     <string name="login_in_progress">D1 login in progress</string>
     <string name="initializing_d1_sdk">Initializing D1 SDK</string>
+    <string name="progress_fetching_cards">Fetching cards from D1</string>
+    <string name="home_no_cards">No cards are available for this consumer.</string>
+    <string name="home_cards_load_failed">Unable to load cards. Please try again.</string>
+    <string name="home_retry_cards">Try again</string>
 </resources>

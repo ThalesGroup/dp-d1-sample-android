@@ -23,15 +23,69 @@ import com.thalesgroup.gemalto.d1.D1Task;
 import com.thalesgroup.gemalto.d1.card.AssetContent;
 import com.thalesgroup.gemalto.d1.card.CardAsset;
 import com.thalesgroup.gemalto.d1.card.CardMetadata;
-import com.thalesgroup.gemalto.d1.d1pay.TransactionRecord;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Base ViewModel.
  */
 public class BaseViewModel extends ViewModel {
+    private final ExecutorService imageExecutor = Executors.newSingleThreadExecutor();
+    private volatile boolean imagesCleared;
+
+    /** Disk access and PNG decoding must not compete with navigation frames. */
+    protected void loadCachedCardArt(@NonNull Context context, @NonNull String cardId, @NonNull Runnable missing) {
+        Context application = context.getApplicationContext();
+        runImageTask(() -> {
+            byte[] bytes = CoreUtils.getInstance().readFromFile(application, cardId);
+            Bitmap bitmap = bytes.length == 0 ? null : BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            if (imagesCleared) {
+                return;
+            }
+            if (bitmap != null) {
+                publishCardBackground(application, bitmap);
+            } else {
+                // SDK calls retain their existing main-thread contract.
+                CoreUtils.getInstance().runInMainThread(() -> {
+                    if (!imagesCleared) {
+                        missing.run();
+                    }
+                });
+            }
+        });
+    }
+
+    /** Worker-thread publication hook for bitmap and legacy drawable card bindings. */
+    protected void publishCardBackground(@NonNull Context context, @NonNull Bitmap bitmap) {
+        mCardBackground.postValue(bitmap);
+    }
+
+    private void runImageTask(Runnable task) {
+        if (imagesCleared) {
+            return;
+        }
+        try {
+            imageExecutor.execute(() -> {
+                if (!imagesCleared) {
+                    task.run();
+                }
+            });
+        } catch (RejectedExecutionException exception) {
+            if (!imagesCleared) {
+                throw exception;
+            }
+        }
+    }
+
+    @Override protected void onCleared() {
+        imagesCleared = true;
+        imageExecutor.shutdownNow();
+        super.onCleared();
+    }
 
     /**
      * Error message stored in LiveData as String.
@@ -47,11 +101,10 @@ public class BaseViewModel extends ViewModel {
      * Card background stored in LiveData as {@code Bitmap}.
      */
     protected final MutableLiveData<Bitmap> mCardBackground = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mCardArtUnavailable = new MutableLiveData<>(false);
 
-    /**
-     * Icon stored in LiveData as {@code Bitmap}.
-     */
-    protected final MutableLiveData<Bitmap> mIcon = new MutableLiveData<>();
+    /** Terminal missing/unsupported art is distinct from a slow asset request. */
+    public MutableLiveData<Boolean> getCardArtUnavailable() { return mCardArtUnavailable; }
 
     /**
      * Toast stored in LiveData as String.
@@ -84,11 +137,6 @@ public class BaseViewModel extends ViewModel {
     public final MutableLiveData<InternetState> mInternetState = new MutableLiveData<>();
 
     /**
-     * Recent {@code TransactionRecord} stored in LiveData.
-     */
-    public final MutableLiveData<TransactionRecord> mRecentTransactionRecord = new MutableLiveData<>();
-
-    /**
      * Gets the error message live mutable data.
      *
      * @return Error message live mutable data.
@@ -113,15 +161,6 @@ public class BaseViewModel extends ViewModel {
      */
     public MutableLiveData<Bitmap> getCardBackground() {
         return mCardBackground;
-    }
-
-    /**
-     * Gets icon.
-     *
-     * @return Mutable live data.
-     */
-    public MutableLiveData<Bitmap> getIcon() {
-        return mIcon;
     }
 
     /**
@@ -159,34 +198,49 @@ public class BaseViewModel extends ViewModel {
      * @param cardMetadata {@code CardMetadata}.
      */
     protected void extractAndSaveImageResources(@NonNull final Context context, @NonNull final String cardId, final CardMetadata cardMetadata) {
+        final Context application = context.getApplicationContext();
         cardMetadata.getAssetList(new D1Task.Callback<List<CardAsset>>() {
             @Override
             public void onSuccess(final List<CardAsset> cardAssets) {
-                for (final CardAsset cardAsset : cardAssets) {
-                    final CardAsset.AssetType assetType = cardAsset.getType();
-
-                    for (final AssetContent assetContent : cardAsset.getContents()) {
-                        if (assetContent.getMimeType() == AssetContent.MimeType.PNG) {
-                            final byte[] data = Base64.decode(assetContent.getEncodedData(), Base64.DEFAULT);
-                            CoreUtils.getInstance().writeToFile(context, cardId, data);
-
-                            final Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                            if (assetType == CardAsset.AssetType.CARD_BACKGROUND) {
-                                mCardBackground.postValue(bitmap);
-                            } else {
-                                mIcon.postValue(bitmap);
+                runImageTask(() -> {
+                    boolean hasBackground = false;
+                    for (final CardAsset cardAsset : cardAssets) {
+                        if (cardAsset.getType() != CardAsset.AssetType.CARD_BACKGROUND) {
+                            continue;
+                        }
+                        for (final AssetContent assetContent : cardAsset.getContents()) {
+                            if (assetContent.getMimeType() == AssetContent.MimeType.PNG) {
+                                final byte[] data;
+                                try {
+                                    data = Base64.decode(assetContent.getEncodedData(), Base64.DEFAULT);
+                                } catch (IllegalArgumentException invalidAsset) {
+                                    continue;
+                                }
+                                final Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                if (imagesCleared || bitmap == null) {
+                                    continue;
+                                }
+                                hasBackground = true;
+                                CoreUtils.getInstance().writeToFile(application, cardId, data);
+                                publishCardBackground(application, bitmap);
+                            } else if (assetContent.getMimeType() == AssetContent.MimeType.SVG) {
+                                Log.d("extractAndSaveImageResources", "MimeType = SVG");
+                            } else if (assetContent.getMimeType() == AssetContent.MimeType.PDF) {
+                                Log.d("extractAndSaveImageResources", "MimeType = PDF");
                             }
-                        } else if (assetContent.getMimeType() == AssetContent.MimeType.SVG) {
-                            Log.d("extractAndSaveImageResources", "MimeType = SVG");
-                        } else if (assetContent.getMimeType() == AssetContent.MimeType.PDF) {
-                            Log.d("extractAndSaveImageResources", "MimeType = PDF");
                         }
                     }
-                }
+                    if (!imagesCleared) {
+                        mCardArtUnavailable.postValue(!hasBackground);
+                    }
+                });
             }
 
             @Override
             public void onError(@NonNull final D1Exception exception) {
+                if (!imagesCleared) {
+                    mCardArtUnavailable.postValue(true);
+                }
                 Log.e("extractAndSaveImageResources", exception.toString());
             }
         });
@@ -230,13 +284,5 @@ public class BaseViewModel extends ViewModel {
         return mInternetState;
     }
 
-    /**
-     * Gets transaction record mutable live data.
-     *
-     * @return MutableLiveData TransactionRecord.
-     */
-    public MutableLiveData<TransactionRecord> getRecentTransactionRecord() {
-        return mRecentTransactionRecord;
-    }
 }
 

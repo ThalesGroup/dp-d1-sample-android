@@ -1,0 +1,5 @@
+<resources>
+    <!-- Hosting pages provide the selected card's reveal/hide action outside its artwork. -->
+    <item name="card_details_button" type="id" />
+    <item name="card_details_label" type="id" />
+</resources>

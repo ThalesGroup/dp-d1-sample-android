@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="c2p_title">Click To Pay</string>
+    <string name="c2p_not_enrolled_subtitle">Card has not been enrolled to Click To Pay service.\nFill in the profile and enroll the card.</string>
+    <string name="c2p_enrolled_subtitle">Card has been already enrolled to Click To Pay service.\nYou can update the profile or opt-out completely.</string>
+    <string name="c2p_cardholder_name">Cardholder Name</string>
+    <string name="c2p_consumer_info">Consumer Information</string>
+    <string name="c2p_first_name">First Name</string>
+    <string name="c2p_middle_name">Middle Name</string>
+    <string name="c2p_last_name">Last Name</string>
+    <string name="c2p_language">Language / Locale (e.g. it-IT)</string>
+    <string name="c2p_phone_country_code">Phone Country Code (e.g. +39)</string>
+    <string name="c2p_phone_number">Phone Number</string>
+    <string name="c2p_email">Email</string>
+    <string name="c2p_billing_address">Billing Address</string>
+    <string name="c2p_country_code">Country Code (ISO 3166-1 alpha-2 format, e.g. IT)</string>
+    <string name="c2p_address_line1">Address Line 1</string>
+    <string name="c2p_address_line2">Address Line 2</string>
+    <string name="c2p_address_line3">Address Line 3</string>
+    <string name="c2p_city">City</string>
+    <string name="c2p_state">State (ISO 3166-2 alpha-3 format, e.g. RM)</string>
+    <string name="c2p_zip_code">Zip Code</string>
+    <string name="c2p_btn_enroll">Enroll</string>
+    <string name="c2p_btn_update">Update</string>
+    <string name="c2p_btn_optout">Opt Out</string>
+    <string name="c2p_op_retrieving_profiles">Retrieving Click To Pay profiles …</string>
+    <string name="c2p_op_enrolling_card">Enrolling card to Click To Pay …</string>
+    <string name="c2p_op_card_opt_out">Requesting Click To Pay opt-out …</string>
+    <string name="c2p_op_card_consumer_update">Updating card and consumer …</string>
+    <string name="c2p_op_pending">%s operation is pending.\nYou will be notified when completed.</string>
+</resources>

@@ -11,11 +11,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,7 +36,6 @@ public class JWTManager {
     public static void getJwtAuthToken(final JwtCallback jwtCallback) {
         executor.execute(() -> {
             BufferedReader input = null;
-            HttpURLConnection httpURLConnection = null;
 
             try {
                 final Map<String, String> bodyMap = new HashMap<>();
@@ -43,19 +44,20 @@ public class JWTManager {
                 bodyMap.put("iss", Configuration.iss);
                 bodyMap.put("aud", Configuration.aud);
                 bodyMap.put("scope", Configuration.scope);
+                bodyMap.put("cbp", Configuration.cbp);
 
                 final URL url = new URL(Configuration.jwtUrl);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
+                final HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
+                httpURLConnection.setRequestProperty("Authorization",
+                        "Basic " + Base64.encodeToString(String.format("%s:%s",
+                                                Configuration.jwtUsername,
+                                                Configuration.jwtPassword)
+                                        .getBytes(StandardCharsets.UTF_8),
+                                Base64.NO_WRAP));
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setInstanceFollowRedirects(false);
-
-                final String userpass = Configuration.jwtUsername + ":" + Configuration.jwtPassword;
-                httpURLConnection.setRequestProperty(
-                        "Authorization",
-                        "Basic " + new String(Base64.encode(userpass.getBytes(), Base64.DEFAULT))
-                );
 
                 final Gson gson = new Gson();
                 final String jsonBody = gson.toJson(bodyMap);
@@ -91,15 +93,15 @@ public class JWTManager {
 
                     jwtCallback.onJwtSuccess(token);
                 } else {
-                    jwtCallback.onJwtError(httpURLConnection.getResponseMessage());
+                    jwtCallback.onJwtError(String.format(Locale.ENGLISH,
+                            "Invalid response code: %d",
+                            httpURLConnection.getResponseCode()));
                 }
-            } catch (final IOException e) {
-                jwtCallback.onJwtError(e.toString());
+            } catch (final MalformedURLException e) {
+                throw new IllegalStateException(e);
+            } catch (final IOException exception) {
+                jwtCallback.onJwtError(Objects.requireNonNull(exception.getLocalizedMessage()));
             } finally {
-                if (httpURLConnection != null) {
-                    httpURLConnection.disconnect();
-                }
-
                 if (input != null) {
                     try {
                         input.close();

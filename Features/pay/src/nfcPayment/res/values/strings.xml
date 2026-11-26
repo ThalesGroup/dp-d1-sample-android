@@ -1,0 +1,13 @@
+<resources>
+    <string name="banking_payment_title">Contactless payment</string>
+    <string name="banking_payment_description">Follow the instructions to complete your payment</string>
+    <string name="banking_history_description">Review the recent payments made with your card</string>
+    <string name="payment_sdk_versions_format">SDK versions: %1$s</string>
+    <string name="label_payment">payment</string>
+    <string name="label_d1_pay_description">payment description</string>
+    <string name="default_card_label">Default Card</string>
+    <string name="default_card_accessibility">Default Card: %1$s</string>
+
+    <string name="set_default_payment_title">Make %1$s your default</string>
+    <string name="set_default_payment_message">Set %1$s as your default payment app so your phone uses it when you tap to pay.</string>
+</resources>

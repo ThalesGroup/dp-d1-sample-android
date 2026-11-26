@@ -264,13 +264,6 @@ public class ProgressWheel extends View {
     }
 
     /**
-     * @return Integer.
-     */
-    public int getTextSize() {
-        return textSize;
-    }
-
-    /**
      * @param textSize Integer.
      */
     public void setTextSize(final int textSize) {

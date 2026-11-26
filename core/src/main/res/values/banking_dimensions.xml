@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="banking_gutter">24dp</dimen>
+    <dimen name="banking_control_radius">8dp</dimen>
+    <!-- Align card pages with three or four actions; larger text can grow this area. -->
+    <dimen name="banking_card_actions_min_height">228dp</dimen>
+</resources>

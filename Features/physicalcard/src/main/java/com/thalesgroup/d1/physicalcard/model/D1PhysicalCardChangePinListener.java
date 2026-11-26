@@ -4,9 +4,9 @@
 
 package com.thalesgroup.d1.physicalcard.model;
 
-import com.thalesgroup.gemalto.d1.D1Exception;
-
 import androidx.annotation.NonNull;
+
+import com.thalesgroup.gemalto.d1.D1Exception;
 
 public interface D1PhysicalCardChangePinListener {
     void onFirstEntryFinished();

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <TextView
+        android:id="@+id/tv_hint_timer_line_1"
+        style="@style/BankingTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_hint_2_tap_and_pay_timer_line_1"
+        android:textSize="22sp" />
+    <TextView
+        android:id="@+id/tv_hint_timer_line_2"
+        style="@style/BankingBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_hint_2_tap_and_pay_timer_line_2" />
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/tap_and_pay_symbol"
+        android:importantForAccessibility="no" />
+    <com.thalesgroup.d1.templates.core.ui.base.ProgressWheel
+        android:id="@+id/pw_spinner"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="16dp"
+        ProgressWheel:barColor="@color/pw_bar_color"
+        ProgressWheel:barLen="40dp"
+        ProgressWheel:barWidth="3dp"
+        ProgressWheel:circleColor="@color/pw_overlay_color"
+        ProgressWheel:contourColor="@color/transparent"
+        ProgressWheel:rimColor="@color/pw_rim_color"
+        ProgressWheel:rimWidth="2dp"
+        ProgressWheel:text="--"
+        ProgressWheel:textColor="@color/pw_text_color"
+        ProgressWheel:textSize="24sp" />
+    <TextView
+        android:id="@+id/tv_amount_currency"
+        style="@style/BankingTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textSize="28sp" />
+</LinearLayout>

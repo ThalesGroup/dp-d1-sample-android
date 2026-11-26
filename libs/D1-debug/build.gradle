@@ -1,2 +1,10 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('d1-debug-d1pay-4.2.0.aar'))
+
+// Pay Use-Case
+//artifacts.add("default", file('d1-debug-d1pay-4.4.0.aar'))
+artifacts.add("default", file('d1-debug-d1pay-4.5.1.aar'))
+
+
+// Push Use-Case
+//artifacts.add("default", file('d1-debug-4.3.0.aar'))
+//artifacts.add("default", file('d1-debug-4.5.1.aar'))

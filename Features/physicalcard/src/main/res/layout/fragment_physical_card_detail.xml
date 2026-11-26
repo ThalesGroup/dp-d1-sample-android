@@ -1,55 +1,47 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/banking_background"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout style="@style/BankingScreenContent">
+        <LinearLayout style="@style/BankingCompactHeaderContainer"
+            android:transitionName="banking_page_header">
+            <TextView
+                style="@style/BankingCompactHeaderTitle"
+                android:text="@string/physical_card_services_title" />
+            <TextView
+                style="@style/BankingCompactHeaderDescription"
+                android:text="@string/physical_card_services_subtitle" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/logo_digibank_notext"
-            app:layout_constraintBottom_toTopOf="@+id/activate_card_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <View style="@style/BankingDivider" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/activate_card_button"
-            style="@style/Button.Blue.Oval"
-            android:layout_width="wrap_content"
-            android:text="@string/activate_card"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/logo" />
+            style="@style/BankingActionRow"
+            android:drawableStart="@drawable/banking_ic_activate"
+            android:text="@string/activate_card" />
 
-        <Button
+        <View style="@style/BankingDivider" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/display_pin_button"
-            style="@style/Button.Blue.Oval"
-            android:layout_width="wrap_content"
-            android:text="@string/display_pin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activate_card_button" />
+            style="@style/BankingActionRow"
+            android:drawableStart="@drawable/banking_ic_pin"
+            android:text="@string/display_pin" />
 
-        <Button
+        <View style="@style/BankingDivider" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/change_pin_button"
-            style="@style/Button.Blue.Oval"
-            android:layout_width="wrap_content"
-            android:text="@string/change_pin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/display_pin_button" />
+            style="@style/BankingActionRow"
+            android:drawableStart="@drawable/banking_ic_change_pin"
+            android:text="@string/change_pin" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View style="@style/BankingDivider" />
+    </LinearLayout>
+</ScrollView>

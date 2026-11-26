@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.thalesgroup.d1.physicalcard.R;
 import com.thalesgroup.d1.physicalcard.ui.activate.ActivateCardFragment;
 import com.thalesgroup.d1.physicalcard.ui.changepin.ChangePinFragment;
@@ -16,9 +19,6 @@ import com.thalesgroup.d1.physicalcard.ui.showpin.ShowPinCardFragment;
 import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
 
 import org.jetbrains.annotations.NotNull;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 
 /**
  * Physical detail Fragment.

@@ -4,17 +4,11 @@
 
 package com.thalesgroup.d1.physicalcard.model;
 
-import android.content.Context;
+import androidx.annotation.NonNull;
 
 import com.thalesgroup.d1.templates.core.model.D1ModuleConnector;
-import com.thalesgroup.gemalto.d1.D1Exception;
-import com.thalesgroup.gemalto.d1.D1Task;
 import com.thalesgroup.gemalto.d1.PINDisplayTextView;
-import com.thalesgroup.gemalto.d1.PINEntryUI;
 import com.thalesgroup.gemalto.d1.SecureEditText;
-import com.thalesgroup.gemalto.d1.card.CardActivationMethod;
-
-import androidx.annotation.NonNull;
 
 /**
  * D1PhysicalCardApi.

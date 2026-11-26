@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
  * HexUtils.
  */
 public class HexUtils {
-    private final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-
     /**
      * @param input String.
      *
@@ -27,20 +25,4 @@ public class HexUtils {
         return data;
     }
 
-    /**
-     * Creates hex string from bytes.
-     *
-     * @param bytes Bytes from which to create the hexa string.
-     *
-     * @return Hex string.
-     */
-    public static String bytesToHex(final byte[] bytes) {
-        final char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            final int value = bytes[j] & 0xFF;
-            hexChars[j * 2] = HEX_ARRAY[value >>> 4];
-            hexChars[j * 2 + 1] = HEX_ARRAY[value & 0x0F];
-        }
-        return new String(hexChars);
-    }
 }

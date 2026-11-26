@@ -4,10 +4,10 @@
 
 package com.thalesgroup.d1.physicalcard.model;
 
+import androidx.annotation.NonNull;
+
 import com.thalesgroup.gemalto.d1.D1Exception;
 import com.thalesgroup.gemalto.d1.card.CardActivationMethod;
-
-import androidx.annotation.NonNull;
 
 /**
  * D1PhysicalCardListener

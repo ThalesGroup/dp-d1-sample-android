@@ -1,0 +1,21 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="mViewModel"
+            type="com.thalesgroup.d1.templates.pay.ui.transactionhistory.TransactionHistoryViewModel" />
+    </data>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/banking_gutter"
+        android:paddingEnd="@dimen/banking_gutter"
+        android:paddingBottom="24dp"
+        android:clipToPadding="false"
+        android:background="@color/banking_background"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/transaction_history_header" />
+</layout>

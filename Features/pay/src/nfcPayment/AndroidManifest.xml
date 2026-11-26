@@ -1,0 +1,43 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature android:name="android.hardware.nfc.hce" />
+    <!-- In case the Application uses the biometric as CDCVM -->
+    <uses-feature android:name="android.hardware.nfc" />
+    <!--Even if deprecated from Android 10, this is needed for Android 9 and below -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <application
+        android:allowBackup="false"
+        tools:replace="android:allowBackup">
+
+        <service
+            android:name="com.thalesgroup.gemalto.d1.d1pay.D1HCEService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NFC_SERVICE">
+            <intent-filter>
+                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.cardemulation.host_apdu_service"
+                android:resource="@xml/apduservice" />
+        </service>
+
+        <activity
+            android:name="com.thalesgroup.d1.templates.pay.ui.payment.PaymentActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation|screenLayout"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            android:taskAffinity=""
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+    </application>
+</manifest>

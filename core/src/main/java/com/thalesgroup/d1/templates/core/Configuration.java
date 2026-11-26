@@ -26,17 +26,22 @@ public class Configuration {
     public static String d1ServiceRsaModulus;
 
     public static String digitalCardUrl;
+    public static String appProfileId;
 
+    /**
+     * Consumer ID which is retrieved at the login screen
+     */
     public static String consumerId;
-    public static String cardId;
+    public static String cbp;
 
     public static String jwtUrl;
     public static String jwtUsername;
     public static String jwtPassword;
-    public static String kid;
+
     public static String iss;
     public static String aud;
     public static String scope;
+    public static String kid;
 
     /**
      * Loads the D1 configuration from assets file.
@@ -49,15 +54,14 @@ public class Configuration {
         d1ServiceRsaExponent = getProperty("D1_SERVICE_RSA_EXPONENT", context, FILENAME);
         d1ServiceRsaModulus = getProperty("D1_SERVICE_RSA_MODULUS", context, FILENAME);
         digitalCardUrl = getProperty("DIGITAL_CARD_URL", context, FILENAME);
-        consumerId = getProperty("CONSUMER_ID", context, FILENAME);
-        cardId = getProperty("CARD_ID", context, FILENAME);
+        appProfileId = getProperty("APP_PROFILE_ID", context, FILENAME);
         jwtUrl = getProperty("JWT_URL", context, FILENAME);
         jwtUsername = getProperty("JWT_USERNAME", context, FILENAME);
         jwtPassword = getProperty("JWT_PASSWORD", context, FILENAME);
-        kid = getProperty("KID", context, FILENAME);
         iss = getProperty("ISS", context, FILENAME);
         aud = getProperty("AUD", context, FILENAME);
         scope = getProperty("SCOPE", context, FILENAME);
+        kid = getProperty("KID", context, FILENAME);
     }
 
     /**

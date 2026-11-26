@@ -1,0 +1,4 @@
+<resources>
+    <string name="loading_status_default">Working…</string>
+    <string name="loading_status_description">Please wait while this completes.</string>
+</resources>

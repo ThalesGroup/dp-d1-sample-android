@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.thalesgroup.d1.physicalcard.R;
-import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
-import com.thalesgroup.gemalto.d1.PINDisplayTextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.thalesgroup.d1.physicalcard.R;
+import com.thalesgroup.d1.templates.core.ui.base.AbstractBaseFragment;
+import com.thalesgroup.gemalto.d1.PINDisplayTextView;
 
 /**
  * Show PIN fragment.

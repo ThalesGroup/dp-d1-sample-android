@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/BankingHeaderContainer"
+    android:transitionName="banking_page_header">
+    <ImageView
+        android:id="@+id/logo"
+        style="@style/BankingHeaderLogo" />
+    <TextView
+        style="@style/BankingHeaderTitle"
+        android:text="@string/home_services_title" />
+    <TextView
+        style="@style/BankingHeaderDescription"
+        android:text="@string/home_services_subtitle" />
+</LinearLayout>

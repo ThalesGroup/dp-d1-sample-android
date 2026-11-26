@@ -15,10 +15,9 @@ public class Constants {
      * Error codes for SDK initalisation.
      */
     public static class ErrorCodeCore {
-        public static final long SDK_ALREADY_INITIALIZED = 10001;
-        public static final long SDK_INIT_ONGOING = 10002;
         public static final long SDK_INIT_FAILED = 10003;
         public static final long SDK_NOT_CONFIGURED = 10004;
+        public static final long FCM_INIT_FAILED = 10005;
     }
 
     /**
