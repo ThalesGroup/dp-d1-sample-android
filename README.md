@@ -1,49 +1,54 @@
-# D1 SDK Sample Android application
+# D1 SDK Sample Android Application
 
-This project provides a code demonstrating an integration of Thales D1 SDK into an Android application. This serves not only as a guide but also as a ready made solution if code needs to be transferred 1:1 to a client application.
+This project provides sample code demonstrating the integration of the Thales D1 SDK into an Android application. It serves not only as a guide but also as a ready-made solution when code needs to be transferred 1:1 to a client application.
 
 
-# Getting started
+# Getting Started
 
+The app features two build variants: `pushProvisioning` and `nfcPayment`.
+
+Building the `nfcPayment` variant requires the use of D1 SDK artifacts that include the NFC Payment feature (e.g. `d1-debug-d1pay-<version>.aar`).
 
 The following files need to be added to the project and updated based on the client [onboarding](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/configuration/2.-onboarding):
 
-## TLDR files to add:
+## TL;DR: Files to Add
+
 ```bash
 .
 ├── D1
-│   ├── d1.properties
-│   └── D1 SDK Binaries
+│   ├── d1.properties
+│   └── D1 SDK Binaries
 │
 └── NFC Payment Extras
-    ├── Android Keystore
-    ├── keystore.properties
-    ├── gemcbp.properties
-    ├── mobilegateway.properties
-    ├── rages.properties
-    └── google-services.json
+    ├── Android Keystore
+    ├── keystore.properties
+    ├── gemcbp.properties
+    ├── mobilegateway.properties
+    ├── rages.properties
+    └── google-services.json
 ```
 
->[!NOTE]
-> Thales SDK support team could provide a configuration package to connect the app to the [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox) environment. If you are interested in this option please reach out to your Thales project manager or sales representative.
+> [!NOTE]
+> The Thales SDK support team can provide a configuration package to connect the app to the [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox) environment. If you are interested in this option, please reach out to your Thales project manager or sales representative.
 
 ## D1 Backend Configuration
-   
-The `d1.properties` file which holds the D1 backend configuration needs to be added to the project.
+
+The `d1.properties` file, which contains the D1 backend configuration, needs to be added to the project.
 
 **`core/src/main/assets/d1.properties`**
+
 ```bash
 D1_SERVICE_URL = 
 ISSUER_ID = 
 D1_SERVICE_RSA_EXPONENT = 
 D1_SERVICE_RSA_MODULUS = 
 DIGITAL_CARD_URL = 
+APP_PROFILE_ID = 
 ```
-For using [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox) the file must also include:
+
+When using the [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox), the file must also include:
 
 ```bash
-CONSUMER_ID = 
-CARD_ID = 
 JWT_URL = 
 JWT_USERNAME = 
 JWT_PASSWORD = 
@@ -53,16 +58,17 @@ AUD =
 SCOPE = 
 ```
 
-
-The `d1.properties` file is **not** kept under version control to prevent it from being overwritten during repository update.
+The `d1.properties` file is **not** kept under version control to prevent it from being overwritten during repository updates.
 
 
 ## D1 SDK Binaries
 
-This sample application was tested with **D1 SDK version 4.2.0**.
-Please refer to the sample application `build.gradle` files for the correct location of D1 SDK.
+This sample application was tested with **D1 SDK version 4.5.1**.
+
+Please refer to the sample application's `build.gradle` files for the correct location of the D1 SDK binaries.
 
 **`app/build.gradle`**
+
 ```groovy
 debugImplementation project(":libs:d1-debug")
 releaseImplementation project(":libs:d1-release")
@@ -71,39 +77,28 @@ releaseImplementation project(":libs:d1-release")
 ```bash
 libs/
 ├── d1-debug
-│   ├── build.gradle
-│   └── d1-debug-d1pay-4.2.0.aar
+│   ├── build.gradle
+│   └── d1-debug-4.5.1.aar
 └── d1-release
     ├── build.gradle
-    └── d1-release-d1pay-4.2.0.aar
-```
-
-**`settings.gradle`**
-```groovy
-include':app',
-    ':libs:d1-debug',
-    ':libs:d1-release'
+    └── d1-release-4.5.1.aar
 ```
 
 For more details, please refer to the [Binary Integration](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/configuration/1.-binary-integration/android) section of the D1 Developer Portal.
 
-## Additional NFC Payment Configuration:
-To use [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment/get-started/overview) service, the following configurations need to be added:
+## Application Binding
 
-1. Android Keystore
-2. Additional Backend Configuration
-3. Google Services
+The Thales D1 platform verifies the application signature. See the [Issuer Application Signing Key](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/configuration/2.-onboarding/initial-setup#issuer-application-signing-key) section for an explanation.
 
-### 1. Android Keystore
-To use [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment/get-started/overview) service, the sample application needs to be signed with a specific keystore - see: [Issuer Application Signing Key section](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/configuration/2.-onboarding/initial-setup#issuer-application-signing-key). The sample application needs to be updated with the appropriate keystore and signing configuration.
+The application needs to be updated with the appropriate keystore and signing configuration depending on the environment being used.
 
 ```bash
 app/keystore/keystore
 ```
 
 **`app/build.gradle`**
-```groovy
 
+```groovy
 android {
     signingConfigs {
         def keystorePropertiesFile = rootProject.file("app/keystore/keystore.properties")
@@ -122,6 +117,7 @@ android {
 ```
 
 **`app/keystore/keystore.properties`**
+
 ```bash
 storePassword= 
 keyPassword= 
@@ -129,12 +125,25 @@ keyAlias=
 storeFile=keystore/keystore
 ```
 
-### 2. Additional Backend Configuration
-The following files with a working NFC Payment backend configuration need to be added:
+## [Conditional] Google Services
+
+Using certain D1 services requires integration with [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging).
+
+It is mandatory for integration with the [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment/get-started/overview) service. It is also recommended when integrating [Click to Pay](https://docs.payments.thalescloud.io/click-to-pay) use cases.
+
+For this reason, the corresponding `google-services.json` file needs to be added to the application module.
+
+```bash
+app/google-services.json
+```
+
+## [Optional] NFC Payment-Specific Configuration
+
+To use the [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment/get-started/overview) service, the following files need to be added and updated with configuration values pointing to the desired environment:
 
 **`1. Features/pay/src/main/assets/gemcbp.properties`**
-```bash
 
+```bash
 # The URL of the CPS server.
 # To be provided by Thales integrator.
 CPS_URL=https://dummy.endpoint.test/mobile/cps
@@ -157,8 +166,8 @@ CPS_CONNECTION_RETRY_INTERVAL=10000
 ```
 
 **`2. Features/pay/src/main/assets/mobilegateway.properties`**
-```bash
 
+```bash
 # The URL of the MG server.
 # To be provided by Thales integrator.
 MG_CONNECTION_URL=https://dummy.endpoint.test/mobile/mg
@@ -191,8 +200,8 @@ MG_TRANSACTION_HISTORY_CONNECTION_URL=https://dummy.endpoint.test/mobile/mg
 ```
 
 **`3. Features/pay/src/main/assets/rages.properties`**
-```bash
 
+```bash
 # A fixed parameter
 REALM=CBP
 
@@ -225,33 +234,30 @@ CPS_CONNECTION_RETRY_COUNT=5
 CPS_CONNECTION_RETRY_INTERVAL=10000
 ```
 
-These files are not kept under version control to prevent them from being overwritten during repository update.
+These files are not kept under version control to prevent them from being overwritten during repository updates.
 
-
-### 3. Google Services
-
-[NFC Payment](https://docs.payments.thalescloud.io/nfc-payment/get-started/overview) service requires [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) integration. For this reason the corresponding `google-services.json` file needs to be added to the sample application.
-
-```bash
-app/google-services.json
-```
 
 # Authentication
-To receive access to all D1 services, the user needs to authenticate with D1. This authentication is done using a [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens). For the [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox) a web service is used to fetch the JWT. The JWT configuration is part of the `d1.properties` file.
+
+To access all D1 services, the user needs to authenticate with D1. Authentication is performed using a [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens).
+
+For the [Mobile SDK Sandbox](https://docs.payments.thalescloud.io/nfc-payment/integrate-d1-sdk/getting-started/environments/mobile-sdk-sandbox), a web service is used to obtain the JWT. The JWT configuration is part of the `d1.properties` file.
 
 For more details, please refer to the [D1 SDK Login](https://docs.payments.thalescloud.io/push-provisioning/integrate-the-d1-sdk/getting-started/configuration/5.-authentication/sdk-login) section of the D1 Developer Portal.
 
 
-# Build and run project
-After all of the configurations have been added, the application can be build either using Android Studio, or from the command line.
+# Build and Run the Project
+
+After all configurations have been added, the application can be built either using Android Studio or from the command line.
 
 ```bash
 >> ./gradlew assemble
 >> adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-# Project structure
-The sample application is divided in to multiple modules.
+# Project Structure
+
+The sample application is divided into multiple modules.
 
 ```bash
 .
@@ -259,35 +265,40 @@ The sample application is divided in to multiple modules.
 ├── core
 │
 ├── Features
-│   ├── clicktopay
-│   ├── pay
-│   ├── physicalcard
-│   ├── push
-│   └── virtualcard
+│   ├── clicktopay
+│   ├── pay
+│   ├── physicalcard
+│   ├── push
+│   └── virtualcard
 │
 └── libs
-    ├── D1-debug
-    └── D1-release
+    ├── D1-debug
+    └── D1-release
 ```
 
 
 ## Use Cases
-* app - Main application.
-* core - Common classes and components for all modules.
-* Features/clicktopay - [Click to Pay](https://docs.payments.thalescloud.io/click-to-pay)
-* Features/pay - [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment)
-* Features/physicalcard - [Physical Issuance](https://docs.payments.thalescloud.io/pin-management)
-* Features/push - [Push Provisioning](https://docs.payments.thalescloud.io/push-provisioning)
-* Features/virtualCard - [Secure Card Display](https://docs.payments.thalescloud.io/secure-card-display)
-* libs - D1 SDK binaries.
+
+* `app` - Main application.
+* `core` - Common classes and components for all modules.
+* `Features/clicktopay` - [Click to Pay](https://docs.payments.thalescloud.io/click-to-pay).
+* `Features/pay` - [NFC Payment](https://docs.payments.thalescloud.io/nfc-payment).
+* `Features/physicalcard` - [Physical Issuance](https://docs.payments.thalescloud.io/pin-management).
+* `Features/push` - [Push Provisioning](https://docs.payments.thalescloud.io/push-provisioning).
+* `Features/virtualcard` - [Secure Card Display](https://docs.payments.thalescloud.io/secure-card-display).
+* `libs` - D1 SDK binaries.
 
 
 # Documentation
+
 [Thales D1 Platform Developer Portal](https://docs.payments.thalescloud.io/)
 
 
 # Contributing
-If you are interested in contributing to the D1 SDK Sample Android application, start by reading the [Contributing guide](/CONTRIBUTING.md).
+
+If you are interested in contributing to the D1 SDK Sample Android application, start by reading the [Contributing Guide](/CONTRIBUTING.md).
+
 
 # License
+
 [LICENSE](/LICENSE)
